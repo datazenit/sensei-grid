@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sensei Grid</title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="reset.css"/>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css" href="sensei-grid.css"/>
+
+    <script src="jquery/dist/jquery.min.js"></script>
+    <script src="lodash/dist/lodash.min.js"></script>
+    <script src="sensei-grid.js"></script>
+    <script src="example.js"></script>
+
+    <style type="text/css">
+        .example {
+            width: 900px;
+            margin: 50px auto;
+        }
+    </style>
+
+</head>
+<body>
+<div class="example">
+    <div class="sensei-grid"></div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th colspan="2">Keyboard shortcuts when the editor <strong>is not active</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="width:250px"><code>left, right, up, down</code></td>
+            <td>move active cell</td>
+        </tr>
+        <tr>
+            <td><code>esc</code></td>
+            <td>move focus away from grid and remove highlight from active cell and row</td>
+        </tr>
+        <tr>
+            <td><code>enter</code></td>
+            <td>open cell editor</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th colspan="2">Keyboard shortcuts when the editor <strong>is active</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="width:250px"><code>ctrl + enter</code></td>
+            <td>move editor down</td>
+        </tr>
+        <tr>
+            <td><code>ctrl + shift + enter</code></td>
+            <td>move editor up</td>
+        </tr>
+        <tr>
+            <td><code>enter</code></td>
+            <td>exit editor and save</td>
+        </tr>
+        <tr>
+            <td><code>tab</code></td>
+            <td>move forward</td>
+        </tr>
+        <tr>
+            <td><code>shift + tab</code></td>
+            <td>move backward</td>
+        </tr>
+        <tr>
+            <td><code>esc</code></td>
+            <td>exit editor without saving</td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <!--<div class="panel panel-default">-->
+    <!--<div class="panel-heading">Keyboard shortcuts when the editor is active</div>-->
+    <!--<div class="panel-body">-->
+    <!--<p><code>ctrl + enter</code>: move editor down</p>-->
+    <!--<p><code>ctrl + shift + enter</code>: move editor up</p>-->
+    <!--<p><code>tab</code>: move editor down</p>-->
+    <!--<p><code>ctrl + shift + enter</code>: move editor down</p>-->
+    <!--</div>-->
+    <!--</div>-->
+</div>
+</body>
+</html>

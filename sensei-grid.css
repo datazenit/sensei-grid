@@ -1,0 +1,63 @@
+.sensei-grid {
+	/*position: relative;*/
+    outline: none;
+}
+.sensei-grid table {
+	table-layout:fixed;
+}
+.sensei-grid table td,
+.sensei-grid table th {
+	/*max-width: 100px;*/
+	overflow: hidden;
+	white-space: nowrap;
+	/*width: 100px;*/
+	/*-webkit-user-select: none;
+	-moz-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
+	cursor: default;*/
+}
+.sensei-grid thead {
+	background: #F5F5F5;
+}
+.sensei-grid thead>tr>th {
+	border-bottom-width: 1px;
+}
+.sensei-grid tbody>tr>td {
+}
+.sensei-grid .activeCell {
+	background: #eff7fc;
+}
+.sensei-grid tr>td>div {
+}
+.sensei-grid .activeCell {
+	/*background: #d0e9f8;*/
+	border: 1px double #3399ff;
+}
+.sensei-grid .activeRow {
+	background: #eff7fc;
+}
+
+.sensei-grid-editor {
+	position: absolute;
+	background: white;
+	border: 2px solid #3399ff;
+	width: 100px;
+	height: 50px;
+	box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+}
+.sensei-grid-editor input,
+.sensei-grid-editor select {
+	border: none;
+	width: 100%;
+	height: 100%;
+	box-shadow: none;
+	outline: none;
+	padding: 5px 4px;
+}
+
+.sensei-grid-sortable tr>th {
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+}
