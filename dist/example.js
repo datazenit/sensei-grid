@@ -14,7 +14,7 @@ $(function () {
 		{name: "id", type: "string"},
 		{name: "created_at", type: "string"}, 
 		// editor: "CustomEditor" @fixme
-		{name: "status", type: "string", editor: "CustomEditor"},
+		{name: "status", type: "string"},
 		{name: "title", type: "string"},
 		{name: "count", type: "string"},
 	];
