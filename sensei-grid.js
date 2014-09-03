@@ -1,6 +1,5 @@
 (function ($) {
 
-    // editor interface
     window.Editor = function(grid) {
         this.grid = grid;
     };
@@ -24,9 +23,6 @@
     };
     Editor.prototype.getElement = function () {
         return $(this.editor);
-    };
-    Editor.prototype.isVisible = function () {
-        return this.getElement() && this.getElement().is(":visible");
     };
     Editor.prototype.initialize = function () {};
     Editor.prototype.render = function () {};
@@ -131,25 +127,21 @@
             plugin.renderColumns();
             plugin.renderData();
             
+            // render each editor
             _.each(plugin.editors, function (editor) { 
                 editor.initialize();
                 editor.render();
-                // hide the editor
                 editor.getElement().hide();
             });
 
-            // plugin.renderEditor();
             plugin.bindEvents();
         };
         plugin.bindEvents = function () {
             plugin.$el.on("click", "tr>td", plugin.clickCell);
             plugin.$el.on("dblclick", "tr>td", plugin.dblClickCell);
             plugin.$el.on("blur", plugin.blur);
-            $(document).on("click", plugin.editorBlur);
-            plugin.$el.on("focusin", ".sensei-grid-editor", function (e) {
-                console.log("focus on editor", e);
-            });
             plugin.$el.on("keydown", plugin.keydown);
+            $(document).on("click", plugin.editorBlur);
         };
 
         plugin.unbindEvents = function () {
@@ -211,16 +203,12 @@
             var $td = plugin.getActiveCell();
 
             if ($td.next().length > 0) {
-                // console.log("there is next el");
                 $td.next().setActiveCell();
             } else {
                 // try next row
                 var $nextRow = $td.parent("tr").next();
                 if ($nextRow.length > 0) {
-                    // console.log("nextRow", $nextRow);
                     $("td:first", $nextRow).setActiveCell();
-                } else {
-                    // console.log("end of table");
                 }
             }
         };
@@ -231,18 +219,13 @@
 
             var $prevRow = $td.parent("tr").prev();
             if ($prevRow.length > 0) {
-                // console.log("there is prev row");
                 var index = $td.index();
                 var $upCell = $("td", $prevRow).eq(index);
                 if ($upCell.length > 0) {
-                    // console.log("there is a cell precisely up");
                     $upCell.setActiveCell();
                 } else {
-                    // console.log("strange, no cell up, select last one", $upCell);
                     $("td:last", $prevRow).setActiveCell();
                 }
-            } else {
-                // console.log("this is top row");
             }
         };
 
@@ -252,16 +235,12 @@
 
             console.log("left");
             if ($td.prev().length > 0) {
-                // console.log("there is prev el");
                 $td.prev().setActiveCell();
             } else {
                 // try next row
                 var $prevRow = $td.parent("tr").prev();
                 if ($prevRow.length > 0) {
-                    // console.log("prevRow", $prevRow);
                     $("td:last", $prevRow).setActiveCell();
-                } else {
-                    // console.log("beginning of table");
                 }
             }
         };
@@ -272,18 +251,13 @@
 
             var $nextRow = $td.parent("tr").next();
             if ($nextRow.length > 0) {
-                // console.log("there is next row");
                 var index = $td.index();
                 var $downCell = $("td", $nextRow).eq(index);
                 if ($downCell.length > 0) {
-                    // console.log("there is a cell precisely down");
                     $downCell.setActiveCell();
                 } else {
-                    // console.log("strange, no cell down, select last one", $downCell);
                     $("td:first", $nextRow).setActiveCell();
                 }
-            } else {
-                // console.log("this is top row");
             }
         };
 
@@ -305,7 +279,7 @@
                     plugin.editCell();
                 }
 
-                // scroll cell into viewport
+                // scroll cell into viewport if it is not already visible
                 if (!plugin.getActiveCell().find(">div").isOnScreen()) {
                     if (_.contains(["up", "left"], direction)) {
                         plugin.getActiveCell().get(0).scrollIntoView(true);    
@@ -320,16 +294,9 @@
         };
 
         plugin.editCell = function () {
-
-            // var $td = plugin.getActiveCell();
-            // var $editor = plugin.getEditor().getElement();
-
+            // currently this function is just a wrapper around showEditor
             console.log("editCell");
-
             plugin.showEditor();
-
-            // $editor.css($td.cellPosition());
-            // $editor.css({width: $td.outerWidth() + 1, height: $td.outerHeight() + 1});
         };
 
         plugin.getActiveCellType = function () {
@@ -345,8 +312,6 @@
             var $td = plugin.getActiveCell();
 
             var editorName = $td.data("editor");
-
-            // console.info("getEditor", editorName);
 
             if (editorName && _.has(plugin.editors, editorName)) {
                 console.log("getEditor", editorName);
@@ -364,7 +329,6 @@
 
             // save editor if is active
             if (plugin.isEditing) {
-                // var val = $("input", $editor).val();
                 var val = plugin.activeEditor.getValue();
                 console.log("save editor value:", val);
                 plugin.getActiveCell().html($("<div>").text(val));
@@ -372,9 +336,6 @@
 
             // hide editor
             plugin.getEditor().hide();
-
-            // remove active editor, because it is not needed anymore
-            // previously it was used for active cell reference
         };
 
         plugin.exitEditor = function (skipSave) {
@@ -400,7 +361,7 @@
             if (plugin.isEditing) {
                 plugin.showEditor();
                 console.log("editor is visible, move along");
-                plugin.editCell(); // editCell was called with plugin.getActiveCell() previously
+                plugin.editCell(); // previously editCell was called with plugin.getActiveCell
             }
         };
 
@@ -428,10 +389,6 @@
             plugin.activeEditor.setValue($td.text());
 
             return $editor;
-        };
-
-        plugin.isVisibleEditor = function () {
-            return _.find(plugin.editors, function (editor) { return editor.isVisible(); });
         };
 
         plugin.keydown = function (e) {
@@ -468,19 +425,16 @@
                     plugin.move("down");
                     break;
                 case 13: // enter
+                    // the code below must be refactored
                     if (plugin.isEditing) {
                         if (e.ctrlKey && e.shiftKey) {
-                            console.log("ctrl + shift + enter", "move editor up");
                             plugin.move("up");
                         } else if (e.ctrlKey && !e.shiftKey) {
-                            console.log("ctrl + enter", "move editor down");
                             plugin.move("down");
                         } else {
-                            console.log("enter", "exit editor");
                             plugin.exitEditor();
                         }
                     } else {
-                        console.log("enter", "edit cell");
                         plugin.editCell();
                     }
                     break;
@@ -512,7 +466,7 @@
         plugin.clickCell = function (e) {
             e.preventDefault();
             console.log("clicked cell");
-            if (plugin.isVisibleEditor()) {
+            if (plugin.isEditing) {
                 plugin.exitEditor();                
             }
             $(this).setActiveCell();
