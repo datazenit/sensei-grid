@@ -1,6 +1,6 @@
 $(function () {
 	var data = [];
-	for (var i = 0; i < 500; ++i) {
+	for (var i = 0; i < 10; ++i) {
 		data.push({
 			"id": "#" + (i + 1),
 			"created_at": "2014-05-02 12:22",
