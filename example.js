@@ -1,6 +1,6 @@
 $(function () {
 	var data = [];
-	for (var i = 0; i < 5; ++i) {
+	for (var i = 0; i < 500; ++i) {
 		data.push({
 			"id": "#" + (i + 1),
 			"created_at": "2014-05-02 12:22",
@@ -13,7 +13,6 @@ $(function () {
 	var columns = [
 		{name: "id", type: "string"},
 		{name: "created_at", type: "string"}, 
-		// editor: "CustomEditor" @fixme
 		{name: "status", type: "string", editor: "CustomEditor"},
 		{name: "title", type: "string"},
 		{name: "count", type: "string"},
