@@ -17,7 +17,7 @@ var BasicEditor = Editor.extend({
     },
     setValue: function (val) {
         $("input", this.editor).val(val).focus();
-    },
+    }
 });
 
 var CustomEditor = Editor.extend({

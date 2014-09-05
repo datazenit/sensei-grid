@@ -101,15 +101,17 @@
             this._events[event].push({callback: callback, context: context});
         };
         plugin.events.trigger = function (event) {
+            var args = Array.prototype.slice.call(arguments, 1);
             if (_.has(this._events, event)) {
                 var events = this._events[event];
                 _.each(events, function (e) {
                     console.log("trigger event", event, e);
-                    _.bind(e["callback"], e["context"]);
+                    var cbk = _.bind(e["callback"], e["context"]);
+                    cbk.apply(this, args);
                 });
             }
         };
-        plugin.events.off = function (event, callback) {
+        plugin.events.off = function (event) {
             if (_.has(this._events, event)) {
                 delete this._events[event];
             }
@@ -158,7 +160,7 @@
 
         plugin.hideEditors = function () {
             $(".sensei-grid-editor", plugin.$el).hide();
-        }
+        };
 
         plugin.blur = function (e) {
             // check if focus has moved to editor
@@ -170,7 +172,7 @@
             } else {
                 console.log("grid blur, focus not on editor");
                 plugin.exitEditor();
-                this.isEditing = false;
+                plugin.isEditing = false;
                 plugin.deactivateCell();
             }
         };
@@ -299,11 +301,6 @@
             plugin.showEditor();
         };
 
-        plugin.getActiveCellType = function () {
-            var $td = plugin.getActiveCell();
-            return "string";
-        };
-
         plugin.getEditor = function () {
             return plugin.activeEditor;
         };
@@ -325,13 +322,19 @@
         plugin.saveEditor = function () {
             console.log("save editor");
 
-            var $editor = plugin.getEditor().getElement();
-
             // save editor if is active
             if (plugin.isEditing) {
+
+                var $td = plugin.getActiveCell();
                 var val = plugin.activeEditor.getValue();
-                console.log("save editor value:", val);
-                plugin.getActiveCell().html($("<div>").text(val));
+
+                // set value from editor to the active cell
+                $td.html($("<div>").text(val));
+
+                // trigger editor:save event
+                var data = {};
+                data[$td.data("column")] = val;
+                plugin.events.trigger("editor:save", data, $td.data());
             }
 
             // hide editor
@@ -386,7 +389,14 @@
             $editor.css({width: $td.outerWidth() + 1, height: $td.outerHeight() + 1});
 
             // set value in editor
-            plugin.activeEditor.setValue($td.text());
+            var column = $td.data("column");
+            var value = $td.text();
+            plugin.activeEditor.setValue(value);
+
+            // trigger editor:load event
+            var data = {};
+            data[column] = value;
+            plugin.events.trigger("editor:load", data, $td.data());
 
             return $editor;
         };
@@ -484,7 +494,7 @@
 
             var $thead = $("thead", plugin.$el);
             var tr = document.createElement("tr");
-            _.each(plugin.columns, function (column, key) {
+            _.each(plugin.columns, function (column) {
                 var th = document.createElement("th");
                 var div = document.createElement("div");
 
@@ -503,7 +513,7 @@
             console.log("renderData");
 
             var $tbody = $("tbody", plugin.$el);
-            _.each(plugin.data, function (item, key) {
+            _.each(plugin.data, function (item) {
                 var tr = document.createElement("tr");
                 _.each(plugin.columns, function (column) {
                     var td = document.createElement("td");
