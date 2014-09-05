@@ -40,7 +40,7 @@ $(function () {
     console.log("grid.getCellDataByIndex(0, 1):", grid.getCellDataByIndex(0, 1));
     console.log("grid.getCellDataByKey(2, created_at):", grid.getCellDataByKey(2, "created_at"));
     console.log("grid.getGridData():", grid.getGridData());
-    console.groupEnd("api examples");
+    console.groupEnd();
 
     window.grid = grid;
 }); 
