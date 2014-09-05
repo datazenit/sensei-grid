@@ -3,7 +3,7 @@ $(function () {
 	for (var i = 0; i < 10; ++i) {
 		data.push({
 			"id": "#" + (i + 1),
-			"created_at": "2014-05-02 12:22",
+			"created_at": new Date().toDateString(),
 			"status": "In progress",
 			"title": "Test " + i + Math.round(Math.random() * 1000),
 			"count": Math.round(Math.random() * 100)
