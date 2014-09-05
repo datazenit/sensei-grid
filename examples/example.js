@@ -15,7 +15,7 @@ $(function () {
 		{name: "created_at", type: "string"}, 
 		{name: "status", type: "string", editor: "CustomEditor"},
 		{name: "title", type: "string"},
-		{name: "count", type: "string"},
+		{name: "count", type: "string"}
 	];
 
 	var grid = $(".sensei-grid").grid(data, columns);
