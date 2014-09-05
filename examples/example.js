@@ -31,4 +31,16 @@ $(function () {
         console.info("active cell:", $cell);
     });
 	grid.render();
+
+    // api examples
+    var $row = grid.getRowByIndex(5);
+    console.group("data api examples");
+    console.log("grid.getRowDataByIndex(0):", grid.getRowDataByIndex(0));
+    console.log("grid.getRowData($row):", grid.getRowData($row));
+    console.log("grid.getCellDataByIndex(0, 1):", grid.getCellDataByIndex(0, 1));
+    console.log("grid.getCellDataByKey(2, created_at):", grid.getCellDataByKey(2, "created_at"));
+    console.log("grid.getGridData():", grid.getGridData());
+    console.groupEnd("api examples");
+
+    window.grid = grid;
 }); 

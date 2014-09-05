@@ -179,15 +179,99 @@
             }
         };
 
+        plugin.getCellData = function ($cell) {
+            return $cell.text();
+        };
+
+        plugin.getCellColumn = function ($cell) {
+            return $cell.data("column");
+        };
+
+        plugin.getCellDataByIndex = function (row, cell) {
+            var $row = plugin.getRowByIndex(row);
+            var $cell = plugin.getCellFromRowByIndex($row, cell);
+            return plugin.getCellData($cell);
+        };
+
+        plugin.getCellDataByKey = function (row, key) {
+            var $row = plugin.getRowByIndex(row);
+            var $cell = plugin.getCellFromRowByKey($row, key);
+            return plugin.getCellData($cell);
+        };
+
+        plugin.getCellFromRowByIndex = function ($row, index) {
+            var $cell = $row.find("td").eq(index);
+            if ($cell.length === 0) {
+                throw new Error("Cell does not exist: ", $cell);
+            }
+
+            return $cell;
+        };
+
+        plugin.getCellFromRowByKey = function ($row, key) {
+
+            var $cell = $row.find("td").filter(function () {
+                return $(this).data("column") === key;
+            });
+            if ($cell.length === 0) {
+                throw new Error("Cell does not exist: ", $cell);
+            }
+
+            return $cell;
+        };
+
+        plugin.getRowCellsByIndex = function (index) {
+            return plugin.getRowByIndex(index).find("td");
+        };
+
+        plugin.getRowCells = function ($row) {
+            return $row.find("td");
+        };
+
+        plugin.getRowByIndex = function (index) {
+            var $row = plugin.$el.find("tbody>tr").eq(index);
+            if ($row.length === 0) {
+                throw new Error("Row does not exist: ", $row);
+            }
+
+            return $row;
+        };
+
+        plugin.getRowDataByIndex = function (index) {
+            var $row = plugin.getRowByIndex(index);
+            return plugin.getRowData($row);
+        };
+
+        plugin.getRowData = function ($row) {
+
+            // get all cells from row
+            var $cells = plugin.getRowCells($row);
+
+            // get data from each cell
+            var data = {};
+            $cells.each(function () {
+                data[plugin.getCellColumn($(this))] = plugin.getCellData($(this));
+            });
+            return data;
+        };
+
+        plugin.getRows = function () {
+            return plugin.$el.find("tbody>tr");
+        };
+
+        plugin.getGridData = function () {
+            var $rows = plugin.getRows();
+            return $rows.map(function () {
+                return plugin.getRowData($(this));
+            }).get();
+        };
+
         plugin.getActiveCell = function () {
             // if editor is active, get active cell from it
             if (plugin.isEditing && plugin.activeEditor && plugin.activeEditor.activeCell) {
-                // console.log("getActiveCell", plugin.activeEditor, plugin.activeEditor.activeCell);
                 return plugin.activeEditor.activeCell;
-            } else {
-                // console.log("getActiveCell by classname")
-                return $("td.activeCell", plugin.$el);                
             }
+            return $("td.activeCell", plugin.$el);
         };
 
         plugin.deactivateCell = function () {
