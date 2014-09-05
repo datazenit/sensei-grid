@@ -21,5 +21,11 @@ $(function () {
 	var grid = $(".sensei-grid").grid(data, columns);
 	grid.registerEditor(BasicEditor);
 	grid.registerEditor(CustomEditor);
+    grid.events.on("editor:save", function (data, $cell) {
+        console.info("save cell:", data, $cell);
+    });
+    grid.events.on("cell:select", function ($cell) {
+        console.info("active cell:", $cell);
+    });
 	grid.render();
 }); 
