@@ -24,6 +24,9 @@ $(function () {
     grid.events.on("editor:save", function (data, $cell) {
         console.info("save cell:", data, $cell);
     });
+    grid.events.on("editor:load", function (data, $cell) {
+        console.info("set value in editor:", data, $cell);
+    });
     grid.events.on("cell:select", function ($cell) {
         console.info("active cell:", $cell);
     });
