@@ -76,6 +76,9 @@
             $("tr>.activeCell", plugin.$el).removeClass("activeCell");
             $(this).addClass("activeCell");
             $(this).parent("tr").addClass("activeRow");
+
+            // trigger cell:select event
+            plugin.events.trigger("cell:select", $(this));
         };
 
         // fixes inconsistent position in firefox/chrome
@@ -93,7 +96,6 @@
         };
 
         plugin.events = {_events: {}};
-        // need to allow multiple callbacks on single event
         plugin.events.on = function (event, callback, context) {
             if (!_.has(this._events, event)) {
                 this._events[event] = [];
@@ -334,7 +336,7 @@
                 // trigger editor:save event
                 var data = {};
                 data[$td.data("column")] = val;
-                plugin.events.trigger("editor:save", data, $td.data());
+                plugin.events.trigger("editor:save", data, $td);
             }
 
             // hide editor
@@ -396,7 +398,7 @@
             // trigger editor:load event
             var data = {};
             data[column] = value;
-            plugin.events.trigger("editor:load", data, $td.data());
+            plugin.events.trigger("editor:load", data, $td);
 
             return $editor;
         };
