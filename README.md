@@ -13,6 +13,13 @@ Demo: http://datazenit.com/static/sensei-grid/examples/
 
 [![Sensei Grid Screenshot](http://lauris.github.io/images/blog/sensei-grid-screenshot.png)](http://datazenit.com/static/sensei-grid/examples/)
 
+## Blog posts
+
+* [Work and open source #2: Sensei Grid](http://lauris.github.io/datazenit/2014/08/29/open-source-work-2-sensei-grid/)
+* [First public release of Sensei Grid](http://lauris.github.io/development/2014/09/03/first-public-release-sensei-grid/)
+* [Sensei Grid Roadmap](http://lauris.github.io/development/2014/09/04/sensei-grid-roadmap/)
+* [Sensei Grid Daily Overview](http://lauris.github.io/development/2014/09/05/sensei-grid-daily-overview/)
+
 ## Basic Usage
 
 Define your data array. Each row is represented by an object.
