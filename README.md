@@ -23,7 +23,7 @@ Demo: http://datazenit.com/static/sensei-grid/examples/
 ## Goals
 
 * **Simplicity**: Sensei Grid will be a single purpose data grid without unrelated functionality.
-* **Small code base**: I will try to avoid bloatware and dirty workarounds/hacks as much as possible to keep the code base small and tidy.
+* **Small code base**: Bloatware and dirty workarounds/hacks will be avoided as much as possible to keep the code base small and tidy.
 * **Extensibility**: Even though Sensei Grid will be kept simple, we will put serious effort to make it easy to extend and customize.
 * **Stability**: Sensei Grid is backed by [Datazenit](http://datazenit.com), meaning that the project is financially supported and will be constantly maintained and improved.
 
