@@ -1,0 +1,28 @@
+{
+  "name": "Sensei Grid",
+  "version": "0.1",
+  "homepage": "https://github.com/datazenit/sensei-grid",
+  "authors": [
+    "Lauris <lauris@discuss.lv>"
+  ],
+  "description": "Simple data grid in JavaScript/HTML.",
+  "keywords": [
+    "data grid",
+    "grid",
+    "table",
+    "data",
+    "editor",
+    "table editor",
+    "grid editor"
+  ],
+  "ignore": [
+    "node_modules",
+    "test"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "~2.1.1",
+    "lodash": "~2.4.1",
+    "bootstrap": "~3.2.0"
+  }
+}
