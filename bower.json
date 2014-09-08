@@ -16,6 +16,7 @@
     "grid editor"
   ],
   "ignore": [
+    "**/.*",
     "node_modules",
     "test"
   ],
