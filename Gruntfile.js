@@ -66,10 +66,23 @@ module.exports = function (grunt) {
                 }
             }
         },
+        jasmine: {
+            src: ['src/sensei-grid.js', 'src/sensei-editors.js'],
+            options: {
+                vendor: ['lib/jquery/dist/jquery.js', 'lib/lodash/dist/lodash.js'],
+                specs: 'test/*Spec.js',
+                helpers: ["test/helpers.js"],
+                styles: ['src/css/reset.css', 'src/css/sensei.grid']
+            }
+        },
         watch: {
             gruntfile: {
                 files: '<%= jshint.gruntfile.src %>',
                 tasks: ['jshint:gruntfile']
+            },
+            jasmine: {
+                files: ['src/*.js', 'test/*.js'],
+                tasks: ['jasmine']
             }
         }
     });
@@ -80,6 +93,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
+    grunt.loadNpmTasks('grunt-contrib-jasmine');
 
     // Default task.
     grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin']);
