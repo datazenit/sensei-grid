@@ -1,4 +1,6 @@
 $(function () {
+
+    // generate data
 	var data = [];
 	for (var i = 0; i < 10; ++i) {
 		data.push({
@@ -10,17 +12,56 @@ $(function () {
 		});
 	}
 
+    // define columns
 	var columns = [
 		{name: "id", type: "string"},
-		{name: "created_at", type: "string"}, 
+		{name: "created_at", type: "string"},
 		{name: "status", type: "string", editor: "CustomEditor"},
 		{name: "title", type: "string"},
 		{name: "count", type: "string"}
 	];
 
+    // example definition of a custom editor
+    var CustomEditor = Editor.extend({
+        types: [],
+        statuses: ["Backlog", "Accepted", "In progress", "Done", "Verified"],
+        name: "CustomEditor",
+        render: function () {
+            console.log("CustomEditor.render");
+
+            if (!this.editor) {
+                this.editor = document.createElement("div");
+                this.editor.className = "sensei-grid-editor sensei-grid-custom-editor";
+                var select = document.createElement("select");
+                _.each(this.statuses, function (status) {
+                    var option = document.createElement("option");
+                    option.value = status;
+                    option.innerHTML = status;
+                    select.appendChild(option);
+                });
+                this.editor.appendChild(select);
+                this.grid.$el.append(this.editor);
+            }
+        },
+        getValue: function () {
+            return $("select", this.editor).val();
+        },
+        setValue: function (val) {
+            $("select>option", this.editor).filter(function () {
+                return $(this).val() === val;
+            }).attr("selected", "selected");
+            $("select").focus();
+        }
+    });
+
+    // initialize grid
 	var grid = $(".sensei-grid").grid(data, columns);
-	grid.registerEditor(BasicEditor);
+
+    // register editors
+	grid.registerEditor(BasicEditor); // BasicEditor is bundled with Sensei Grid
 	grid.registerEditor(CustomEditor);
+
+    // example listeners on grid events
     grid.events.on("editor:save", function (data, $cell) {
         console.info("save cell:", data, $cell);
     });
@@ -30,6 +71,8 @@ $(function () {
     grid.events.on("cell:select", function ($cell) {
         console.info("active cell:", $cell);
     });
+
+    // render grid
 	grid.render();
 
     // api examples
@@ -41,6 +84,4 @@ $(function () {
     console.log("grid.getCellDataByKey(2, created_at):", grid.getCellDataByKey(2, "created_at"));
     console.log("grid.getGridData():", grid.getGridData());
     console.groupEnd();
-
-    window.grid = grid;
-}); 
+});
