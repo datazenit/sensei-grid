@@ -1,25 +1,14 @@
 .sensei-grid {
-	/*position: relative;*/
     outline: none;
 }
 .sensei-grid table {
 	table-layout:fixed;
-	/*border-spacing: 0;*/
-	/*border-collapse: separate;*/
-	/*border-width: 1px 1px 0 0;*/
 	empty-cells: show;
 }
 .sensei-grid table td,
 .sensei-grid table th {
-	/*max-width: 100px;*/
 	overflow: hidden;
 	white-space: nowrap;
-	/*width: 50px;*/
-	/*-webkit-user-select: none;
-	-moz-user-select: none;
-	-ms-user-select: none;
-	user-select: none;
-	cursor: default;*/
 }
 .sensei-grid thead {
 	background: #F5F5F5;
@@ -29,7 +18,6 @@
 }
 .sensei-grid thead>tr>th,
 .sensei-grid tbody>tr>td {
-	/*border-width: 0 0 1px 1px;*/
 }
 .sensei-grid .activeCell {
 	background: #eff7fc;
@@ -39,7 +27,6 @@
 .sensei-grid .activeCell {
 	background: #d0e9f8;
 	border: 1px double #3399ff;
-	/*border-width: 0 0 1px 1px;*/
 }
 .sensei-grid .activeRow {
 	background: #eff7fc;
@@ -67,12 +54,4 @@
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
-}
-
-/* css for example editors */
-.sensei-grid-custom-editor {
-	border-color: purple;
-}
-.sensei-grid-custom-editor input {
-	background: yellow;
 }
