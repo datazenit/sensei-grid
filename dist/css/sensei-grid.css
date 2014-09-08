@@ -1,19 +1,31 @@
 .sensei-grid {
     outline: none;
 }
+.sensei-grid * {
+    box-sizing: border-box;
+}
 .sensei-grid table {
+	border-spacing: 0;
+	border-collapse: collapse;
+	width: 100%;
 	table-layout:fixed;
 	empty-cells: show;
+	border: 1px solid #ddd;
 }
 .sensei-grid table td,
 .sensei-grid table th {
 	overflow: hidden;
 	white-space: nowrap;
+	border: 1px solid #ddd;
+	text-align: left;
+	padding: 5px;
+	vertical-align: top;
 }
 .sensei-grid thead {
 	background: #F5F5F5;
 }
 .sensei-grid thead>tr>th {
+	vertical-align: bottom;
 	border-bottom-width: 1px;
 }
 .sensei-grid thead>tr>th,
@@ -36,8 +48,6 @@
 	position: absolute;
 	background: white;
 	border: 2px solid #3399ff;
-	width: 100px;
-	height: 50px;
 	box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
 }
 .sensei-grid-editor input,
@@ -47,7 +57,7 @@
 	height: 100%;
 	box-shadow: none;
 	outline: none;
-	padding: 5px 4px;
+	/*padding: 5px 4px;*/
 }
 
 .sensei-grid-sortable tr>th {

@@ -47,7 +47,7 @@
         var plugin = this,
             defaults = {
                 sortable: true,
-                tableClass: "table table-bordered table-condensed"
+                tableClass: "" // table table-bordered table-condensed
             };
 
         plugin.isEditing = false;
