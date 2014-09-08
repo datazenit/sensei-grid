@@ -1,0 +1,29 @@
+{
+    "name": "sensei-grid",
+    "version": "0.1.0",
+    "description": "Simple data grid in JavaScript/HTML.",
+    "main": "index.js",
+    "directories": {
+        "example": "examples"
+    },
+    "dependencies": {},
+    "devDependencies": {},
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/datazenit/sensei-grid.git"
+    },
+    "keywords": [
+        "data",
+        "grid",
+        "table"
+    ],
+    "author": "Lauris Dzilums <lauris@discuss.lv>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/datazenit/sensei-grid/issues"
+    },
+    "homepage": "https://github.com/datazenit/sensei-grid"
+}
