@@ -58,6 +58,7 @@
 	box-shadow: none;
 	outline: none;
 	padding: 5px 4px;
+    background: #fff;
 }
 
 .sensei-grid-sortable tr>th {
