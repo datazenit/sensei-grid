@@ -1,5 +1,4 @@
-Sensei Grid
-===========
+# Sensei Grid [![Build Status](https://travis-ci.org/datazenit/sensei-grid.svg?branch=master)](https://travis-ci.org/datazenit/sensei-grid)
 
 Simple data grid library written in JavaScript. The data grid is part of [Datazenit](http://datazenit.com), a web-based database administration tool.
 
