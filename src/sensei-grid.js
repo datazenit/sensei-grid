@@ -1,6 +1,8 @@
 (function ($) {
 
-    window.Editor = function(grid) {
+    var root = this;
+
+    var Editor = function(grid) {
         this.grid = grid;
     };
     Editor.extend = function (props) {
@@ -13,7 +15,7 @@
         Surrogate.prototype = parent.prototype;
         child.prototype = new Surrogate;
 
-        if (props) { 
+        if (props) {
             _.extend(child.prototype, props);
         }
 
@@ -42,6 +44,9 @@
         console.warn("Editor.setValue not implemented")
     };
 
+    // export editor
+    root.Editor = Editor;
+
     $.fn.grid = function (data, columns, options) {
 
         var plugin = this,
@@ -53,22 +58,22 @@
         plugin.isEditing = false;
 
         $.fn.isOnScreen = function(){
-    
+
             var win = $(window);
-            
+
             var viewport = {
                 top : win.scrollTop(),
                 left : win.scrollLeft()
             };
             viewport.right = viewport.left + win.width();
             viewport.bottom = viewport.top + win.height();
-            
+
             var bounds = this.offset();
             bounds.right = bounds.left + this.outerWidth();
             bounds.bottom = bounds.top + this.outerHeight();
-            
+
             return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
-            
+
         };
 
         $.fn.setActiveCell = function () {
@@ -130,9 +135,9 @@
             plugin.renderBaseTable();
             plugin.renderColumns();
             plugin.renderData();
-            
+
             // render each editor
-            _.each(plugin.editors, function (editor) { 
+            _.each(plugin.editors, function (editor) {
                 editor.initialize();
                 editor.render();
                 editor.getElement().hide();
@@ -156,7 +161,7 @@
             if(plugin.$el.has($(e.target)).length === 0) {
                 console.log("editorBlur -> is grid event:", plugin.$el.has($(e.target)).length);
                 plugin.exitEditor();
-                plugin.deactivateCell();    
+                plugin.deactivateCell();
             }
         };
 
@@ -358,7 +363,7 @@
 
                 if (plugin.isEditing) {
                     // save & hide editor
-                    plugin.saveEditor();   
+                    plugin.saveEditor();
                 }
 
                 if (plugin.isEditing) {
@@ -370,9 +375,9 @@
                 // scroll cell into viewport if it is not already visible
                 if (!plugin.getActiveCell().find(">div").isOnScreen()) {
                     if (_.contains(["up", "left"], direction)) {
-                        plugin.getActiveCell().get(0).scrollIntoView(true);    
+                        plugin.getActiveCell().get(0).scrollIntoView(true);
                     } else {
-                        plugin.getActiveCell().get(0).scrollIntoView(false);                        
+                        plugin.getActiveCell().get(0).scrollIntoView(false);
                     }
                 }
 
@@ -434,7 +439,7 @@
                 if (!skipSave) {
                     plugin.saveEditor();
                 } else {
-                    plugin.getEditor().hide();                    
+                    plugin.getEditor().hide();
                 }
             }
 
@@ -563,7 +568,7 @@
             e.preventDefault();
             console.log("clicked cell");
             if (plugin.isEditing) {
-                plugin.exitEditor();                
+                plugin.exitEditor();
             }
             $(this).setActiveCell();
         };
@@ -606,7 +611,7 @@
                     var div = document.createElement("div");
 
                     if (_.has(item, column.name)) {
-                        $(div).text(item[column.name]);    
+                        $(div).text(item[column.name]);
                     }
 
                     $(td).data("column", column.name);
