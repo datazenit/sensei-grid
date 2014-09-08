@@ -3,7 +3,7 @@ Sensei Grid
 
 Simple data grid library written in JavaScript. The data grid is part of [Datazenit](http://datazenit.com), a web-based database administration tool.
 
-**Not intended for production use.** This is the first public release, and the project is currently under active development. 
+**Currently not intended for production use.** This is the first public release, and the project is currently under active development.
 
 Dependencies: jQuery and underscore.js/lodash. The example in this repository also uses Twitter Bootstrap for default styles.
 
@@ -36,7 +36,7 @@ Define your data array. Each row is represented by an object.
 		{id: 2, title: "foo bar"},
 	];
 
-Currently it is mandatory to define columns in a separate array for Sensei Grid to work  
+Currently it is mandatory to define columns in a separate array for Sensei Grid to work
 
 	var columns = [
 		{name: "id", type: "string"},
