@@ -5,7 +5,7 @@ function generateData(rows) {
             "id": "#" + (i + 1),
             "created_at": new Date().toDateString(),
             "status": "In progress",
-            "title": "Test " + i + Math.round(Math.random() * 1000),
+            "title": "Test unicode €∑ĒŽŌ•ōļķņ© " + i + Math.round(Math.random() * 1000),
             "count": Math.round(Math.random() * 100)
         });
     }
@@ -18,12 +18,3 @@ function getColumns(data) {
         return {name: key,  type: "string"}
     });
 }
-
-//// define columns
-//var columns = [
-//    {name: "id", type: "string"},
-//    {name: "created_at", type: "string"},
-//    {name: "status", type: "string", editor: "CustomEditor"},
-//    {name: "title", type: "string"},
-//    {name: "count", type: "string"}
-//];
