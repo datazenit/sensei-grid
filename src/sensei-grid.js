@@ -137,12 +137,36 @@
             }
         };
 
+        // core parsers for cell values
+        plugin.parsers = {};
+        plugin.parsers["string"] = function (val) {
+            return val.toString();
+        };
+        plugin.parsers["int"] = function (val) {
+            return parseInt(val);
+        };
+        plugin.parsers["float"] = function (val) {
+            return parseFloat(val);
+        };
+
         plugin.getCellData = function ($cell) {
-            return $cell.text();
+            var value = $cell.text();
+            var type = plugin.getCellType($cell);
+
+            // parse value according to defined cell type
+            if (_.has(plugin.parsers, type)) {
+                value = plugin.parsers[type](value);
+            }
+
+            return value;
         };
 
         plugin.getCellColumn = function ($cell) {
             return $cell.data("column");
+        };
+
+        plugin.getCellType = function ($cell) {
+            return $cell.data("type");
         };
 
         plugin.getCellDataByIndex = function (row, cell) {
@@ -189,7 +213,7 @@
         plugin.getRowByIndex = function (index) {
             var $row = plugin.$el.find("tbody>tr").eq(index);
             if ($row.length === 0) {
-                throw new Error("Row does not exist: ", $row);
+                throw new Error("Row does not exist");
             }
 
             return $row;
