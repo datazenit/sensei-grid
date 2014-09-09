@@ -184,7 +184,7 @@
         plugin.getCellFromRowByIndex = function ($row, index) {
             var $cell = $row.find("td").eq(index);
             if ($cell.length === 0) {
-                throw new Error("Cell does not exist: ", $cell);
+                throw new Error("Cell does not exist");
             }
 
             return $cell;
