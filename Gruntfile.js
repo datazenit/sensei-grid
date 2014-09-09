@@ -73,7 +73,7 @@ module.exports = function (grunt) {
                 vendor: ['lib/jquery/dist/jquery.js', 'lib/lodash/dist/lodash.js'],
                 specs: 'test/*Spec.js',
                 helpers: ["test/helpers.js"],
-                styles: ['src/css/reset.css', 'src/css/sensei.grid']
+                styles: ['src/css/reset.css', 'src/css/sensei-grid.css']
             }
         },
         watch: {
