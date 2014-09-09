@@ -45,6 +45,7 @@ module.exports = function (grunt) {
                 eqnull: true,
                 browser: true,
                 node: true,
+                predef: ["_"],
                 globals: {
                     jQuery: true
                 }
@@ -53,7 +54,7 @@ module.exports = function (grunt) {
                 src: 'Gruntfile.js'
             },
             src: {
-                //src: 'src/*.js'
+                src: 'src/*.js'
             }
         },
         cssmin: {
@@ -95,7 +96,9 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
 
-    // Default task.
-    grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'cssmin']);
+    // Tasks
+    grunt.registerTask('test', ['jshint', 'jasmine']);
+    grunt.registerTask('build', ['test', 'concat', 'uglify', 'cssmin']);
+    grunt.registerTask('default', ['build']);
 
 };
