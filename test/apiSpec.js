@@ -27,17 +27,6 @@ describe("sensei-grid api", function () {
         grid = null;
     });
 
-
-    // api examples
-    //var $row = grid.getRowByIndex(5);
-    //console.group("data api examples");
-    //console.log("grid.getRowDataByIndex(0):", grid.getRowDataByIndex(0));
-    //console.log("grid.getRowData($row):", grid.getRowData($row));
-    //console.log("grid.getCellDataByIndex(0, 1):", grid.getCellDataByIndex(0, 1));
-    //console.log("grid.getCellDataByKey(2, created_at):", grid.getCellDataByKey(2, "created_at"));
-    //console.log("grid.getGridData():", grid.getGridData());
-    //console.groupEnd();
-
     describe("getRowDataByIndex", function () {
         it("should return data by positive index", function () {
             expect(grid.getRowDataByIndex(0)).toEqual(data[0]);
@@ -80,10 +69,17 @@ describe("sensei-grid api", function () {
             expect(grid.getCellDataByIndex(-1,0)).toEqual(data[9]["id"]);
             expect(grid.getCellDataByIndex(0,-1)).toEqual(data[0]["count"]);
         });
+    });
+
+    describe("getCellDataByKey", function () {
+        it("should return cell data by key", function () {
+            expect(grid.getCellDataByKey(0, "created_at")).toEqual(data[0]["created_at"]);
+            expect(grid.getCellDataByKey(1, "title")).toEqual(data[1]["title"]);
+            expect(grid.getCellDataByKey(9, "id")).toEqual(data[9]["id"]);
+        });
         it("should throw error when cell or row is not found", function () {
-            expect(function () { grid.getCellDataByIndex(100,0) }).toThrowError("Row does not exist");
-            expect(function () { grid.getCellDataByIndex(0,100) }).toThrowError("Cell does not exist");
-            expect(function () { grid.getCellDataByIndex(100,100) }).toThrowError("Row does not exist");
+            expect(function () { grid.getCellDataByKey(0,"key_from_outer_space") }).toThrowError("Cell does not exist");
+            expect(function () { grid.getCellDataByKey(100,"title") }).toThrowError("Row does not exist");
         });
     });
 });
