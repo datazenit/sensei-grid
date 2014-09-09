@@ -82,4 +82,10 @@ describe("sensei-grid api", function () {
             expect(function () { grid.getCellDataByKey(100,"title") }).toThrowError("Row does not exist");
         });
     });
+
+    describe("getGridData", function () {
+        it("should return grid data", function () {
+            expect(grid.getGridData()).toEqual(data);
+        });
+    });
 });
