@@ -2,7 +2,7 @@
 var data = generateData(10);
 var columns = getColumns(data);
 
-describe("sensei-grid", function () {
+describe("sensei-grid dom", function () {
 
     var grid;
     var $el = $('<div class="sensei-grid-test">');
