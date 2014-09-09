@@ -32,7 +32,7 @@ Define your data array. Each row is represented by an object.
 
 	var data = [
 		{id: 1, title: "test"},
-		{id: 2, title: "foo bar"},
+		{id: 2, title: "foo bar"}
 	];
 
 Currently it is mandatory to define columns in a separate array for Sensei Grid to work
@@ -59,10 +59,11 @@ Render data grid in ``.example`` container.
 Planned for the upcoming releases:
 
 * Tests and full coverage
-* Event callbacks (e.g., save, load, render, move, sort) for an easy extensibility
+* Event callbacks (e.g., save, load, render, move, sort) for increased extensibility
 * Field types (e.g., string, int, date, float)
 * Example editor for specific field types (a simple datepicker for date field and similar examples)
 * Optional column definition (if the structure of data is simple, assume default column settings)
 * Firefox compatibility issues (there are currently some issues with table rendering in Firefox)
-* Configuration parameters for grid
-* Column sorting (not sure about this just yet)
+* More configuration parameters for grid
+* Column sorting and resizing (to be discussed)
+* Implement undo/redo (to be discussed)
