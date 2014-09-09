@@ -88,4 +88,27 @@ describe("sensei-grid api", function () {
             expect(grid.getGridData()).toEqual(data);
         });
     });
+
+    describe("getRows", function () {
+        it("should return all rows from table", function () {
+            expect(grid.getRows().length).toEqual(10);
+            expect(grid.getRows().get()).toEqual($(".sensei-grid-test>table>tbody>tr").get());
+        });
+    });
+
+    describe("getCellFromRowByKey", function () {
+        it("should return cell from row by key", function () {
+            var $row = $(".sensei-grid-test>table>tbody>tr:first");
+            var $cell = $(".sensei-grid-test>table>tbody>tr:first>td:first").get();
+            expect(grid.getCellFromRowByKey($row, "id").get()).toEqual($cell);
+        });
+    });
+
+    describe("getCellFromRowByIndex", function () {
+        it("should return cell from row by index", function () {
+            var $row = $(".sensei-grid-test>table>tbody>tr:first");
+            var $cell = $(".sensei-grid-test>table>tbody>tr:first>td:first").get();
+            expect(grid.getCellFromRowByIndex($row, 0).get()).toEqual($cell);
+        });
+    });
 });
