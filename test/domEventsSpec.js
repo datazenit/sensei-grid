@@ -10,8 +10,6 @@ describe("sensei-grid dom events", function () {
     // create dom element before each test
     beforeEach(function () {
 
-        console.info("beforeEach");
-
         // suppress console.log statements from src files
         console.log = function () {};
 
@@ -27,7 +25,6 @@ describe("sensei-grid dom events", function () {
 
     // remove grid wrapper after each test
     afterEach(function () {
-        console.info("afterEach");
         grid.destroy();
         grid = null;
     });
@@ -50,6 +47,25 @@ describe("sensei-grid dom events", function () {
             var $cell2 = $(".sensei-grid>table>tbody>tr:eq(4)>td:eq(1)");
             $cell2.trigger("click");
             expect($(".sensei-grid .activeCell").length).toBe(1);
+        });
+        it("outside of grid should remove active cell", function () {
+            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(3)");
+            $cell.trigger("click");
+
+            expect($(".sensei-grid .activeCell").length).toBe(1);
+
+            $(document).trigger("click");
+            expect($(".sensei-grid .activeCell").length).toBe(0);
+        });
+        it("outside of grid should close editor", function () {
+            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(3)");
+            $cell.trigger("dblclick");
+            expect($(".sensei-grid-editor").is(":visible")).toBe(true);
+            expect($(".sensei-grid-editor").length).toBe(1);
+
+            $(document).trigger("click");
+            expect($(".sensei-grid .activeCell").length).toBe(0);
+            expect($(".sensei-grid-editor").is(":visible")).toBe(false);
         });
     });
     describe("dblclick", function () {
