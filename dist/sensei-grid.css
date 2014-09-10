@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.1.0
+ * sensei-grid v0.1.2
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -52,7 +52,7 @@ table {
 }
 .sensei-grid,
 .sensei-grid-editor input,
-.sensei-grid-editor input {
+.sensei-grid-editor select {
     font: 14px Helvetica, Arial, sans-serif;
     line-height: 20px;
 }

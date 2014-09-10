@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.1.0
+ * sensei-grid v0.1.2
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -494,17 +494,17 @@
              // specific keyCodes that won't be hijacked from the editor
             var editorCodes = [8, 37, 38, 39, 40];
 
-            if ((plugin.getActiveCell().length === 0 && !plugin.isEditing) || !_.contains(codes, e.keyCode)) {
+            if ((plugin.getActiveCell().length === 0 && !plugin.isEditing) || !_.contains(codes, e.which)) {
                 return;
             }
 
-            if (plugin.isEditing && _.contains(editorCodes, e.keyCode)) {
+            if (plugin.isEditing && _.contains(editorCodes, e.which)) {
                 return;
             } else {
                 e.preventDefault();
             }
 
-            switch (e.keyCode) {
+            switch (e.which) {
                 case 37: // left
                     plugin.move("left");
                     break;
