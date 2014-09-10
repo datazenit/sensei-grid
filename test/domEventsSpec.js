@@ -76,4 +76,91 @@ describe("sensei-grid dom events", function () {
             expect($(".sensei-grid-editor").length).toBe(1);
         });
     });
+    describe("keypress", function () {
+        it("right arrow should move active cell", function () {
+            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(0)");
+            $cell.trigger("click");
+            expect($cell.hasClass("activeCell")).toBe(true);
+
+            var e = $.Event("keydown");
+            e.which = 39; // right
+
+            // start position
+
+            $(".sensei-grid>table").trigger(e);
+            expect($cell.hasClass("activeCell")).toBe(false);
+            expect($cell.next().hasClass("activeCell")).toBe(true);
+
+            // end position
+
+            $cell = $(".sensei-grid>table>tbody>tr:eq(9)>td:eq(4)");
+            $cell.trigger("click");
+            $(".sensei-grid>table").trigger(e);
+            expect($cell.hasClass("activeCell")).toBe(true);
+        });
+        it("left arrow should move active cell", function () {
+            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(4)");
+            $cell.trigger("click");
+            expect($cell.hasClass("activeCell")).toBe(true);
+
+            var e = $.Event("keydown");
+            e.which = 37; // left
+
+            // end position
+
+            $(".sensei-grid>table").trigger(e);
+            $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(3)");
+            expect($cell.hasClass("activeCell")).toBe(true);
+
+            // start position
+
+            $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(0)");
+            $cell.trigger("click");
+            $(".sensei-grid>table").trigger(e);
+            expect($cell.hasClass("activeCell")).toBe(true);
+        });
+        it("up arrow should move active cell", function () {
+            var $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(0)");
+            $cell.trigger("click");
+            expect($cell.hasClass("activeCell")).toBe(true);
+
+            var e = $.Event("keydown");
+            e.which = 38; // up
+
+            // movement at start position
+
+            $(".sensei-grid>table").trigger(e);
+            $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(0)");
+            expect($cell.hasClass("activeCell")).toBe(true);
+
+            // movement at end position
+
+            $cell = $(".sensei-grid>table>tbody>tr:eq(1)>td:eq(0)");
+            $cell.trigger("click");
+            $(".sensei-grid>table").trigger(e);
+            $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(0)");
+            expect($cell.hasClass("activeCell")).toBe(true);
+        });
+        it("down arrow should move active cell", function () {
+            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(0)");
+            $cell.trigger("click");
+            expect($cell.hasClass("activeCell")).toBe(true);
+
+            var e = $.Event("keydown");
+            e.which = 40; // down
+
+            // movement at start position
+
+            $(".sensei-grid>table").trigger(e);
+            $cell = $(".sensei-grid>table>tbody>tr:eq(1)>td:eq(0)");
+            expect($cell.hasClass("activeCell")).toBe(true);
+
+            // movement at end position
+
+            $cell = $(".sensei-grid>table>tbody>tr:eq(9)>td:eq(0)");
+            $cell.trigger("click");
+            $(".sensei-grid>table").trigger(e);
+            expect($cell.hasClass("activeCell")).toBe(true);
+        });
+    });
 });
