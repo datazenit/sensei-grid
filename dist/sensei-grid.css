@@ -50,6 +50,12 @@ table {
 .sensei-grid {
     outline: none;
 }
+.sensei-grid,
+.sensei-grid-editor input,
+.sensei-grid-editor input {
+    font: 14px Helvetica, Arial, sans-serif;
+    line-height: 20px;
+}
 .sensei-grid * {
     box-sizing: border-box;
 }

@@ -103,6 +103,12 @@
 
             plugin.bindEvents();
         };
+
+        plugin.destroy = function () {
+            plugin.unbindEvents();
+            plugin.$el.remove();
+        };
+
         plugin.bindEvents = function () {
             plugin.$el.on("click", "tr>td", plugin.clickCell);
             plugin.$el.on("dblclick", "tr>td", plugin.dblClickCell);
@@ -112,7 +118,11 @@
         };
 
         plugin.unbindEvents = function () {
-
+            plugin.$el.off("click", "tr>td");
+            plugin.$el.off("dblclick", "tr>td");
+            plugin.$el.off("blur");
+            plugin.$el.off("keydown");
+            $(document).off("click");
         };
 
         plugin.editorBlur = function (e) {
