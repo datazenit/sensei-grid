@@ -58,12 +58,13 @@ Render data grid in ``.example`` container.
 
 Planned for the upcoming releases:
 
-* Tests and full coverage
-* Event callbacks (e.g., save, load, render, move, sort) for increased extensibility
+* Tests and full coverage (WIP)
+* New row support (WIP)
+* Event callbacks (e.g., save, load, render, move, sort)
 * Field types (e.g., string, int, date, float)
-* Example editor for specific field types (a simple datepicker for date field and similar examples)
 * Optional column definition (if the structure of data is simple, assume default column settings)
 * Firefox compatibility issues (there are currently some issues with table rendering in Firefox)
 * More configuration parameters for grid
+* Example editor for specific field types (a simple datepicker for date field and similar examples)
 * Column sorting and resizing (to be discussed)
 * Implement undo/redo (to be discussed)
