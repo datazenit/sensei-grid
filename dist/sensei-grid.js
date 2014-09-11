@@ -9,6 +9,7 @@
 
         var plugin = this,
             defaults = {
+                emptyRow: true,
                 sortable: true,
                 tableClass: "" // table table-bordered table-condensed
             };
@@ -597,24 +598,29 @@
 
             var $tbody = $("tbody", plugin.$el);
             _.each(plugin.data, function (item) {
-                var tr = document.createElement("tr");
-                _.each(plugin.columns, function (column) {
-                    var td = document.createElement("td");
-                    var div = document.createElement("div");
-
-                    if (_.has(item, column.name)) {
-                        $(div).text(item[column.name]);
-                    }
-
-                    $(td).data("column", column.name);
-                    $(td).data("type", column.type || "string");
-                    $(td).data("editor", column.editor || "BasicEditor");
-
-                    td.appendChild(div);
-                    tr.appendChild(td);
-                });
+                var tr = plugin.renderRow(item);
                 $tbody.append(tr);
             });
+        };
+
+        plugin.renderRow = function (item) {
+            var tr = document.createElement("tr");
+            _.each(plugin.columns, function (column) {
+                var td = document.createElement("td");
+                var div = document.createElement("div");
+
+                if (_.has(item, column.name)) {
+                    $(div).text(item[column.name]);
+                }
+
+                $(td).data("column", column.name);
+                $(td).data("type", column.type || "string");
+                $(td).data("editor", column.editor || "BasicEditor");
+
+                td.appendChild(div);
+                tr.appendChild(td);
+            });
+            return tr;
         };
 
         plugin.renderBaseTable = function () {
