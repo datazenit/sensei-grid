@@ -169,10 +169,10 @@ describe("sensei-grid dom events", function () {
             expect($cell.hasClass("activeCell")).toBe(true);
 
             var e = $.Event("keydown");
-            e.which = 27; // esc
+            e.which = 8; // backspace
             $(".sensei-grid").trigger(e);
 
-            expect($cell.hasClass("activeCell")).toBe(false);
+            expect($cell.text()).toEqual("");
         });
     });
     describe("editor shortcuts", function () {
