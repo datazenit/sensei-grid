@@ -4,7 +4,7 @@
 
         var plugin = this,
             defaults = {
-                emptyRow: true,
+                emptyRow: false,
                 sortable: true,
                 tableClass: "" // table table-bordered table-condensed
             };
@@ -596,6 +596,12 @@
                 var tr = plugin.renderRow(item);
                 $tbody.append(tr);
             });
+
+            if (plugin.config["emptyRow"]) {
+                // render empty row at the end of table
+                var tr = plugin.renderRow();
+                $tbody.append(tr);
+            }
         };
 
         plugin.renderRow = function (item) {

@@ -42,6 +42,10 @@
 }
 .sensei-grid tr>td>div {
 }
+.sensei-grid tr>td>div::before {
+    content: '\00a0';
+}
+
 .sensei-grid .activeCell {
 	background: #d0e9f8;
 	border: 1px double #3399ff;
