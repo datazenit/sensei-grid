@@ -55,7 +55,7 @@ $(function () {
     });
 
     // initialize grid
-	var grid = $(".sensei-grid").grid(data, columns);
+	var grid = $(".sensei-grid").grid(data, columns, {emptyRow: true});
 
     // register editors
 	grid.registerEditor(BasicEditor); // BasicEditor is bundled with Sensei Grid
