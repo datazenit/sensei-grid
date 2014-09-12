@@ -66,5 +66,6 @@ Planned for the upcoming releases:
 * Firefox compatibility issues (there are currently some issues with table rendering in Firefox)
 * More configuration parameters for grid
 * Example editor for specific field types (a simple datepicker for date field and similar examples)
+* Touch support for mobile devices
 * Column sorting and resizing (to be discussed)
 * Implement undo/redo (to be discussed)
