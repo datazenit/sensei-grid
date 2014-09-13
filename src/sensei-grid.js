@@ -605,7 +605,7 @@
 
             var $tbody = $("tbody", plugin.$el);
             _.each(plugin.data, function (item) {
-                var tr = plugin.renderRow(item);
+                var tr = plugin.renderRow(item, true);
                 $tbody.append(tr);
             });
 
@@ -617,7 +617,6 @@
         };
 
         plugin.renderRow = function (item, saved) {
-            saved = saved || true; // default value for saved
             var tr = document.createElement("tr");
             _.each(plugin.columns, function (column) {
                 var td = document.createElement("td");

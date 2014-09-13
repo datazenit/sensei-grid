@@ -40,4 +40,20 @@ describe("sensei-grid new row", function () {
         expect($(".sensei-grid>table>tbody>tr").length).toEqual(10);
         expect($(".sensei-grid>table>tbody>tr:last").text()).not.toEqual("");
     });
+
+    it("should set unsaved row state to the empty row", function () {
+        // render grid
+        grid = $el.grid(data, columns, {emptyRow: true});
+        grid.render();
+
+        var $emptyCell = $(".sensei-grid>table>tbody>tr:last>td:first");
+
+        expect($emptyCell.data("saved")).toEqual(false);
+        expect(grid.getCellStatus($emptyCell)).toEqual(false);
+
+        var $cell = $(".sensei-grid>table>tbody>tr:first>td:first");
+
+        expect($cell.data("saved")).toEqual(true);
+        expect(grid.getCellStatus($cell)).toEqual(true);
+    });
 });
