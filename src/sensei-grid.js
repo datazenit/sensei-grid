@@ -180,6 +180,10 @@
             return $cell.data("type");
         };
 
+        plugin.getCellStatus = function ($cell) {
+            return !!$cell.data("saved");
+        };
+
         plugin.getCellDataByIndex = function (row, cell) {
             var $row = plugin.getRowByIndex(row);
             var $cell = plugin.getCellFromRowByIndex($row, cell);
@@ -599,12 +603,13 @@
 
             if (plugin.config["emptyRow"]) {
                 // render empty row at the end of table
-                var tr = plugin.renderRow();
+                var tr = plugin.renderRow(null, false);
                 $tbody.append(tr);
             }
         };
 
-        plugin.renderRow = function (item) {
+        plugin.renderRow = function (item, saved) {
+            saved = saved || true; // default value for saved
             var tr = document.createElement("tr");
             _.each(plugin.columns, function (column) {
                 var td = document.createElement("td");
@@ -617,6 +622,7 @@
                 $(td).data("column", column.name);
                 $(td).data("type", column.type || "string");
                 $(td).data("editor", column.editor || "BasicEditor");
+                $(td).data("saved", saved);
 
                 td.appendChild(div);
                 tr.appendChild(td);
