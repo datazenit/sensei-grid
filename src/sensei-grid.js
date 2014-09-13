@@ -280,7 +280,11 @@
 
         plugin.clearActiveCell = function () {
             var $td = plugin.getActiveCell();
+            var oldValue = plugin.getCellData($td);
             $(">div", $td).empty();
+
+            // trigger cell:clear event
+            plugin.events.trigger("cell:clear", oldValue, $td);
         };
 
         plugin.moveRight = function () {
@@ -580,6 +584,10 @@
             _.each(plugin.columns, function (column) {
                 var th = document.createElement("th");
                 var div = document.createElement("div");
+
+                if (plugin.config["sortable"]) {
+                    th.className = "sensei-grid-sortable";
+                }
 
                 $(div).text(column.name);
                 th.appendChild(div);

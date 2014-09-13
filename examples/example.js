@@ -55,7 +55,7 @@ $(function () {
     });
 
     // initialize grid
-	var grid = $(".sensei-grid").grid(data, columns, {emptyRow: true});
+	var grid = $(".sensei-grid").grid(data, columns, {emptyRow: true, sortable: false});
 
     // register editors
 	grid.registerEditor(BasicEditor); // BasicEditor is bundled with Sensei Grid
@@ -70,6 +70,9 @@ $(function () {
     });
     grid.events.on("cell:select", function ($cell) {
         console.info("active cell:", $cell);
+    });
+    grid.events.on("cell:clear", function (oldValue, $cell) {
+        console.info("clear cell:", oldValue, $cell);
     });
 
     // render grid

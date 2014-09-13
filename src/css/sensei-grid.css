@@ -73,7 +73,7 @@
     background: #fff;
 }
 
-.sensei-grid-sortable tr>th {
+.sensei-grid th.sensei-grid-sortable {
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
