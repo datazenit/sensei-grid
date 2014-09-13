@@ -15,10 +15,6 @@ describe("sensei-grid new row", function () {
 
         // create wrapper element
         $("body").append($el);
-
-        // render grid
-        //grid = $el.grid(data, columns);
-        //grid.render();
     });
 
     // remove grid wrapper after each test
