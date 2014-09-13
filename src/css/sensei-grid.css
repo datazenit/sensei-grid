@@ -18,6 +18,9 @@
 	empty-cells: show;
 	border: 1px solid #ddd;
 }
+.sensei-grid tr div::before {
+    content: '\00a0';
+}
 .sensei-grid table td,
 .sensei-grid table th {
 	overflow: hidden;
@@ -33,6 +36,7 @@
 .sensei-grid thead>tr>th {
 	vertical-align: bottom;
 	border-bottom-width: 1px;
+    font-weight: bold;
 }
 .sensei-grid thead>tr>th,
 .sensei-grid tbody>tr>td {
@@ -41,9 +45,6 @@
 	background: #eff7fc;
 }
 .sensei-grid tr>td>div {
-}
-.sensei-grid tr>td>div::before {
-    content: '\00a0';
 }
 
 .sensei-grid .activeCell {
