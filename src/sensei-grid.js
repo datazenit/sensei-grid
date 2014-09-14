@@ -400,10 +400,9 @@
             if (editorName && _.has(plugin.editors, editorName)) {
                 console.log("getEditor", editorName);
                 return plugin.editors[editorName];
+            } else {
+                throw Error("Editor not found: " + editorName);
             }
-
-            console.warn("Editor not found:", editorName);
-            return null;
         };
 
         plugin.saveEditor = function () {
