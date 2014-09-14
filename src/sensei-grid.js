@@ -415,17 +415,35 @@
                 var $td = plugin.getActiveCell();
                 var val = plugin.activeEditor.getValue();
 
-                // set value from editor to the active cell
-                $td.html($("<div>").text(val));
+                if (val !== $td.text()) {
 
-                // trigger editor:save event
-                var data = {};
-                data[$td.data("column")] = val;
-                plugin.events.trigger("editor:save", data, $td);
+                    console.log("really saving");
+
+                    // set value from editor to the active cell
+                    $td.html($("<div>").text(val));
+
+                    // trigger editor:save event
+                    var data = {};
+                    data[$td.data("column")] = val;
+                    plugin.events.trigger("editor:save", data, $td);
+
+                    // remove empty row status from current row and assure that
+                    // there is at least one empty row at the end of table
+                    $td.parent("tr").removeClass("sensei-grid-empty-row");
+                    plugin.assureEmptyRow();
+                }
             }
 
             // hide editor
             plugin.getEditor().hide();
+        };
+
+        plugin.assureEmptyRow = function () {
+            if (plugin.config["emptyRow"] && plugin.$el.find("table>tbody>tr.sensei-grid-empty-row").length === 0) {
+                var $tbody = plugin.$el.find("table>tbody");
+                var $row = plugin.renderRow(null, false);
+                $tbody.append($row);
+            }
         };
 
         plugin.exitEditor = function (skipSave) {
@@ -618,6 +636,11 @@
 
         plugin.renderRow = function (item, saved) {
             var tr = document.createElement("tr");
+
+            if (!saved) {
+                tr.className = "sensei-grid-empty-row";
+            }
+
             _.each(plugin.columns, function (column) {
                 var td = document.createElement("td");
                 var div = document.createElement("div");
