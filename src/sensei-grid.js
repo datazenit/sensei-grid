@@ -416,8 +416,6 @@
 
                 if (val !== $td.text()) {
 
-                    console.log("really saving");
-
                     // set value from editor to the active cell
                     $td.html($("<div>").text(val));
 
