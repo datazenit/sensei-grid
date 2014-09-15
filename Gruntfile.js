@@ -61,7 +61,6 @@ module.exports = function (grunt) {
             minify: {
                 files: {
                     'dist/sensei-grid.min.css': [
-                        'src/css/reset.css',
                         'src/css/sensei-grid.css'
                     ]
                 }
@@ -73,7 +72,7 @@ module.exports = function (grunt) {
                 vendor: ['lib/jquery/dist/jquery.js', 'lib/lodash/dist/lodash.js'],
                 specs: 'test/*Spec.js',
                 helpers: ["test/helpers.js"],
-                styles: ['src/css/reset.css', 'src/css/sensei-grid.css']
+                styles: ['src/css/sensei-grid.css']
             }
         },
         watch: {
