@@ -27,7 +27,7 @@ If you don't want to use bower, just download an archive from the [latest releas
 When you have obtained a copy of Sensei Grid, you must include all dependecies, sensei-grid.js and sensei-grid.css.
 Sensei Grid depends on jQuery and lodash/underscore.js. For your convenience all dependecies can be found in ``lib/`` folder.
 
-```
+```html
 <link rel="stylesheet" type="text/css" href="dist/css/sensei-grid.css"/>
 
 <script src="lib/jquery/dist/jquery.min.js"></script>
@@ -40,29 +40,39 @@ Sensei Grid depends on jQuery and lodash/underscore.js. For your convenience all
 
 Define your data array. Each row is represented by an object.
 
-	var data = [
-		{id: 1, title: "test"},
-		{id: 2, title: "foo bar"}
-	];
+```js
+var data = [
+    {id: 1, title: "test"},
+    {id: 2, title: "foo bar"}
+];
+```
 
 Currently it is mandatory to define columns in a separate array for Sensei Grid to work
 
-	var columns = [
-		{name: "id", type: "string"},
-		{name: "title", type: "string"}
-	}
+```js
+var columns = [
+    {name: "id", type: "string"},
+    {name: "title", type: "string"}
+}
+```
 
 Initialize grid with data and columns
 
-	var grid = $(".example").grid(data, columns);
+```js
+var grid = $(".example").grid(data, columns);
+```
 
 Register at least one editor (BasicEditor is bundled with Sensei Grid)
 
-	grid.registerEditor(BasicEditor);
+```js
+grid.registerEditor(BasicEditor);
+```
 
 Render data grid in ``.example`` container.
 
-	grid.render();
+```js
+grid.render();
+```
 
 ## Blog posts
 
