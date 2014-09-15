@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.1.3
+ * sensei-grid v0.1.4
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -9,7 +9,7 @@
 
         var plugin = this,
             defaults = {
-                emptyRow: true,
+                emptyRow: false,
                 sortable: true,
                 tableClass: "" // table table-bordered table-condensed
             };
@@ -185,6 +185,10 @@
             return $cell.data("type");
         };
 
+        plugin.getCellStatus = function ($cell) {
+            return !!$cell.data("saved");
+        };
+
         plugin.getCellDataByIndex = function (row, cell) {
             var $row = plugin.getRowByIndex(row);
             var $cell = plugin.getCellFromRowByIndex($row, cell);
@@ -281,7 +285,11 @@
 
         plugin.clearActiveCell = function () {
             var $td = plugin.getActiveCell();
+            var oldValue = plugin.getCellData($td);
             $(">div", $td).empty();
+
+            // trigger cell:clear event
+            plugin.events.trigger("cell:clear", oldValue, $td);
         };
 
         plugin.moveRight = function () {
@@ -397,10 +405,9 @@
             if (editorName && _.has(plugin.editors, editorName)) {
                 console.log("getEditor", editorName);
                 return plugin.editors[editorName];
+            } else {
+                throw Error("Editor not found: " + editorName);
             }
-
-            console.warn("Editor not found:", editorName);
-            return null;
         };
 
         plugin.saveEditor = function () {
@@ -412,17 +419,33 @@
                 var $td = plugin.getActiveCell();
                 var val = plugin.activeEditor.getValue();
 
-                // set value from editor to the active cell
-                $td.html($("<div>").text(val));
+                if (val !== $td.text()) {
 
-                // trigger editor:save event
-                var data = {};
-                data[$td.data("column")] = val;
-                plugin.events.trigger("editor:save", data, $td);
+                    // set value from editor to the active cell
+                    $td.html($("<div>").text(val));
+
+                    // trigger editor:save event
+                    var data = {};
+                    data[$td.data("column")] = val;
+                    plugin.events.trigger("editor:save", data, $td);
+
+                    // remove empty row status from current row and assure that
+                    // there is at least one empty row at the end of table
+                    $td.parent("tr").removeClass("sensei-grid-empty-row");
+                    plugin.assureEmptyRow();
+                }
             }
 
             // hide editor
             plugin.getEditor().hide();
+        };
+
+        plugin.assureEmptyRow = function () {
+            if (plugin.config["emptyRow"] && plugin.$el.find("table>tbody>tr.sensei-grid-empty-row").length === 0) {
+                var $tbody = plugin.$el.find("table>tbody");
+                var $row = plugin.renderRow(null, false);
+                $tbody.append($row);
+            }
         };
 
         plugin.exitEditor = function (skipSave) {
@@ -582,6 +605,10 @@
                 var th = document.createElement("th");
                 var div = document.createElement("div");
 
+                if (plugin.config["sortable"]) {
+                    th.className = "sensei-grid-sortable";
+                }
+
                 $(div).text(column.name);
                 th.appendChild(div);
 
@@ -598,13 +625,24 @@
 
             var $tbody = $("tbody", plugin.$el);
             _.each(plugin.data, function (item) {
-                var tr = plugin.renderRow(item);
+                var tr = plugin.renderRow(item, true);
                 $tbody.append(tr);
             });
+
+            if (plugin.config["emptyRow"]) {
+                // render empty row at the end of table
+                var tr = plugin.renderRow(null, false);
+                $tbody.append(tr);
+            }
         };
 
-        plugin.renderRow = function (item) {
+        plugin.renderRow = function (item, saved) {
             var tr = document.createElement("tr");
+
+            if (!saved) {
+                tr.className = "sensei-grid-empty-row";
+            }
+
             _.each(plugin.columns, function (column) {
                 var td = document.createElement("td");
                 var div = document.createElement("div");
@@ -616,6 +654,7 @@
                 $(td).data("column", column.name);
                 $(td).data("type", column.type || "string");
                 $(td).data("editor", column.editor || "BasicEditor");
+                $(td).data("saved", saved);
 
                 td.appendChild(div);
                 tr.appendChild(td);
