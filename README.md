@@ -12,19 +12,29 @@ Demo: http://datazenit.com/static/sensei-grid/examples/
 
 [![Sensei Grid Screenshot](http://lauris.github.io/images/blog/sensei-grid-screenshot.png)](http://datazenit.com/static/sensei-grid/examples/)
 
-## Blog posts
-
-* [Work and open source #2: Sensei Grid](http://lauris.github.io/datazenit/2014/08/29/open-source-work-2-sensei-grid/)
-* [First public release of Sensei Grid](http://lauris.github.io/development/2014/09/03/first-public-release-sensei-grid/)
-* [Sensei Grid Roadmap](http://lauris.github.io/development/2014/09/04/sensei-grid-roadmap/)
-* [Sensei Grid Daily Overview](http://lauris.github.io/development/2014/09/05/sensei-grid-daily-overview/)
-
 ## Goals
 
 * **Simplicity**: Sensei Grid will be a single purpose data grid without unrelated functionality.
 * **Small code base**: Bloatware and dirty workarounds/hacks will be avoided as much as possible to keep the code base small and tidy.
 * **Extensibility**: Even though Sensei Grid will be kept simple, we will put serious effort to make it easy to extend and customize.
 * **Stability**: Sensei Grid is backed by [Datazenit](http://datazenit.com), meaning that the project is financially supported and will be constantly maintained and improved.
+
+## Installation
+
+The simplest way to get all necessary files is via bower: ``bower install sensei-grid``. 
+If you don't want to use bower, just download an archive from the [latest release page](https://github.com/datazenit/sensei-grid/releases) or clone the whole repository.
+ 
+When you have obtained a copy of Sensei Grid, you must include all dependecies, sensei-grid.js and sensei-grid.css.
+Sensei Grid depends on jQuery and lodash/underscore.js. For your convenience all dependecies can be found in ``lib/`` folder.
+
+```
+<link rel="stylesheet" type="text/css" href="dist/css/sensei-grid.css"/>
+
+<script src="lib/jquery/dist/jquery.min.js"></script>
+<script src="lib/lodash/dist/lodash.min.js"></script>
+<script src="dist/sensei-grid.js"></script>
+```
+
 
 ## Basic Usage
 
@@ -53,6 +63,13 @@ Register at least one editor (BasicEditor is bundled with Sensei Grid)
 Render data grid in ``.example`` container.
 
 	grid.render();
+
+## Blog posts
+
+* [Work and open source #2: Sensei Grid](http://lauris.github.io/datazenit/2014/08/29/open-source-work-2-sensei-grid/)
+* [First public release of Sensei Grid](http://lauris.github.io/development/2014/09/03/first-public-release-sensei-grid/)
+* [Sensei Grid Roadmap](http://lauris.github.io/development/2014/09/04/sensei-grid-roadmap/)
+* [Sensei Grid Daily Overview](http://lauris.github.io/development/2014/09/05/sensei-grid-daily-overview/)
 
 ## Roadmap
 
