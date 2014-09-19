@@ -91,7 +91,7 @@ Planned for the upcoming releases:
 * Optional column definition (if the structure of data is simple, assume default column settings)
 * Firefox compatibility issues (there are currently some issues with table rendering in Firefox)
 * More configuration parameters for grid
-* Example editor for specific field types (a simple datepicker for date field and similar examples)
+* ~~Example editor for specific field types~~ (an example select box editor can be found in examples/example.js)
 * Touch support for mobile devices
 * Column sorting and resizing (to be discussed)
 * Implement undo/redo (to be discussed)
