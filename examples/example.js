@@ -74,6 +74,20 @@ $(function () {
     grid.events.on("cell:clear", function (oldValue, $cell) {
         console.info("clear cell:", oldValue, $cell);
     });
+    grid.events.on("cell:deactivate", function ($cell) {
+        console.info("cell deactivate:", $cell);
+    });
+    grid.events.on("row:select", function ($row) {
+        console.info("row select:", $row);
+    });
+    grid.events.on("row:save", function (data, $row, source) {
+        console.info("row save:", source, data);
+        // save row via ajax or any other way
+        // simulate delay caused by ajax and set row as saved
+        setTimeout(function () {
+            grid.setRowSaved($row);
+        }, 1000);
+    });
 
     // render grid
 	grid.render();

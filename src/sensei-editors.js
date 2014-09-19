@@ -37,16 +37,15 @@
         this.getElement().show();
     };
     Editor.prototype.hide = function () {
-        console.log("Editor hide");
         this.getElement().hide();
         this.grid.activeEditor.activeCell = null;
         this.grid.activeEditor = null;
     };
     Editor.prototype.getValue = function () {
-        console.warn("Editor.getValue not implemented");
+        throw Error("Editor.getValue not implemented");
     };
     Editor.prototype.setValue = function () {
-        console.warn("Editor.setValue not implemented");
+        throw Error("Editor.setValue not implemented");
     };
 
     // export editor
@@ -56,8 +55,6 @@
         types: [],
         name: "BasicEditor",
         render: function () {
-            console.log("BasicEditor.render");
-
             if (!this.editor) {
                 this.editor = document.createElement("div");
                 this.editor.className = "sensei-grid-editor sensei-grid-basic-editor";

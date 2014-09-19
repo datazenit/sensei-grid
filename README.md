@@ -85,10 +85,9 @@ grid.render();
 
 Planned for the upcoming releases:
 
-* Tests and full coverage (WIP)
-* New row support (WIP)
-* Event callbacks (e.g., save, load, render, move, sort)
-* Field types (e.g., string, int, date, float)
+* ~~New row support~~
+* ~~Event callbacks (e.g., save, load, render)~~
+* ~~Field types (e.g., string, int, float)~~
 * Optional column definition (if the structure of data is simple, assume default column settings)
 * Firefox compatibility issues (there are currently some issues with table rendering in Firefox)
 * More configuration parameters for grid

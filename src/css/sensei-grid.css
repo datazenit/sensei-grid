@@ -42,18 +42,17 @@
 .sensei-grid thead>tr>th,
 .sensei-grid tbody>tr>td {
 }
-.sensei-grid .activeCell {
-	background: #eff7fc;
-}
 .sensei-grid tr>td>div {
 }
-
 .sensei-grid .activeCell {
 	background: #d0e9f8;
 	border: 1px double #3399ff;
 }
 .sensei-grid .activeRow {
 	background: #eff7fc;
+}
+.sensei-grid .sensei-grid-dirty-row {
+    color: gray;
 }
 
 .sensei-grid-editor {
