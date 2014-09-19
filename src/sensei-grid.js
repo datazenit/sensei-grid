@@ -275,7 +275,6 @@
         plugin.setRowSaved = function ($row) {
             $row.removeClass("sensei-grid-dirty-row").removeClass("sensei-grid-empty-row");
             $row.find(">td").data("saved", true);
-            $row.animate({backgroundColor: '#FF0000'}, 'slow');
         };
 
         plugin.deactivateCell = function () {

@@ -19,8 +19,10 @@ describe("sensei-grid new row", function () {
 
     // remove grid wrapper after each test
     afterEach(function () {
-        grid.destroy();
-        grid = null;
+        if (grid !== null) {
+            grid.destroy();
+            grid = null;
+        }
     });
 
     it("should render new empty row at the end of table if setting is enabled", function () {
@@ -78,5 +80,29 @@ describe("sensei-grid new row", function () {
         expect($(".sensei-grid>table>tbody>tr:last").hasClass("sensei-grid-empty-row")).toBe(true);
         expect($(".sensei-grid>table>tbody>tr.sensei-grid-empty-row").length).toBe(1);
         expect($(".sensei-grid>table>tbody>tr").length).toBe(12);
+    });
+
+    it("should trigger row:save event", function (done) {
+        // render grid
+        grid = $el.grid(data, columns, {emptyRow: true});
+        grid.registerEditor(BasicEditor);
+        grid.render();
+
+        var $cell = $(".sensei-grid>table>tbody>tr:last>td:first");
+
+        // listen to row:save event and test returned values
+        grid.events.on("row:save", function (data, $row, source) {
+            expect(data).toEqual({id: "test", created_at: "", status: "", title: "", count: NaN});
+            expect($row.get()).toEqual($cell.parent("tr").get());
+            expect(source).toEqual("editor:close");
+            done();
+        });
+
+        // add some content to an empty row's cell
+        $cell.trigger("dblclick");
+        $(".sensei-grid-editor input").val("test");
+
+        // trigger editor:close event that would further trigger row:save event
+        $cell.next().trigger("click");
     });
 });
