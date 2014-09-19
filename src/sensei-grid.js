@@ -138,7 +138,7 @@
             $(".sensei-grid-editor", plugin.$el).hide();
         };
 
-        plugin.blur = function (e) {
+        plugin.blur = function () {
             // check if focus has moved to editor
             // e.relatedTarget && plugin.$el.has($(e.relatedTarget))
             // not firefox compatible
