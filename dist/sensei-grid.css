@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.1.4
+ * sensei-grid v0.1.5
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -47,18 +47,17 @@
 .sensei-grid thead>tr>th,
 .sensei-grid tbody>tr>td {
 }
-.sensei-grid .activeCell {
-	background: #eff7fc;
-}
 .sensei-grid tr>td>div {
 }
-
 .sensei-grid .activeCell {
 	background: #d0e9f8;
 	border: 1px double #3399ff;
 }
 .sensei-grid .activeRow {
 	background: #eff7fc;
+}
+.sensei-grid .sensei-grid-dirty-row {
+    color: gray;
 }
 
 .sensei-grid-editor {

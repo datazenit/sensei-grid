@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.1.4
+ * sensei-grid v0.1.5
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -15,6 +15,7 @@
             };
 
         plugin.isEditing = false;
+        plugin.$prevRow = null;
 
         $.fn.isOnScreen = function(){
 
@@ -36,20 +37,28 @@
         };
 
         $.fn.setActiveCell = function () {
-            $("tr", plugin.$el).removeClass("activeRow");
+            plugin.$prevRow = $("tr>.activeCell", plugin.$el).parent("tr");
+            plugin.$prevRow.removeClass("activeRow");
+
             $("tr>.activeCell", plugin.$el).removeClass("activeCell");
             $(this).addClass("activeCell");
             $(this).parent("tr").addClass("activeRow");
 
             // trigger cell:select event
             plugin.events.trigger("cell:select", $(this));
+
+            if (plugin.$prevRow.index() !== $(this).parent("tr").index()) {
+                plugin.events.trigger("row:select", $(this).parent("tr"));
+                if (plugin.$prevRow.hasClass("sensei-grid-dirty-row") && plugin.isEditing) {
+                    plugin.events.trigger("row:save", plugin.getRowData(plugin.$prevRow), plugin.$prevRow, "row:select");
+                }
+            }
         };
 
         // fixes inconsistent position in firefox/chrome
         // for this to work a div is needed inside table cell
         $.fn.cellPosition = function () {
             var pos = $("div", this).position();
-            console.log("cell pos", pos);
             pos.left = Math.round(pos.left);
             pos.top = Math.round(pos.top);
             var paddingH = $(this).outerWidth() - $(this).width();
@@ -71,7 +80,6 @@
             if (_.has(this._events, event)) {
                 var events = this._events[event];
                 _.each(events, function (e) {
-                    console.log("trigger event", event, e);
                     var cbk = _.bind(e["callback"], e["context"]);
                     cbk.apply(this, args);
                 });
@@ -89,8 +97,6 @@
         };
 
         plugin.render = function () {
-            console.log("render");
-
             plugin.renderBaseTable();
             plugin.renderColumns();
             plugin.renderData();
@@ -128,7 +134,6 @@
 
         plugin.editorBlur = function (e) {
             if(plugin.$el.has($(e.target)).length === 0) {
-                console.log("editorBlur -> is grid event:", plugin.$el.has($(e.target)).length);
                 plugin.exitEditor();
                 plugin.deactivateCell();
             }
@@ -138,15 +143,11 @@
             $(".sensei-grid-editor", plugin.$el).hide();
         };
 
-        plugin.blur = function (e) {
+        plugin.blur = function () {
             // check if focus has moved to editor
-            console.log("blur", e.relatedTarget);
             // e.relatedTarget && plugin.$el.has($(e.relatedTarget))
             // not firefox compatible
-            if (plugin.isEditing) {
-                console.log("focus moved to editor");
-            } else {
-                console.log("grid blur, focus not on editor");
+            if (!plugin.isEditing) {
                 plugin.exitEditor();
                 plugin.isEditing = false;
                 plugin.deactivateCell();
@@ -276,11 +277,18 @@
             return $("td.activeCell", plugin.$el);
         };
 
+        plugin.setRowSaved = function ($row) {
+            $row.removeClass("sensei-grid-dirty-row").removeClass("sensei-grid-empty-row");
+            $row.find(">td").data("saved", true);
+        };
+
         plugin.deactivateCell = function () {
-            console.log("deactivateCell");
             var $td = plugin.getActiveCell();
             $td.removeClass("activeCell");
             $td.parent("tr").removeClass("activeRow");
+
+            // trigger cell:deactivate event
+            plugin.events.trigger("cell:deactivate", $td);
         };
 
         plugin.clearActiveCell = function () {
@@ -327,7 +335,6 @@
 
             var $td = plugin.getActiveCell();
 
-            console.log("left");
             if ($td.prev().length > 0) {
                 $td.prev().setActiveCell();
             } else {
@@ -369,7 +376,6 @@
 
                 if (plugin.isEditing) {
                     // show editor for currently active cell
-                    console.log("move -> edit cell", plugin.getActiveCell());
                     plugin.editCell();
                 }
 
@@ -389,7 +395,6 @@
 
         plugin.editCell = function () {
             // currently this function is just a wrapper around showEditor
-            console.log("editCell");
             plugin.showEditor();
         };
 
@@ -403,7 +408,6 @@
             var editorName = $td.data("editor");
 
             if (editorName && _.has(plugin.editors, editorName)) {
-                console.log("getEditor", editorName);
                 return plugin.editors[editorName];
             } else {
                 throw Error("Editor not found: " + editorName);
@@ -411,7 +415,6 @@
         };
 
         plugin.saveEditor = function () {
-            console.log("save editor");
 
             // save editor if is active
             if (plugin.isEditing) {
@@ -431,8 +434,11 @@
 
                     // remove empty row status from current row and assure that
                     // there is at least one empty row at the end of table
-                    $td.parent("tr").removeClass("sensei-grid-empty-row");
-                    plugin.assureEmptyRow();
+                    var $tr = $td.parent("tr");
+                    if ($tr.hasClass("sensei-grid-empty-row")) {
+                        $tr.removeClass("sensei-grid-empty-row").addClass("sensei-grid-dirty-row");
+                        plugin.assureEmptyRow();
+                    }
                 }
             }
 
@@ -449,18 +455,23 @@
         };
 
         plugin.exitEditor = function (skipSave) {
-            console.log("exit editor");
             var $td = plugin.getActiveCell();
             if (plugin.isEditing && plugin.activeEditor) {
                 if (!skipSave) {
                     plugin.saveEditor();
+
+                    var $row = $td.parent("tr");
+                    // if the row was dirty, save it as a whole
+                    if ($row.hasClass("sensei-grid-dirty-row") && plugin.isEditing) {
+                        plugin.events.trigger("row:save", plugin.getRowData($row), $row, "editor:close");
+                    }
+
                 } else {
                     plugin.getEditor().hide();
                 }
             }
 
             // need to regain focus
-            console.log("need to regain focus on sensei-grid");
             $td.setActiveCell();
             plugin.$el.focus();
 
@@ -470,14 +481,11 @@
         plugin.moveEditor = function () {
             if (plugin.isEditing) {
                 plugin.showEditor();
-                console.log("editor is visible, move along");
                 plugin.editCell(); // previously editCell was called with plugin.getActiveCell
             }
         };
 
         plugin.showEditor = function () {
-
-            console.log("show editor");
 
             // set active editor instance
             plugin.activeEditor = plugin.getEditorInstance();
@@ -489,6 +497,11 @@
 
             // set editing mode after we have gotten active cell
             plugin.isEditing = true;
+
+            // check if we need to save a dirty row
+//            if (plugin.$prevRow.hasClass("sensei-grid-dirty-row")) {
+//                plugin.events.trigger("row:save", plugin.getRowData(plugin.$prevRow), plugin.$prevRow, "editor:show");
+//            }
 
             // show editor and set correct position
             $editor.show();
@@ -582,7 +595,6 @@
 
         plugin.clickCell = function (e) {
             e.preventDefault();
-            console.log("clicked cell");
             if (plugin.isEditing) {
                 plugin.exitEditor();
             }
@@ -591,14 +603,11 @@
 
         plugin.dblClickCell = function (e) {
             e.preventDefault();
-            console.log("double clicked cell");
             $(this).setActiveCell();
             plugin.editCell();
         };
 
         plugin.renderColumns = function () {
-            console.log("renderColumns");
-
             var $thead = $("thead", plugin.$el);
             var tr = document.createElement("tr");
             _.each(plugin.columns, function (column) {
@@ -621,8 +630,6 @@
         };
 
         plugin.renderData = function () {
-            console.log("renderData");
-
             var $tbody = $("tbody", plugin.$el);
             _.each(plugin.data, function (item) {
                 var tr = plugin.renderRow(item, true);
@@ -663,8 +670,6 @@
         };
 
         plugin.renderBaseTable = function () {
-            console.log("renderBaseTable");
-
             var table = document.createElement("table");
             var thead = document.createElement("thead");
             var tbody = document.createElement("tbody");
@@ -678,7 +683,6 @@
         };
 
         plugin.init = function (data, columns, options) {
-            console.log("sensei grid init");
             plugin.config = $.extend({}, defaults, options);
             plugin.data = data;
             plugin.columns = columns;
@@ -730,16 +734,15 @@
         this.getElement().show();
     };
     Editor.prototype.hide = function () {
-        console.log("Editor hide");
         this.getElement().hide();
         this.grid.activeEditor.activeCell = null;
         this.grid.activeEditor = null;
     };
     Editor.prototype.getValue = function () {
-        console.warn("Editor.getValue not implemented");
+        throw Error("Editor.getValue not implemented");
     };
     Editor.prototype.setValue = function () {
-        console.warn("Editor.setValue not implemented");
+        throw Error("Editor.setValue not implemented");
     };
 
     // export editor
@@ -749,8 +752,6 @@
         types: [],
         name: "BasicEditor",
         render: function () {
-            console.log("BasicEditor.render");
-
             if (!this.editor) {
                 this.editor = document.createElement("div");
                 this.editor.className = "sensei-grid-editor sensei-grid-basic-editor";
