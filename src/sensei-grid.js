@@ -124,7 +124,7 @@
             plugin.$el.off("dblclick", "tr>td");
             plugin.$el.off("blur");
             plugin.$el.off("keydown");
-            $(document).off("click");
+            $(document).off("click", plugin.editorBlur);
         };
 
         plugin.editorBlur = function (e) {
