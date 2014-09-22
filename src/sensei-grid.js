@@ -6,7 +6,7 @@
             defaults = {
                 emptyRow: false,
                 sortable: true,
-                tableClass: "" // table table-bordered table-condensed
+                tableClass: "table table-bordered"
             };
 
         plugin.isEditing = false;
@@ -56,8 +56,8 @@
             var pos = $("div", this).position();
             pos.left = Math.round(pos.left);
             pos.top = Math.round(pos.top);
-            var paddingH = $(this).outerWidth() - $(this).width();
-            var paddingV = $(this).outerHeight() - $(this).height();
+            var paddingH = $(this).outerWidth() - $("div", this).outerWidth();
+            var paddingV = $(this).outerHeight() - $("div", this).outerHeight();
             pos.top -= Math.round(paddingV / 2);
             pos.left -= Math.round(paddingH / 2);
             return pos;
@@ -116,6 +116,7 @@
             plugin.$el.on("dblclick", "tr>td", plugin.dblClickCell);
             plugin.$el.on("blur", plugin.blur);
             plugin.$el.on("keydown", plugin.keydown);
+            plugin.$el.on("click", "tr>th.sensei-grid-sortable", plugin.sort);
             $(document).on("click", plugin.editorBlur);
         };
 
@@ -124,7 +125,18 @@
             plugin.$el.off("dblclick", "tr>td");
             plugin.$el.off("blur");
             plugin.$el.off("keydown");
+            plugin.$el.off("click", "tr>th.sensei-grid-sortable", plugin.sort);
             $(document).off("click", plugin.editorBlur);
+        };
+
+        plugin.sort = function () {
+            // get column value
+            var col = $(this).text();
+
+            // sort data
+            plugin.data = _.sortBy(plugin.data, col);
+
+            plugin.renderData();
         };
 
         plugin.editorBlur = function (e) {
@@ -626,6 +638,10 @@
 
         plugin.renderData = function () {
             var $tbody = $("tbody", plugin.$el);
+
+            // remove existing content from tbody
+            $tbody.html(null);
+
             _.each(plugin.data, function (item) {
                 var tr = plugin.renderRow(item, true);
                 $tbody.append(tr);
