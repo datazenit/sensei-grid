@@ -7,7 +7,6 @@
     outline: none;
 }
 .sensei-grid table {
-	table-layout: fixed;
 	empty-cells: show;
 }
 .sensei-grid td,
