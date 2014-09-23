@@ -27,8 +27,12 @@ If you don't want to use bower, just download an archive from the [latest releas
 When you have obtained a copy of Sensei Grid, you must include all dependecies, sensei-grid.js and sensei-grid.css.
 Sensei Grid depends on jQuery and lodash/underscore.js. For your convenience all dependecies can be found in ``lib/`` folder.
 
+*Warning:* By default Sensei Grid does not apply any styles to the table. It means that you need to create your own 
+stylesheet or you can just use bootstrap.css as shown in the example below.
+
 ```html
 <link rel="stylesheet" type="text/css" href="dist/css/sensei-grid.css"/>
+<link rel="stylesheet" type="text/css" href="lib/bootstrap/dist/css/bootstrap.min.css"/>
 
 <script src="lib/jquery/dist/jquery.min.js"></script>
 <script src="lib/lodash/dist/lodash.min.js"></script>
