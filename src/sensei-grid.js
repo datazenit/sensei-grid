@@ -12,13 +12,13 @@
         plugin.isEditing = false;
         plugin.$prevRow = null;
 
-        $.fn.isOnScreen = function(){
+        $.fn.isOnScreen = function () {
 
             var win = $(window);
 
             var viewport = {
-                top : win.scrollTop(),
-                left : win.scrollLeft()
+                top: win.scrollTop(),
+                left: win.scrollLeft()
             };
             viewport.right = viewport.left + win.width();
             viewport.bottom = viewport.top + win.height();
@@ -132,15 +132,31 @@
         plugin.sort = function () {
             // get column value
             var col = $(this).text();
+            var order = "asc";
 
-            // sort data
-            plugin.data = _.sortBy(plugin.data, col);
+            // remove previous sorting icon
+            plugin.$el.find("th.sensei-grid-sortable .glyphicon").remove();
+
+            if ($(this).data("order") && $(this).data("order") === "asc") {
+                order = "desc";
+                // add sorting icon
+                $(this).append($("<span>").addClass("glyphicon glyphicon-chevron-up"));
+            } else {
+                // add sorting icon
+                $(this).append($("<span>").addClass("glyphicon glyphicon-chevron-down"));
+            }
+
+            // save sort order
+            $(this).data("order", order);
+
+            // trigger callback
+            plugin.events.trigger("column:sort", col, order, $(this));
 
             plugin.renderData();
         };
 
         plugin.editorBlur = function (e) {
-            if(plugin.$el.has($(e.target)).length === 0) {
+            if (plugin.$el.has($(e.target)).length === 0) {
                 plugin.exitEditor();
                 plugin.deactivateCell();
             }
@@ -535,7 +551,7 @@
             // all keyCodes that will be used
             var codes = [8, 9, 13, 27, 37, 38, 39, 40];
 
-             // specific keyCodes that won't be hijacked from the editor
+            // specific keyCodes that won't be hijacked from the editor
             var editorCodes = [8, 37, 38, 39, 40];
 
             if ((plugin.getActiveCell().length === 0 && !plugin.isEditing) || !_.contains(codes, e.which)) {

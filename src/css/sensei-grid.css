@@ -5,6 +5,15 @@
 	table-layout: fixed;
 	empty-cells: show;
 }
+.sensei-grid td,
+.sensei-grid th {
+    white-space: nowrap;
+    overflow: hidden;
+}
+.sensei-grid td>div,
+.sensei-grid th>div {
+    overflow: hidden;
+}
 .sensei-grid tr div::after {
     content: '\00a0';
 }
@@ -48,4 +57,15 @@
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
+    padding-right: 22px;
+    position: relative;
+}
+.sensei-grid th.sensei-grid-sortable div {
+}
+.sensei-grid th.sensei-grid-sortable .glyphicon {
+    font-size: 10px;
+    color: #aaa;
+    position: absolute;
+    right: 7px;
+    top: 13px;
 }
