@@ -1,53 +1,33 @@
 /**
- * sensei-grid v0.1.5
+ * sensei-grid v0.2.0
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
 .sensei-grid {
     outline: none;
 }
-.sensei-grid,
-.sensei-grid-editor input,
-.sensei-grid-editor select {
-    font: 14px Helvetica, Arial, sans-serif;
-    line-height: 20px;
-}
-.sensei-grid * {
-    box-sizing: border-box;
-}
 .sensei-grid table {
-	border-spacing: 0;
-	border-collapse: collapse;
-	width: 100%;
-	table-layout:fixed;
+	table-layout: fixed;
 	empty-cells: show;
-	border: 1px solid #ddd;
 }
-.sensei-grid tr div::before {
-    /*content: '\00a0';*/
+.sensei-grid td,
+.sensei-grid th {
+    white-space: nowrap;
+    overflow: hidden;
 }
-.sensei-grid table td,
-.sensei-grid table th {
-	overflow: hidden;
-	white-space: nowrap;
-	border: 1px solid #ddd;
-	text-align: left;
-	padding: 5px 7px;
-	vertical-align: top;
-    height: 31px;
+.sensei-grid td>div,
+.sensei-grid th>div {
+    overflow: hidden;
+}
+.sensei-grid tr div::after {
+    content: '\00a0';
 }
 .sensei-grid thead {
 	background: #F5F5F5;
 }
 .sensei-grid thead>tr>th {
-	vertical-align: bottom;
 	border-bottom-width: 1px;
     font-weight: bold;
-}
-.sensei-grid thead>tr>th,
-.sensei-grid tbody>tr>td {
-}
-.sensei-grid tr>td>div {
 }
 .sensei-grid .activeCell {
 	background: #d0e9f8;
@@ -81,4 +61,16 @@
     cursor: pointer;
     user-select: none;
     -webkit-user-select: none;
+    -moz-user-select: none;
+    padding-right: 22px;
+    position: relative;
+}
+.sensei-grid th.sensei-grid-sortable div {
+}
+.sensei-grid th.sensei-grid-sortable .glyphicon {
+    font-size: 10px;
+    color: #aaa;
+    position: absolute;
+    right: 7px;
+    top: 13px;
 }

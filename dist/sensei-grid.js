@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.1.5
+ * sensei-grid v0.2.0
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -11,19 +11,19 @@
             defaults = {
                 emptyRow: false,
                 sortable: true,
-                tableClass: "" // table table-bordered table-condensed
+                tableClass: "table table-bordered"
             };
 
         plugin.isEditing = false;
         plugin.$prevRow = null;
 
-        $.fn.isOnScreen = function(){
+        $.fn.isOnScreen = function () {
 
             var win = $(window);
 
             var viewport = {
-                top : win.scrollTop(),
-                left : win.scrollLeft()
+                top: win.scrollTop(),
+                left: win.scrollLeft()
             };
             viewport.right = viewport.left + win.width();
             viewport.bottom = viewport.top + win.height();
@@ -61,8 +61,8 @@
             var pos = $("div", this).position();
             pos.left = Math.round(pos.left);
             pos.top = Math.round(pos.top);
-            var paddingH = $(this).outerWidth() - $(this).width();
-            var paddingV = $(this).outerHeight() - $(this).height();
+            var paddingH = $(this).outerWidth() - $("div", this).outerWidth();
+            var paddingV = $(this).outerHeight() - $("div", this).outerHeight();
             pos.top -= Math.round(paddingV / 2);
             pos.left -= Math.round(paddingH / 2);
             return pos;
@@ -121,6 +121,7 @@
             plugin.$el.on("dblclick", "tr>td", plugin.dblClickCell);
             plugin.$el.on("blur", plugin.blur);
             plugin.$el.on("keydown", plugin.keydown);
+            plugin.$el.on("click", "tr>th.sensei-grid-sortable", plugin.sort);
             $(document).on("click", plugin.editorBlur);
         };
 
@@ -129,11 +130,38 @@
             plugin.$el.off("dblclick", "tr>td");
             plugin.$el.off("blur");
             plugin.$el.off("keydown");
-            $(document).off("click");
+            plugin.$el.off("click", "tr>th.sensei-grid-sortable", plugin.sort);
+            $(document).off("click", plugin.editorBlur);
+        };
+
+        plugin.sort = function () {
+            // get column value
+            var col = $(this).text();
+            var order = "asc";
+
+            // remove previous sorting icon
+            plugin.$el.find("th.sensei-grid-sortable .glyphicon").remove();
+
+            if ($(this).data("order") && $(this).data("order") === "asc") {
+                order = "desc";
+                // add sorting icon
+                $(this).append($("<span>").addClass("glyphicon glyphicon-chevron-up"));
+            } else {
+                // add sorting icon
+                $(this).append($("<span>").addClass("glyphicon glyphicon-chevron-down"));
+            }
+
+            // save sort order
+            $(this).data("order", order);
+
+            // trigger callback
+            plugin.events.trigger("column:sort", col, order, $(this));
+
+            plugin.renderData();
         };
 
         plugin.editorBlur = function (e) {
-            if(plugin.$el.has($(e.target)).length === 0) {
+            if (plugin.$el.has($(e.target)).length === 0) {
                 plugin.exitEditor();
                 plugin.deactivateCell();
             }
@@ -528,7 +556,7 @@
             // all keyCodes that will be used
             var codes = [8, 9, 13, 27, 37, 38, 39, 40];
 
-             // specific keyCodes that won't be hijacked from the editor
+            // specific keyCodes that won't be hijacked from the editor
             var editorCodes = [8, 37, 38, 39, 40];
 
             if ((plugin.getActiveCell().length === 0 && !plugin.isEditing) || !_.contains(codes, e.which)) {
@@ -631,6 +659,10 @@
 
         plugin.renderData = function () {
             var $tbody = $("tbody", plugin.$el);
+
+            // remove existing content from tbody
+            $tbody.html(null);
+
             _.each(plugin.data, function (item) {
                 var tr = plugin.renderRow(item, true);
                 $tbody.append(tr);
