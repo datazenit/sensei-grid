@@ -21,9 +21,9 @@ Demo: http://datazenit.com/static/sensei-grid/examples/
 
 ## Installation
 
-The simplest way to get all necessary files is via bower: ``bower install sensei-grid``. 
+The simplest way to get all necessary files is via bower: ``bower install sensei-grid``.
 If you don't want to use bower, just download an archive from the [latest release page](https://github.com/datazenit/sensei-grid/releases) or clone the whole repository.
- 
+
 When you have obtained a copy of Sensei Grid, you must include all dependecies, sensei-grid.js and sensei-grid.css.
 Sensei Grid depends on jQuery and lodash/underscore.js. For your convenience all dependecies can be found in ``lib/`` folder.
 
@@ -89,9 +89,10 @@ Planned for the upcoming releases:
 * ~~Event callbacks (e.g., save, load, render)~~
 * ~~Field types (e.g., string, int, float)~~
 * Optional column definition (if the structure of data is simple, assume default column settings)
-* Firefox compatibility issues (there are currently some issues with table rendering in Firefox)
+* ~~Firefox compatibility issues~~
 * More configuration parameters for grid
 * ~~Example editor for specific field types~~ (an example select box editor can be found in examples/example.js)
 * Touch support for mobile devices
-* Column sorting and resizing (to be discussed)
+* Column sorting
+* Column resizing (to be discussed)
 * Implement undo/redo (to be discussed)
