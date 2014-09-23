@@ -97,6 +97,6 @@ Planned for the upcoming releases:
 * More configuration parameters for grid
 * ~~Example editor for specific field types~~ (an example select box editor can be found in examples/example.js)
 * Touch support for mobile devices
-* Column sorting
+* ~~Column sorting callbacks~~
 * Column resizing (to be discussed)
 * Implement undo/redo (to be discussed)
