@@ -17,6 +17,9 @@
 .sensei-grid td>div,
 .sensei-grid th>div {
     overflow: hidden;
+    /* transparent border fixes another firefox quirk 
+    when cell width is calculated incorrectly */
+    border: 1px solid transparent;
 }
 .sensei-grid tr div::after {
     content: '\00a0';
@@ -63,8 +66,6 @@
     -moz-user-select: none;
     padding-right: 22px;
     position: relative;
-}
-.sensei-grid th.sensei-grid-sortable div {
 }
 .sensei-grid th.sensei-grid-sortable .glyphicon {
     font-size: 10px;

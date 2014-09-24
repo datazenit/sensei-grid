@@ -2,11 +2,12 @@ $(function () {
 
     // generate data
 	var data = [];
-	for (var i = 0; i < 10; ++i) {
+	for (var i = 0; i < 1000; ++i) {
 		data.push({
 			"id": i + 1,
 			"created_at": new Date().toDateString(),
-			"status": "In progress",
+            "status": "In progress",
+            "author": "John Doe",
 			"title": "Test " + i + Math.round(Math.random() * 1000),
 			"count": Math.round(Math.random() * 100)
 		});
@@ -15,7 +16,8 @@ $(function () {
     // define columns
 	var columns = [
 		{name: "id", type: "int"},
-		{name: "created_at", type: "string"},
+        {name: "created_at", type: "string"},
+        {name: "author", type: "string"},
 		{name: "status", type: "string", editor: "CustomEditor"},
 		{name: "title", type: "string"},
 		{name: "count", type: "string"}
@@ -102,4 +104,6 @@ $(function () {
     console.log("grid.getCellDataByKey(2, created_at):", grid.getCellDataByKey(2, "created_at"));
     console.log("grid.getGridData():", grid.getGridData());
     console.groupEnd();
+
+    window.grid = grid;
 });

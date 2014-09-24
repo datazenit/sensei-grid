@@ -1,12 +1,19 @@
 (function ($) {
 
+    // @TODO need to refactor event model. For example, avoid forced focus on grid, 
+    // just set a mode (active/inactive) instead. 
+    // key events should be global not specific to sensei grid, thus no focus would be needed
+    // on sensei grid for them to work.
+    // current event model and forced focus causes grid to get scrolled in area 
+    // when editor moves/closes which is unnecessary
+
     $.fn.grid = function (data, columns, options) {
 
         var plugin = this,
             defaults = {
                 emptyRow: false,
                 sortable: true,
-                tableClass: "table table-bordered"
+                tableClass: "table table-bordered table-condensed"
             };
 
         plugin.isEditing = false;
@@ -31,6 +38,17 @@
 
         };
 
+        // lightweight function to force redraw an element
+        function redraw($el) {
+            var el = $el.get(0);
+            var d = el.style.display;
+            
+            // actual code that will force redraw of element
+            el.style.display = "none";
+            el.offsetHeight; // jshint ignore:line
+            el.style.display = d;
+        }
+
         $.fn.setActiveCell = function () {
             plugin.$prevRow = $("tr>.activeCell", plugin.$el).parent("tr");
             plugin.$prevRow.removeClass("activeRow");
@@ -38,6 +56,9 @@
             $("tr>.activeCell", plugin.$el).removeClass("activeCell");
             $(this).addClass("activeCell");
             $(this).parent("tr").addClass("activeRow");
+
+            // redraw element to fix border style in firefox
+            redraw($(this).parent("tr"));
 
             // trigger cell:select event
             plugin.events.trigger("cell:select", $(this));
@@ -53,13 +74,16 @@
         // fixes inconsistent position in firefox/chrome
         // for this to work a div is needed inside table cell
         $.fn.cellPosition = function () {
-            var pos = $("div", this).position();
-            pos.left = Math.round(pos.left);
-            pos.top = Math.round(pos.top);
-            var paddingH = $(this).outerWidth() - $("div", this).outerWidth();
-            var paddingV = $(this).outerHeight() - $("div", this).outerHeight();
-            pos.top -= Math.round(paddingV / 2);
-            pos.left -= Math.round(paddingH / 2);
+
+            var pos = $(this).position();
+
+            // if browser is firefox or similar, fix table cell position
+            // firefox calculates cell positions differently from webkit browsers
+            if (plugin.isSillyFirefox()) {
+                pos.left -= 1;
+                pos.top -= 1;
+            }
+
             return pos;
         };
 
@@ -84,6 +108,12 @@
             if (_.has(this._events, event)) {
                 delete this._events[event];
             }
+        };
+
+        plugin.isSillyFirefox = function () {
+            var tableLeft = plugin.$el.position().left;
+            var cellLeft = plugin.$el.find("td:first").position().left;
+            return cellLeft !== tableLeft;
         };
 
         plugin.registerEditor = function (Editor) {
@@ -112,21 +142,20 @@
         };
 
         plugin.bindEvents = function () {
-            plugin.$el.on("click", "tr>td", plugin.clickCell);
-            plugin.$el.on("dblclick", "tr>td", plugin.dblClickCell);
-            plugin.$el.on("blur", plugin.blur);
-            plugin.$el.on("keydown", plugin.keydown);
-            plugin.$el.on("click", "tr>th.sensei-grid-sortable", plugin.sort);
-            $(document).on("click", plugin.editorBlur);
+            // unbind previous events
+            plugin.unbindEvents();
+
+            plugin.$el.on("click.grid", "tr>td", plugin.clickCell);
+            plugin.$el.on("dblclick.grid", "tr>td", plugin.dblClickCell);
+            plugin.$el.on("blur.grid", plugin.blur);
+            plugin.$el.on("keydown.grid", plugin.keydown);
+            plugin.$el.on("click.grid", "tr>th.sensei-grid-sortable", plugin.sort);
+            $(document).on("click.grid", plugin.editorBlur);
         };
 
         plugin.unbindEvents = function () {
-            plugin.$el.off("click", "tr>td");
-            plugin.$el.off("dblclick", "tr>td");
-            plugin.$el.off("blur");
-            plugin.$el.off("keydown");
-            plugin.$el.off("click", "tr>th.sensei-grid-sortable", plugin.sort);
-            $(document).off("click", plugin.editorBlur);
+            plugin.$el.off(".grid");
+            $(document).off(".grid");
         };
 
         plugin.sort = function () {
@@ -156,7 +185,7 @@
         };
 
         plugin.editorBlur = function (e) {
-            if (plugin.$el.has($(e.target)).length === 0) {
+            if (plugin.getActiveCell().length > 0 && plugin.$el.has($(e.target)).length === 0) {
                 plugin.exitEditor();
                 plugin.deactivateCell();
             }
@@ -170,10 +199,14 @@
             // check if focus has moved to editor
             // e.relatedTarget && plugin.$el.has($(e.relatedTarget))
             // not firefox compatible
-            if (!plugin.isEditing) {
+            if (plugin.getActiveCell().length > 0 && !plugin.isEditing) {
+                var $td = plugin.getActiveCell();
                 plugin.exitEditor();
                 plugin.isEditing = false;
                 plugin.deactivateCell();
+
+                // force redraw on last active row
+                redraw($td.parent("tr"));
             }
         };
 
@@ -495,8 +528,10 @@
             }
 
             // need to regain focus
-            $td.setActiveCell();
-            plugin.$el.focus();
+            if (plugin.isEditing) {
+                $td.setActiveCell();
+                plugin.$el.focus();
+            }
 
             plugin.isEditing = false;
         };
