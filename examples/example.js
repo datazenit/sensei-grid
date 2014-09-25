@@ -1,13 +1,18 @@
 $(function () {
 
+    // define select editor properties
+    var authors = {"values": ["Bob", "John", "Alice", "Jane"]};
+    var statuses = {"values": ["In progress", "Completed", "Done", "Verified"]};
+
     // generate data
 	var data = [];
 	for (var i = 0; i < 100; ++i) {
 		data.push({
 			"id": i + 1,
 			"created_at": new Date().toDateString(),
-            "status": "In progress",
-            "author": "John Doe",
+            "status": _.shuffle(statuses.values)[0],
+            "body": "The quick, brown fox jumps over a lazy dog.",
+            "author": _.shuffle(authors.values)[0],
 			"title": "Test " + i + Math.round(Math.random() * 1000),
 			"count": Math.round(Math.random() * 100)
 		});
@@ -17,52 +22,21 @@ $(function () {
 	var columns = [
 		{name: "id", type: "int"},
         {name: "created_at", type: "string"},
-        {name: "author", type: "string"},
-		{name: "status", type: "string", editor: "CustomEditor"},
+        {name: "author", type: "string", editor: "SelectEditor", editorProps: authors},
+        {name: "body", type: "string", editor: "TextareaEditor"},
+		{name: "status", type: "string", editor: "SelectEditor", editorProps: statuses},
 		{name: "title", type: "string"},
 		{name: "count", type: "string"}
 	];
-
-    // example definition of a custom editor
-    var CustomEditor = Editor.extend({
-        types: [],
-        statuses: ["Backlog", "Accepted", "In progress", "Done", "Verified"],
-        name: "CustomEditor",
-        render: function () {
-            console.log("CustomEditor.render");
-
-            if (!this.editor) {
-                this.editor = document.createElement("div");
-                this.editor.className = "sensei-grid-editor sensei-grid-custom-editor";
-                var select = document.createElement("select");
-                _.each(this.statuses, function (status) {
-                    var option = document.createElement("option");
-                    option.value = status;
-                    option.innerHTML = status;
-                    select.appendChild(option);
-                });
-                this.editor.appendChild(select);
-                this.grid.$el.append(this.editor);
-            }
-        },
-        getValue: function () {
-            return $("select", this.editor).val();
-        },
-        setValue: function (val) {
-            $("select>option", this.editor).filter(function () {
-                return $(this).val() === val;
-            }).attr("selected", "selected");
-            $("select").focus();
-        }
-    });
 
     // initialize grid
     var options = {emptyRow: true, sortable: false};
 	var grid = $(".sensei-grid").grid(data, columns, options);
 
-    // register editors
-	grid.registerEditor(BasicEditor); // BasicEditor is bundled with Sensei Grid
-	grid.registerEditor(CustomEditor);
+    // register editors that are bundled with sensei grid
+    grid.registerEditor(BasicEditor);
+    grid.registerEditor(TextareaEditor);
+    grid.registerEditor(SelectEditor);
 
     // example listeners on grid events
     grid.events.on("editor:save", function (data, $cell) {

@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.2.2
+ * sensei-grid v0.2.3
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -49,7 +49,8 @@
 	box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
 }
 .sensei-grid-editor input,
-.sensei-grid-editor select {
+.sensei-grid-editor select,
+.sensei-grid-editor textarea {
 	border: none;
 	width: 100%;
 	height: 100%;
@@ -57,6 +58,10 @@
 	outline: none;
 	padding: 5px 6px;
     background: #fff;
+}
+.sensei-grid-editor textarea {
+	/** fixes bottom gap */
+	vertical-align: top; 
 }
 
 .sensei-grid th.sensei-grid-sortable {

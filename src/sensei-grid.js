@@ -18,6 +18,7 @@
 
         plugin.isEditing = false;
         plugin.$prevRow = null;
+        plugin.editorProps = {};
 
         $.fn.isOnScreen = function () {
 
@@ -464,6 +465,11 @@
             var editorName = $td.data("editor");
 
             if (editorName && _.has(plugin.editors, editorName)) {
+                // check if there is props for this editor
+                var col = plugin.getCellColumn($td);
+                if (_.has(plugin.editorProps, col)) {
+                    plugin.editors[editorName].props = plugin.editorProps[col];
+                }
                 return plugin.editors[editorName];
             } else {
                 throw Error("Editor not found: " + editorName);
@@ -556,15 +562,10 @@
             // set editing mode after we have gotten active cell
             plugin.isEditing = true;
 
-            // check if we need to save a dirty row
-//            if (plugin.$prevRow.hasClass("sensei-grid-dirty-row")) {
-//                plugin.events.trigger("row:save", plugin.getRowData(plugin.$prevRow), plugin.$prevRow, "editor:show");
-//            }
-
             // show editor and set correct position
-            $editor.show();
+            plugin.activeEditor.show();
             $editor.css($td.cellPosition());
-            $editor.css({width: $td.outerWidth() + 1, height: $td.outerHeight() + 1});
+            plugin.activeEditor.setDimensions($td);
 
             // set value in editor
             var column = $td.data("column");
@@ -681,6 +682,10 @@
 
                 $(th).data("type", column.type || "string");
                 $(th).data("editor", column.editor || "BasicEditor");
+
+                if (column.editorProps) {
+                    plugin.editorProps[column.name] = column.editorProps;                    
+                }
 
                 tr.appendChild(th);
             });

@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.2.2
+ * sensei-grid v0.2.3
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -23,6 +23,7 @@
 
         plugin.isEditing = false;
         plugin.$prevRow = null;
+        plugin.editorProps = {};
 
         $.fn.isOnScreen = function () {
 
@@ -469,6 +470,11 @@
             var editorName = $td.data("editor");
 
             if (editorName && _.has(plugin.editors, editorName)) {
+                // check if there is props for this editor
+                var col = plugin.getCellColumn($td);
+                if (_.has(plugin.editorProps, col)) {
+                    plugin.editors[editorName].props = plugin.editorProps[col];
+                }
                 return plugin.editors[editorName];
             } else {
                 throw Error("Editor not found: " + editorName);
@@ -561,15 +567,10 @@
             // set editing mode after we have gotten active cell
             plugin.isEditing = true;
 
-            // check if we need to save a dirty row
-//            if (plugin.$prevRow.hasClass("sensei-grid-dirty-row")) {
-//                plugin.events.trigger("row:save", plugin.getRowData(plugin.$prevRow), plugin.$prevRow, "editor:show");
-//            }
-
             // show editor and set correct position
-            $editor.show();
+            plugin.activeEditor.show();
             $editor.css($td.cellPosition());
-            $editor.css({width: $td.outerWidth() + 1, height: $td.outerHeight() + 1});
+            plugin.activeEditor.setDimensions($td);
 
             // set value in editor
             var column = $td.data("column");
@@ -686,6 +687,10 @@
 
                 $(th).data("type", column.type || "string");
                 $(th).data("editor", column.editor || "BasicEditor");
+
+                if (column.editorProps) {
+                    plugin.editorProps[column.name] = column.editorProps;                    
+                }
 
                 tr.appendChild(th);
             });
@@ -805,6 +810,9 @@
         this.grid.activeEditor.activeCell = null;
         this.grid.activeEditor = null;
     };
+    Editor.prototype.setDimensions = function ($td) {
+        this.getElement().css({width: $td.outerWidth() + 1, height: $td.outerHeight() + 1});
+    };
     Editor.prototype.getValue = function () {
         throw Error("Editor.getValue not implemented");
     };
@@ -832,6 +840,73 @@
         },
         setValue: function (val) {
             $("input", this.editor).val(val).focus();
+        }
+    });
+
+    root.TextareaEditor = Editor.extend({
+        types: [],
+        name: "TextareaEditor",
+        render: function () {
+            if (!this.editor) {
+                this.editor = document.createElement("div");
+                this.editor.className = "sensei-grid-editor sensei-grid-textarea-editor";
+                var textarea = document.createElement("textarea");
+                this.editor.appendChild(textarea);
+                this.grid.$el.append(this.editor);
+            }
+        },
+        setDimensions: function ($td) {
+            this.getElement().find("textarea").css({width: $td.outerWidth() + 50, height: $td.outerHeight() + 50});
+        },
+        getValue: function () {
+            return $("textarea", this.editor).val();
+        },
+        setValue: function (val) {
+            $("textarea", this.editor).val(val).focus();
+        }
+    });
+
+    root.SelectEditor = Editor.extend({
+        types: [],
+        name: "SelectEditor",
+        render: function () {
+            console.log("CustomEditor.render");
+
+            if (!this.editor) {
+                this.editor = document.createElement("div");
+                this.editor.className = "sensei-grid-editor sensei-grid-custom-editor";
+                var select = document.createElement("select");
+                this.editor.appendChild(select);
+                this.grid.$el.append(this.editor);
+            }
+        },
+        renderValues: function () {
+            if (_.has(this.props, "values")) {
+                
+                var $select = this.getElement().find("select");
+                $select.html(null);
+
+                _.each(this.props["values"], function (val) {
+                    var option = document.createElement("option");
+                    option.value = val;
+                    option.innerHTML = val;
+                    $select.append(option);
+                });   
+            }
+        },
+        show: function () {
+            this.renderValues();
+            this.getElement().show();
+        },
+        getValue: function () {
+            return $("select", this.editor).val();
+        },
+        setValue: function (val) {
+            console.log("Set selectbox value", val, $("select>option"));
+            $("select>option", this.editor).filter(function () {
+                return $(this).val() === val;
+            }).attr("selected", "selected");
+            $("select").focus();
         }
     });
 })(jQuery);
