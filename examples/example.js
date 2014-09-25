@@ -2,7 +2,7 @@ $(function () {
 
     // generate data
 	var data = [];
-	for (var i = 0; i < 1000; ++i) {
+	for (var i = 0; i < 100; ++i) {
 		data.push({
 			"id": i + 1,
 			"created_at": new Date().toDateString(),
