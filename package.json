@@ -1,6 +1,6 @@
 {
   "name": "sensei-grid",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "Simple data grid in JavaScript/HTML.",
   "main": "index.js",
   "directories": {

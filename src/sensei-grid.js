@@ -39,8 +39,11 @@
 
         };
 
-        // lightweight function to force redraw an element
-        function redraw($el) {
+        /**
+         * Force redraw on element
+         * @param $el
+         */
+        var redraw = function ($el) {
             var el = $el.get(0);
             var d = el.style.display;
             
@@ -48,7 +51,16 @@
             el.style.display = "none";
             el.offsetHeight; // jshint ignore:line
             el.style.display = d;
-        }
+        };
+
+        /**
+         * Normalize line endings
+         * @param text
+         * @returns string
+         */
+        var normalizeLineEndings = function (text) {
+            return text.replace(/\r\n/g, "\n");
+        };
 
         $.fn.setActiveCell = function () {
             plugin.$prevRow = $("tr>.activeCell", plugin.$el).parent("tr");
@@ -484,7 +496,7 @@
                 var $td = plugin.getActiveCell();
                 var val = plugin.activeEditor.getValue();
 
-                if (val !== $td.text()) {
+                if (normalizeLineEndings(val) !== normalizeLineEndings($td.text())) {
 
                     // set value from editor to the active cell
                     $td.html($("<div>").text(val));
