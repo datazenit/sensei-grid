@@ -292,6 +292,10 @@
             return $cell;
         };
 
+        plugin.getCellRow = function ($cell) {
+            return $cell.parent("tr");
+        };
+
         plugin.getRowCellsByIndex = function (index) {
             return plugin.getRowByIndex(index).find("td");
         };
