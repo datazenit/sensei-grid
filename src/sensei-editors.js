@@ -62,6 +62,7 @@
                 this.editor = document.createElement("div");
                 this.editor.className = "sensei-grid-editor sensei-grid-basic-editor";
                 var input = document.createElement("input");
+                input.setAttribute("type", "text");
                 this.editor.appendChild(input);
                 this.grid.$el.append(this.editor);
             }
@@ -94,6 +95,40 @@
         },
         setValue: function (val) {
             $("textarea", this.editor).val(val).focus();
+        }
+    });
+
+    root.BooleanEditor = Editor.extend({
+        types: [],
+        name: "BooleanEditor",
+        render: function () {
+            if (!this.editor) {
+                this.editor = document.createElement("div");
+                this.editor.className = "sensei-grid-editor sensei-grid-boolean-editor";
+                var $wrapper = $("<div>", {class: "sensei-grid-checkbox-wrapper"});
+                $wrapper.append($("<input>", {type: "checkbox"}));
+                $(this.editor).append($wrapper);
+                this.grid.$el.append(this.editor);
+            }
+        },
+        setDimensions: function ($td) {
+            var css = {
+                width: $td.outerWidth() - 3, 
+                height: $td.outerHeight() - 3, 
+                background: "white"
+            };
+            this.getElement().find(".sensei-grid-checkbox-wrapper").css(css);
+        },
+        getValue: function () {
+            return $("input", this.editor).is(":checked") ? "true" : "false";
+        },
+        setValue: function (val) {
+            if (val.toLowerCase() === "true") {
+                $("input", this.editor).prop("checked", true);
+            } else {
+                $("input", this.editor).prop("checked", false);
+            }
+            $("input", this.editor).focus();
         }
     });
 

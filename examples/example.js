@@ -9,7 +9,8 @@ $(function () {
 	for (var i = 0; i < 100; ++i) {
 		data.push({
 			"id": i + 1,
-			"created_at": new Date().toDateString(),
+            "created_at": new Date().toDateString(),
+            "is_admin": true,
             "status": _.shuffle(statuses.values)[0],
             "body": "The quick, brown fox jumps over a lazy dog.",
             "author": _.shuffle(authors.values)[0],
@@ -21,6 +22,7 @@ $(function () {
     // define columns
 	var columns = [
 		{name: "id", type: "int"},
+        {name: "is_admin", type: "boolean", editor: "BooleanEditor"},
         {name: "created_at", type: "string"},
         {name: "author", type: "string", editor: "SelectEditor", editorProps: authors},
         {name: "body", type: "string", editor: "TextareaEditor"},
@@ -35,6 +37,7 @@ $(function () {
 
     // register editors that are bundled with sensei grid
     grid.registerEditor(BasicEditor);
+    grid.registerEditor(BooleanEditor);
     grid.registerEditor(TextareaEditor);
     grid.registerEditor(SelectEditor);
 
