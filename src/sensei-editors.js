@@ -175,4 +175,42 @@
             $("select").focus();
         }
     });
+
+    root.DateEditor = Editor.extend({
+        types: [],
+        name: "DateEditor",
+        render: function () {
+            if (!this.editor) {
+
+                // create editor elements
+                this.editor = document.createElement("div");
+                this.editor.className = "sensei-grid-editor sensei-grid-date-editor";
+                var $wrapper = $("<div>", {class: "sensei-grid-date-wrapper"});
+                $wrapper.append($("<input>", {type: "text", class: "datepicker"}));
+                $(this.editor).append($wrapper);
+                this.grid.$el.append(this.editor);
+
+                // needed for datepicker
+                var grid = this.grid;
+
+                // load the datepicker
+                $('.datepicker').pickadate({
+                    format : 'ddd mmm dd yy', 
+                    editable: true,
+                    onClose: function() {
+                        grid.preventEnter = false;
+                    },
+                    onOpen: function() {
+                        grid.preventEnter = true;
+                    }
+                });
+            }
+        },
+        getValue: function () {
+            return $("input", this.editor).val();
+        },
+        setValue: function (val) {
+            $("input", this.editor).val(val).focus();
+        }
+    });
 })(jQuery);

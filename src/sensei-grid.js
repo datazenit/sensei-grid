@@ -19,6 +19,7 @@
         plugin.isEditing = false;
         plugin.$prevRow = null;
         plugin.editorProps = {};
+        plugin.preventEnter = false;
 
         $.fn.isOnScreen = function () {
 
@@ -637,7 +638,9 @@
                         } else if (e.ctrlKey && !e.shiftKey) {
                             plugin.move("down");
                         } else {
-                            plugin.exitEditor();
+                            if (!plugin.preventEnter) {
+                                plugin.exitEditor();
+                            }
                         }
                     } else {
                         plugin.editCell();

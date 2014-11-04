@@ -23,7 +23,7 @@ $(function () {
 	var columns = [
 		{name: "id", type: "int"},
         {name: "is_admin", type: "boolean", editor: "BooleanEditor"},
-        {name: "created_at", type: "string"},
+        {name: "created_at", type: "string", editor: "DateEditor"},
         {name: "author", type: "string", editor: "SelectEditor", editorProps: authors},
         {name: "body", type: "string", editor: "TextareaEditor"},
 		{name: "status", type: "string", editor: "SelectEditor", editorProps: statuses},
@@ -40,6 +40,7 @@ $(function () {
     grid.registerEditor(BooleanEditor);
     grid.registerEditor(TextareaEditor);
     grid.registerEditor(SelectEditor);
+    grid.registerEditor(DateEditor);
 
     // example listeners on grid events
     grid.events.on("editor:save", function (data, $cell) {
