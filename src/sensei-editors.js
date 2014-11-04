@@ -195,7 +195,7 @@
 
                 // load the datepicker
                 $('.datepicker').pickadate({
-                    format : 'ddd mmm dd yy', 
+                    format : 'ddd mmm dd yyyy', 
                     editable: true,
                     onClose: function() {
                         grid.preventEnter = false;
