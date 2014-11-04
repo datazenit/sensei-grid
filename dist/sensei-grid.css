@@ -1,44 +1,44 @@
 /**
- * sensei-grid v0.2.6
+ * sensei-grid v0.3.0
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
 .sensei-grid {
     outline: none;
 }
-.sensei-grid table {
+.sensei-grid>table {
 	empty-cells: show;
 }
-.sensei-grid td,
-.sensei-grid th {
+.sensei-grid>table td,
+.sensei-grid>table th {
     white-space: nowrap;
     overflow: hidden;
 }
-.sensei-grid td>div,
-.sensei-grid th>div {
+.sensei-grid>table td>div,
+.sensei-grid>table th>div {
     overflow: hidden;
     /* transparent border fixes another firefox quirk 
     when cell width is calculated incorrectly */
     border: 1px solid transparent;
 }
-.sensei-grid tr div::after {
+.sensei-grid>table tr div::after {
     content: '\00a0';
 }
-.sensei-grid thead {
+.sensei-grid>table thead {
 	background: #F5F5F5;
 }
-.sensei-grid thead>tr>th {
+.sensei-grid>table thead>tr>th {
 	border-bottom-width: 1px;
     font-weight: bold;
 }
-.sensei-grid .activeCell {
+.sensei-grid>table .activeCell {
 	background: #d0e9f8;
 	border: 1px double #3399ff;
 }
-.sensei-grid .activeRow {
+.sensei-grid>table .activeRow {
 	background: #eff7fc;
 }
-.sensei-grid .sensei-grid-dirty-row {
+.sensei-grid>table .sensei-grid-dirty-row {
     color: gray;
 }
 
@@ -72,6 +72,12 @@
 .sensei-grid-editor textarea {
 	/** fixes bottom gap */
 	vertical-align: top; 
+}
+
+.sensei-grid-date-editor .picker__holder {
+    min-width: 300px;
+    margin-left: -2px;
+    margin-top: 2px;
 }
 
 .sensei-grid th.sensei-grid-sortable {

@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.2.6
+ * sensei-grid v0.3.0
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -24,6 +24,7 @@
         plugin.isEditing = false;
         plugin.$prevRow = null;
         plugin.editorProps = {};
+        plugin.preventEnter = false;
 
         $.fn.isOnScreen = function () {
 
@@ -642,7 +643,9 @@
                         } else if (e.ctrlKey && !e.shiftKey) {
                             plugin.move("down");
                         } else {
-                            plugin.exitEditor();
+                            if (!plugin.preventEnter) {
+                                plugin.exitEditor();
+                            }
                         }
                     } else {
                         plugin.editCell();
@@ -958,6 +961,44 @@
                 return $(this).val() === val;
             }).attr("selected", "selected");
             $("select").focus();
+        }
+    });
+
+    root.DateEditor = Editor.extend({
+        types: [],
+        name: "DateEditor",
+        render: function () {
+            if (!this.editor) {
+
+                // create editor elements
+                this.editor = document.createElement("div");
+                this.editor.className = "sensei-grid-editor sensei-grid-date-editor";
+                var $wrapper = $("<div>", {class: "sensei-grid-date-wrapper"});
+                $wrapper.append($("<input>", {type: "text", class: "datepicker"}));
+                $(this.editor).append($wrapper);
+                this.grid.$el.append(this.editor);
+
+                // needed for datepicker
+                var grid = this.grid;
+
+                // load the datepicker
+                $('.datepicker').pickadate({
+                    format : 'ddd mmm dd yy', 
+                    editable: true,
+                    onClose: function() {
+                        grid.preventEnter = false;
+                    },
+                    onOpen: function() {
+                        grid.preventEnter = true;
+                    }
+                });
+            }
+        },
+        getValue: function () {
+            return $("input", this.editor).val();
+        },
+        setValue: function (val) {
+            $("input", this.editor).val(val).focus();
         }
     });
 })(jQuery);
