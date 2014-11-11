@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.3.1
+ * sensei-grid v0.3.2
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -985,6 +985,9 @@
                 $('.datepicker').pickadate({
                     format : 'ddd mmm dd yyyy', 
                     editable: true,
+                    today: false,
+                    clear: false,
+                    close: false,
                     onClose: function() {
                         grid.preventEnter = false;
                     },

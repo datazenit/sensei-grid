@@ -74,6 +74,9 @@
     margin-left: -2px;
     margin-top: 2px;
 }
+.sensei-grid-date-editor .picker {
+    font-size: 14px;
+}
 
 .sensei-grid th.sensei-grid-sortable {
     cursor: pointer;

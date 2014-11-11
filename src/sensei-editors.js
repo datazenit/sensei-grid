@@ -197,6 +197,9 @@
                 $('.datepicker').pickadate({
                     format : 'ddd mmm dd yyyy', 
                     editable: true,
+                    today: false,
+                    clear: false,
+                    close: false,
                     onClose: function() {
                         grid.preventEnter = false;
                     },
