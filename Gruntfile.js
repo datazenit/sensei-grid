@@ -6,7 +6,7 @@ module.exports = function (grunt) {
         banner: '/**\n * <%= pkg.name %> v<%= pkg.version %>\n' +
         ' * Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author %>\n' +
         ' * Licensed under <%= pkg.license %> \n*/\n',
-
+        now : grunt.template.today('yyyymmddhhMMss'),
         concat: {
             options: {
                 banner: '<%= banner %>',
@@ -84,6 +84,18 @@ module.exports = function (grunt) {
                 files: ['src/*.js', 'test/*.js'],
                 tasks: ['jasmine']
             }
+        },
+        preprocess: {
+          options : {
+            context : {
+              now : '<%= now %>'
+            }
+          },
+          prod: {
+            files : {
+              'examples/index.html' : 'src/examples/index.html'
+            }
+          }
         }
     });
 
@@ -94,10 +106,11 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-jasmine');
+    grunt.loadNpmTasks('grunt-preprocess');
 
     // Tasks
     grunt.registerTask('test', ['jshint', 'jasmine']);
-    grunt.registerTask('build', ['test', 'concat', 'uglify', 'cssmin']);
+    grunt.registerTask('build', ['test', 'concat', 'uglify', 'cssmin', 'preprocess']);
     grunt.registerTask('default', ['build']);
 
 };
