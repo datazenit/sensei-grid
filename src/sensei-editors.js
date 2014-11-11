@@ -216,4 +216,26 @@
             $("input", this.editor).val(val).focus();
         }
     });
+
+    root.DisabledEditor = Editor.extend({
+        types: [],
+        name: "DisabledEditor",
+        render: function () {
+            if (!this.editor) {
+
+                // create editor elements
+                this.editor = document.createElement("div");
+                this.editor.className = "sensei-grid-editor sensei-grid-disabled-editor";
+                var $input = $("<input>", {type: "text", readOnly: true});
+                $(this.editor).append($input);
+                this.grid.$el.append(this.editor);
+            }
+        },
+        getValue: function () {
+            return $("input", this.editor).val();
+        },
+        setValue: function (val) {
+            $("input", this.editor).val(val).focus();
+        }
+    });
 })(jQuery);

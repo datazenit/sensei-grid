@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.3.2
+ * sensei-grid v0.3.3
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -995,6 +995,28 @@
                         grid.preventEnter = true;
                     }
                 });
+            }
+        },
+        getValue: function () {
+            return $("input", this.editor).val();
+        },
+        setValue: function (val) {
+            $("input", this.editor).val(val).focus();
+        }
+    });
+
+    root.DisabledEditor = Editor.extend({
+        types: [],
+        name: "DisabledEditor",
+        render: function () {
+            if (!this.editor) {
+
+                // create editor elements
+                this.editor = document.createElement("div");
+                this.editor.className = "sensei-grid-editor sensei-grid-disabled-editor";
+                var $input = $("<input>", {type: "text", readOnly: true});
+                $(this.editor).append($input);
+                this.grid.$el.append(this.editor);
             }
         },
         getValue: function () {

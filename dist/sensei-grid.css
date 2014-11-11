@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.3.2
+ * sensei-grid v0.3.3
  * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -81,6 +81,14 @@
 }
 .sensei-grid-date-editor .picker {
     font-size: 14px;
+}
+
+.sensei-grid-disabled-editor {
+    border-color: #ADADAD;
+}
+.sensei-grid-disabled-editor input[type=text] {
+    cursor: not-allowed;
+    background: #FAFAFA;
 }
 
 .sensei-grid th.sensei-grid-sortable {

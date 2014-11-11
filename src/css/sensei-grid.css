@@ -78,6 +78,14 @@
     font-size: 14px;
 }
 
+.sensei-grid-disabled-editor {
+    border-color: #ADADAD;
+}
+.sensei-grid-disabled-editor input[type=text] {
+    cursor: not-allowed;
+    background: #FAFAFA;
+}
+
 .sensei-grid th.sensei-grid-sortable {
     cursor: pointer;
     user-select: none;
