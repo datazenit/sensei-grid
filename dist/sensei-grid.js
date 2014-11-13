@@ -1026,4 +1026,52 @@
             $("input", this.editor).val(val).focus();
         }
     });
+
+    root.RichEditor = Editor.extend({
+        types: [],
+        name: "RichEditor",
+        render: function () {
+            if (!this.editor) {
+                this.editor = $("<div>", {class: "sensei-grid-editor sensei-grid-rich-editor"});
+                var summertime = $("<div>", {class: "summertime-wrapper"});
+                this.editor.append(summertime);
+                this.grid.$el.append(this.editor);
+            }
+        },
+        setDimensions: function ($td) {
+            this.getElement().css({width: $td.outerWidth() + 50});
+        },
+        getValue: function () {
+            return $(".summertime-wrapper", this.editor).code();
+        },
+        setValue: function (val) {
+            $(".summertime-wrapper", this.editor).destroy();
+            $(".summertime-wrapper", this.editor).html(val);
+
+            var grid = this.grid;
+
+            $(".summertime-wrapper", this.editor).summernote({
+                focus: true,
+                toolbar: [
+                    ['style', ['bold', 'italic', 'underline', 'clear']],
+                    ['font', ['strikethrough']],
+                    ['fontsize', ['fontsize']]
+                ],
+                onfocus: function() {
+                    grid.preventEnter = true;
+                },
+                onblur: function() {
+                    grid.preventEnter = false;
+                },
+                onkeydown: function(e) {
+                    if (e.keyCode === 9) {
+                        e.stopImmediatePropagation();
+                    }
+                }
+            });
+
+            $(".summertime-wrapper", this.editor).code(val);
+        }
+    });
+
 })(jQuery);

@@ -76,13 +76,9 @@ module.exports = function (grunt) {
             }
         },
         watch: {
-            gruntfile: {
-                files: '<%= jshint.gruntfile.src %>',
-                tasks: ['jshint:gruntfile']
-            },
-            jasmine: {
-                files: ['src/*.js', 'test/*.js'],
-                tasks: ['jasmine']
+            preprocess: {
+                files: ['src/examples/*.html'],
+                tasks: ['preprocess']
             }
         },
         preprocess: {
