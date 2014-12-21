@@ -26,7 +26,7 @@ $(function () {
         {name: "created_at", type: "string", editor: "DateEditor"},
         {name: "author", type: "string", editor: "SelectEditor", editorProps: authors},
         {name: "body", type: "string", editor: "TextareaEditor"},
-		{name: "status", type: "string", editor: "DisabledEditor"},
+		{name: "status", type: "string", editor: "SelectEditor", editorProps: statuses},
 		{name: "title", type: "string"},
 		{name: "count", type: "string"}
 	];
@@ -41,7 +41,7 @@ $(function () {
     grid.registerEditor(TextareaEditor);
     grid.registerEditor(SelectEditor);
     grid.registerEditor(DateEditor);
-    grid.registerEditor(DisabledEditor);
+    //grid.registerEditor(DisabledEditor);
 
     // example listeners on grid events
     grid.events.on("editor:save", function (data, $cell) {
