@@ -81,6 +81,9 @@
             if (plugin.$prevRow.index() !== $(this).parent("tr").index()) {
                 plugin.events.trigger("row:select", $(this).parent("tr"));
                 if (plugin.$prevRow.hasClass("sensei-grid-dirty-row") && plugin.isEditing) {
+                    // save editor while keeping it open before trigger row:save event
+                    // otherwise the value is not present in row data
+                    plugin.saveEditor(true);
                     plugin.events.trigger("row:save", plugin.getRowData(plugin.$prevRow), plugin.$prevRow, "row:select");
                 }
             }
@@ -494,7 +497,7 @@
             }
         };
 
-        plugin.saveEditor = function () {
+        plugin.saveEditor = function (keepEditor) {
 
             // save editor if is active
             if (plugin.isEditing) {
@@ -522,8 +525,10 @@
                 }
             }
 
-            // hide editor
-            plugin.getEditor().hide();
+            // hide editor if needed
+            if (!keepEditor) {
+                plugin.getEditor().hide();
+            }
         };
 
         plugin.assureEmptyRow = function () {
