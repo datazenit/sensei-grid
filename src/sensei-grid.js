@@ -1,10 +1,10 @@
 (function ($) {
 
-    // @TODO need to refactor event model. For example, avoid forced focus on grid, 
-    // just set a mode (active/inactive) instead. 
+    // @TODO need to refactor event model. For example, avoid forced focus on grid,
+    // just set a mode (active/inactive) instead.
     // key events should be global not specific to sensei grid, thus no focus would be needed
     // on sensei grid for them to work.
-    // current event model and forced focus causes grid to get scrolled in area 
+    // current event model and forced focus causes grid to get scrolled in area
     // when editor moves/closes which is unnecessary
 
     $.fn.grid = function (data, columns, options) {
@@ -47,7 +47,7 @@
         var redraw = function ($el) {
             var el = $el.get(0);
             var d = el.style.display;
-            
+
             // actual code that will force redraw of element
             el.style.display = "none";
             el.offsetHeight; // jshint ignore:line
@@ -72,6 +72,7 @@
             $(this).parent("tr").addClass("activeRow");
 
             // redraw element to fix border style in firefox
+            // this should be called only for firefox, can cause performance issues on large grids
             redraw($(this).parent("tr"));
 
             // trigger cell:select event
@@ -526,8 +527,8 @@
         };
 
         plugin.assureEmptyRow = function () {
-            if (plugin.config["emptyRow"] && plugin.$el.find("table>tbody>tr.sensei-grid-empty-row").length === 0) {
-                var $tbody = plugin.$el.find("table>tbody");
+            if (plugin.config["emptyRow"] && plugin.$el.find(">table>tbody>tr.sensei-grid-empty-row").length === 0) {
+                var $tbody = plugin.$el.find(">table>tbody");
                 var $row = plugin.renderRow(null, false);
                 $tbody.append($row);
             }
@@ -562,7 +563,7 @@
         plugin.moveEditor = function () {
             if (plugin.isEditing) {
                 plugin.showEditor();
-                plugin.editCell(); // previously editCell was called with plugin.getActiveCell
+                plugin.editCell();
             }
         };
 
@@ -703,7 +704,7 @@
                 $(th).data("editor", column.editor || "BasicEditor");
 
                 if (column.editorProps) {
-                    plugin.editorProps[column.name] = column.editorProps;                    
+                    plugin.editorProps[column.name] = column.editorProps;
                 }
 
                 tr.appendChild(th);
