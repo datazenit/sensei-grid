@@ -7,6 +7,9 @@
     // current event model and forced focus causes grid to get scrolled in area
     // when editor moves/closes which is unnecessary
 
+
+    edits = [];
+
     $.fn.grid = function (data, columns, options) {
 
         var plugin = this,
@@ -556,6 +559,12 @@
                 }
             }
 
+            // checks to see if any edits were made to the text
+            if(edits[0].value == plugin.getCellData(plugin.getActiveCell())) {
+                // removes the last element from the array if no changes were made
+                edits.splice(-1,1)
+            }
+
             // need to regain focus
             if (plugin.isEditing) {
                 $td.setActiveCell();
@@ -594,6 +603,16 @@
             var column = $td.data("column");
             var value = $td.text();
             plugin.activeEditor.setValue(value);
+
+            // stores the original content and records the cell row and column
+            var edit = {
+                "value": value,
+                "row": plugin.getRowData(plugin.getCellRow($td))["id"],
+                "column": $td.index()
+            };
+
+            // adds the edit to the end of the array
+            edits.push(edit);
 
             // trigger editor:load event
             var data = {};
