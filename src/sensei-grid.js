@@ -168,7 +168,11 @@
         };
 
         plugin.getLastEdit = function () {
-            return plugin.edits[0];
+            if(plugin.edits[0]){
+                return plugin.edits[plugin.edits.length - 1];
+            } else {
+                return [];
+            }
         }
 
         plugin.bindEvents = function () {
@@ -573,7 +577,6 @@
                 // removes the last element from the array if no changes were made
                 plugin.removeLastEdit();
             }
-            console.log(plugin.edits);
 
             // need to regain focus
             if (plugin.isEditing) {
@@ -637,7 +640,7 @@
             var preventDefault = true;
 
             // all keyCodes that will be used
-            var codes = [8, 9, 13, 27, 37, 38, 39, 40];
+            var codes = [8, 9, 13, 27, 37, 38, 39, 40, 90];
 
             // specific keyCodes that won't be hijacked from the editor
             var editorCodes = [8, 37, 38, 39, 40];
@@ -699,6 +702,20 @@
                 case 8: // backspace
                     plugin.clearActiveCell();
                     break;
+
+                case 90: // undo
+                    if (e.ctrlKey) {
+                        var edit = plugin.getLastEdit();
+
+                        if (('row' in edit) && ('column' in edit)) {
+                            var element = plugin.getRowCellsByIndex(edit.row - 1)[edit.column]
+                            
+                            element.innerHTML = '<div>' + edit.value + '</div>';
+
+                            plugin.removeLastEdit(edit);
+                            
+                        }
+                    }
             }
 
             if (preventDefault) {
