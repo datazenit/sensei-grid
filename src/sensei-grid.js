@@ -708,12 +708,20 @@
                         var edit = plugin.getLastEdit();
 
                         if (('row' in edit) && ('column' in edit)) {
-                            var element = plugin.getRowCellsByIndex(edit.row - 1)[edit.column]
-                            
-                            element.innerHTML = '<div>' + edit.value + '</div>';
 
+                            var row = plugin.getRowByIndex(edit.row - 1);
+                            var element = plugin.getCellFromRowByIndex(row, edit.column);
+
+                            // set value from editor to the active cell
+                            element.html($("<div>").text(edit.value));
+ 
+                            // trigger editor:save event
+                            var data = {};
+                            data[element.data("column")] = edit.value;
+                            plugin.events.trigger("editor:save", data, element);
+
+                            // remove the last edit
                             plugin.removeLastEdit(edit);
-                            
                         }
                     }
             }
