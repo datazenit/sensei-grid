@@ -188,6 +188,7 @@
         plugin.undo = function () {
             if (plugin.editPointer < 0) {
                 return [];
+                
             } else {
                 var edit = plugin.edits[plugin.editPointer];
                 plugin.editPointer -= 1;
@@ -738,7 +739,7 @@
                         }
                     }
                     break;
-                case 89: //redo
+                case 89: // redo
                     if (e.ctrlKey) {
                         var edit = plugin.redo();
 
