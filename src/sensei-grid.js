@@ -720,7 +720,7 @@
                     break;
 
                 case 90: // undo
-                    if (e.ctrlKey) {
+                    if (e.ctrlKey || e.metaKey) {
                         var edit = plugin.undo();
 
                         if (('row' in edit) && ('column' in edit)) {
@@ -740,7 +740,7 @@
                     }
                     break;
                 case 89: // redo
-                    if (e.ctrlKey) {
+                    if (e.ctrlKey || e.metaKey) {
                         var edit = plugin.redo();
 
                         if (('row' in edit) && ('column' in edit)) {
