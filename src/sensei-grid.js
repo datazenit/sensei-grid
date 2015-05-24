@@ -159,6 +159,43 @@
             plugin.$el.remove();
         };
 
+        plugin.addEdit = function (edit){
+            // the pointer is at the last element in the edits array; push and exit
+            if (plugin.editPoiter == plugin.edits.length - 1) {
+                plugin.editPointer += 1;
+                plugin.edits.push(edit);
+
+            } else {
+                // the pointer is not at the end; an undo occured, so changes after this must be erased
+                plugin.editPointer += 1;
+
+                // remove the nth element; parameter takes a position, not an index
+                plugin.edits.splice(plugin.editPointer);
+                plugin.edits.push(edit);
+            }
+        };
+
+        plugin.redo = function (){
+            if (plugin.editPointer + 1 >= plugin.edits.length) {
+                return [];
+
+            } else {
+                plugin.editPointer += 1;
+                return plugin.edits[plugin.editPointer];
+            }
+        };
+
+        plugin.undo = function () {
+            if (plugin.editPointer < 0) {
+                return [];
+                
+            } else {
+                var edit = plugin.edits[plugin.editPointer];
+                plugin.editPointer -= 1;
+                return edit;
+            }
+        }
+
         plugin.bindEvents = function () {
             // unbind previous events
             plugin.unbindEvents();
@@ -507,6 +544,17 @@
 
                 if (normalizeLineEndings(val) !== normalizeLineEndings($td.text())) {
 
+                    // stores the original content and records the cell row and column
+                    var edit = {
+                        "previousState": plugin.getCellData($td),
+                        "currentState": val,
+                        "row": plugin.getRowData(plugin.getCellRow($td))["id"],
+                        "column": $td.index()
+                    };
+
+                    // save the state prior to edit
+                    plugin.addEdit(edit);
+
                     // set value from editor to the active cell
                     $td.html($("<div>").text(val));
 
@@ -608,7 +656,7 @@
             var preventDefault = true;
 
             // all keyCodes that will be used
-            var codes = [8, 9, 13, 27, 37, 38, 39, 40];
+            var codes = [8, 9, 13, 27, 37, 38, 39, 40, 90, 89];
 
             // specific keyCodes that won't be hijacked from the editor
             var editorCodes = [8, 37, 38, 39, 40];
@@ -669,6 +717,47 @@
                     break;
                 case 8: // backspace
                     plugin.clearActiveCell();
+                    break;
+
+                case 90: // undo
+                    if (e.ctrlKey || e.metaKey) {
+                        var edit = plugin.undo();
+
+                        if (('row' in edit) && ('column' in edit)) {
+
+                            var row = plugin.getRowByIndex(edit.row - 1);
+                            var element = plugin.getCellFromRowByIndex(row, edit.column);
+
+                            // set value from editor to the active cell
+                            element.html($("<div>").text(edit.previousState));
+ 
+                            // trigger editor:save event
+                            var data = {};
+                            data[element.data("column")] = edit.previousState;
+                            plugin.events.trigger("editor:save", data, element);
+
+                        }
+                    }
+                    break;
+                case 89: // redo
+                    if (e.ctrlKey || e.metaKey) {
+                        var edit = plugin.redo();
+
+                        if (('row' in edit) && ('column' in edit)) {
+
+                            var row = plugin.getRowByIndex(edit.row - 1);
+                            var element = plugin.getCellFromRowByIndex(row, edit.column);
+
+                            // set value from editor to the active cell
+                            element.html($("<div>").text(edit.currentState));
+ 
+                            // trigger editor:save event
+                            var data = {};
+                            data[element.data("column")] = edit.currentState;
+                            plugin.events.trigger("editor:save", data, element);
+
+                        }
+                    }
                     break;
             }
 
@@ -780,6 +869,8 @@
             plugin.columns = columns;
             plugin.$el = $(this);
             plugin.editors = {};
+            plugin.edits = [];
+            plugin.editPointer = -1;
             return plugin;
         };
 
