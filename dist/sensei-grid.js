@@ -1,15 +1,15 @@
 /**
  * sensei-grid v0.3.4
- * Copyright (c) 2014 Lauris Dzilums <lauris@discuss.lv>
+ * Copyright (c) 2015 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
 (function ($) {
 
-    // @TODO need to refactor event model. For example, avoid forced focus on grid, 
-    // just set a mode (active/inactive) instead. 
+    // @TODO need to refactor event model. For example, avoid forced focus on grid,
+    // just set a mode (active/inactive) instead.
     // key events should be global not specific to sensei grid, thus no focus would be needed
     // on sensei grid for them to work.
-    // current event model and forced focus causes grid to get scrolled in area 
+    // current event model and forced focus causes grid to get scrolled in area
     // when editor moves/closes which is unnecessary
 
     $.fn.grid = function (data, columns, options) {
@@ -52,7 +52,7 @@
         var redraw = function ($el) {
             var el = $el.get(0);
             var d = el.style.display;
-            
+
             // actual code that will force redraw of element
             el.style.display = "none";
             el.offsetHeight; // jshint ignore:line
@@ -69,6 +69,7 @@
         };
 
         $.fn.setActiveCell = function () {
+
             plugin.$prevRow = $("tr>.activeCell", plugin.$el).parent("tr");
             plugin.$prevRow.removeClass("activeRow");
 
@@ -77,6 +78,7 @@
             $(this).parent("tr").addClass("activeRow");
 
             // redraw element to fix border style in firefox
+            // this should be called only for firefox, can cause performance issues on large grids
             redraw($(this).parent("tr"));
 
             // trigger cell:select event
@@ -85,6 +87,9 @@
             if (plugin.$prevRow.index() !== $(this).parent("tr").index()) {
                 plugin.events.trigger("row:select", $(this).parent("tr"));
                 if (plugin.$prevRow.hasClass("sensei-grid-dirty-row") && plugin.isEditing) {
+                    // save editor while keeping it open before trigger row:save event
+                    // otherwise the value is not present in row data
+                    plugin.saveEditor(true);
                     plugin.events.trigger("row:save", plugin.getRowData(plugin.$prevRow), plugin.$prevRow, "row:select");
                 }
             }
@@ -140,6 +145,11 @@
             plugin.editors[instance.name] = instance;
         };
 
+        plugin.registerRowAction = function (RowAction) {
+            var instance = new RowAction(plugin);
+            plugin.rowActions[instance.name] = instance;
+        };
+
         plugin.render = function () {
             plugin.renderBaseTable();
             plugin.renderColumns();
@@ -152,12 +162,56 @@
                 editor.getElement().hide();
             });
 
+            // render row actions
+            _.each(plugin.rowActions, function (rowAction) {
+                rowAction.initialize();
+                rowAction.render();
+                rowAction.getElement().hide();
+            });
+
             plugin.bindEvents();
         };
 
         plugin.destroy = function () {
             plugin.unbindEvents();
             plugin.$el.remove();
+        };
+
+        plugin.addEdit = function (edit){
+            // the pointer is at the last element in the edits array; push and exit
+            if (plugin.editPointer === plugin.edits.length - 1) {
+                plugin.editPointer += 1;
+                plugin.edits.push(edit);
+
+            } else {
+                // the pointer is not at the end; an undo occured, so changes after this must be erased
+                plugin.editPointer += 1;
+
+                // remove the nth element; parameter takes a position, not an index
+                plugin.edits.splice(plugin.editPointer);
+                plugin.edits.push(edit);
+            }
+        };
+
+        plugin.redo = function (){
+            if (plugin.editPointer + 1 >= plugin.edits.length) {
+                return [];
+
+            } else {
+                plugin.editPointer += 1;
+                return plugin.edits[plugin.editPointer];
+            }
+        };
+
+        plugin.undo = function () {
+            if (plugin.editPointer < 0) {
+                return [];
+                
+            } else {
+                var edit = plugin.edits[plugin.editPointer];
+                plugin.editPointer -= 1;
+                return edit;
+            }
         };
 
         plugin.bindEvents = function () {
@@ -379,6 +433,36 @@
             plugin.events.trigger("cell:clear", oldValue, $td);
         };
 
+        /**
+         * Remove currently active row and trigger event
+         */
+        plugin.removeActiveRow = function () {
+
+            // get active cell
+            var $cell = plugin.getActiveCell();
+
+            // can't remove a row if there is no active cell
+            if (!$cell) {
+                return false;
+            }
+
+            // get row element
+            var $row = plugin.getCellRow($cell);
+
+            // get row data for event
+            var data = plugin.getRowData($row);
+
+            // remove row
+            $row.remove();
+
+            // trigger row:remove event
+            // could be used to persist changes in db
+            plugin.events.trigger("row:remove", $row, data);
+
+            // return status
+            return true;
+        };
+
         plugin.moveRight = function () {
 
             var $td = plugin.getActiveCell();
@@ -498,7 +582,7 @@
             }
         };
 
-        plugin.saveEditor = function () {
+        plugin.saveEditor = function (keepEditor) {
 
             // save editor if is active
             if (plugin.isEditing) {
@@ -507,6 +591,17 @@
                 var val = plugin.activeEditor.getValue();
 
                 if (normalizeLineEndings(val) !== normalizeLineEndings($td.text())) {
+
+                    // stores the original content and records the cell row and column
+                    var edit = {
+                        "previousState": plugin.getCellData($td),
+                        "currentState": val,
+                        "row": plugin.getRowData(plugin.getCellRow($td))["id"],
+                        "column": $td.index()
+                    };
+
+                    // save the state prior to edit
+                    plugin.addEdit(edit);
 
                     // set value from editor to the active cell
                     $td.html($("<div>").text(val));
@@ -526,13 +621,15 @@
                 }
             }
 
-            // hide editor
-            plugin.getEditor().hide();
+            // hide editor if needed
+            if (!keepEditor) {
+                plugin.getEditor().hide();
+            }
         };
 
         plugin.assureEmptyRow = function () {
-            if (plugin.config["emptyRow"] && plugin.$el.find("table>tbody>tr.sensei-grid-empty-row").length === 0) {
-                var $tbody = plugin.$el.find("table>tbody");
+            if (plugin.config["emptyRow"] && plugin.$el.find(">table>tbody>tr.sensei-grid-empty-row").length === 0) {
+                var $tbody = plugin.$el.find(">table>tbody");
                 var $row = plugin.renderRow(null, false);
                 $tbody.append($row);
             }
@@ -567,7 +664,7 @@
         plugin.moveEditor = function () {
             if (plugin.isEditing) {
                 plugin.showEditor();
-                plugin.editCell(); // previously editCell was called with plugin.getActiveCell
+                plugin.editCell();
             }
         };
 
@@ -607,7 +704,7 @@
             var preventDefault = true;
 
             // all keyCodes that will be used
-            var codes = [8, 9, 13, 27, 37, 38, 39, 40];
+            var codes = [8, 9, 13, 27, 37, 38, 39, 40, 90, 89];
 
             // specific keyCodes that won't be hijacked from the editor
             var editorCodes = [8, 37, 38, 39, 40];
@@ -667,7 +764,51 @@
                     }
                     break;
                 case 8: // backspace
-                    plugin.clearActiveCell();
+                    if (e.ctrlKey || e.metaKey) {
+                        plugin.removeActiveRow();
+                    } else {
+                        plugin.clearActiveCell();
+                    }
+                    break;
+                case 90: // undo
+                    if (e.ctrlKey || e.metaKey) {
+                        var edit = plugin.undo();
+
+                        if (('row' in edit) && ('column' in edit)) {
+
+                            var row = plugin.getRowByIndex(edit.row - 1);
+                            var element = plugin.getCellFromRowByIndex(row, edit.column);
+
+                            // set value from editor to the active cell
+                            element.html($("<div>").text(edit.previousState));
+ 
+                            // trigger editor:save event
+                            var data = {};
+                            data[element.data("column")] = edit.previousState;
+                            plugin.events.trigger("editor:save", data, element);
+
+                        }
+                    }
+                    break;
+                case 89: // redo
+                    if (e.ctrlKey || e.metaKey) {
+                        var redo = plugin.redo();
+
+                        if (('row' in redo) && ('column' in redo)) {
+
+                            var currentRow = plugin.getRowByIndex(redo.row - 1);
+                            var currentEl = plugin.getCellFromRowByIndex(currentRow, redo.column);
+
+                            // set value from editor to the active cell
+                            currentEl.html($("<div>").text(redo.currentState));
+ 
+                            // trigger editor:save event
+                            var localData = {};
+                            localData[currentEl.data("column")] = redo.currentState;
+                            plugin.events.trigger("editor:save", localData, currentEl);
+
+                        }
+                    }
                     break;
             }
 
@@ -708,7 +849,7 @@
                 $(th).data("editor", column.editor || "BasicEditor");
 
                 if (column.editorProps) {
-                    plugin.editorProps[column.name] = column.editorProps;                    
+                    plugin.editorProps[column.name] = column.editorProps;
                 }
 
                 tr.appendChild(th);
@@ -779,6 +920,9 @@
             plugin.columns = columns;
             plugin.$el = $(this);
             plugin.editors = {};
+            plugin.rowActions = {};
+            plugin.edits = [];
+            plugin.editPointer = -1;
             return plugin;
         };
 

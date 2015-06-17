@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../lib/summernote/dist/summernote.css"/>
 
     <!-- Sensei Grid CSS -->
-    <link rel="stylesheet" type="text/css" href="../src/css/sensei-grid.css?v=20150617112816"/>
+    <link rel="stylesheet" type="text/css" href="../src/css/sensei-grid.css?v=20150617035447"/>
 
     <!-- JS dependencies -->
     <script src="../lib/jquery/dist/jquery.min.js"></script>
@@ -25,10 +25,10 @@
     <script src="../lib/summernote/dist/summernote.js"></script>
 
     <!-- Sensei Grid JS -->
-    <script src="../src/sensei-grid.js?v=20150617112816"></script>
-    <script src="../src/sensei-editors.js?v=20150617112816"></script>
-    <script src="../src/sensei-row-actions.js?v=20150617112816"></script>
-    <script src="example.js?v=20150617112816"></script>
+    <script src="../src/sensei-grid.js?v=20150617035447"></script>
+    <script src="../src/sensei-editors.js?v=20150617035447"></script>
+    <script src="../src/sensei-row-actions.js?v=20150617035447"></script>
+    <script src="example.js?v=20150617035447"></script>
 
     <!-- Custom CSS for this example -->
     <style type="text/css">
@@ -68,7 +68,7 @@
         </thead>
         <tbody>
         <tr>
-            <td style="width:250px"><code>left, right, up, down</code></td>
+            <td style="width:320px"><code>left, right, up, down</code></td>
             <td>move active cell</td>
         </tr>
         <tr>
@@ -83,6 +83,18 @@
             <td><code>backspace</code></td>
             <td>clear contents of active cell</td>
         </tr>
+        <tr>
+            <td><code>ctrl + backspace</code> or <code>⌘ + backspace</code></td>
+            <td>remove row</td>
+        </tr>
+        <tr>
+            <td><code>ctrl + z</code> or <code>⌘ + z</code></td>
+            <td>undo</td>
+        </tr>
+        <tr>
+            <td><code>ctrl + y</code> or <code>⌘ + y</code></td>
+            <td>redo</td>
+        </tr>
         </tbody>
     </table>
 
@@ -94,7 +106,7 @@
         </thead>
         <tbody>
         <tr>
-            <td style="width:250px"><code>ctrl + enter</code></td>
+            <td style="width:320px"><code>ctrl + enter</code></td>
             <td>move editor down</td>
         </tr>
         <tr>
@@ -116,14 +128,6 @@
         <tr>
             <td><code>esc</code></td>
             <td>exit editor without saving</td>
-        </tr>
-        <tr>
-            <td><code>ctrl + z</code> or <code>⌘ + z</code></td>
-            <td>undo</td>
-        </tr>
-        <tr>
-            <td><code>ctrl + y</code> or <code>⌘ + y</code></td>
-            <td>redo</td>
         </tr>
         </tbody>
     </table>

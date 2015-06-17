@@ -62,8 +62,8 @@
     		if (!this.$el) {
     			var className = "sensei-grid-row-action sensei-grid-basic-row-actions";
     			var $el = $("<div>").addClass(className);
-    			$el.append($("<a>").addClass("btn btn-default btn-xs").text("Delete"))
-    			$el.append($("<a>").addClass("btn btn-default btn-xs").text("Duplicate"))
+    			$el.append($("<a>").addClass("btn btn-default btn-xs").text("Delete"));
+    			$el.append($("<a>").addClass("btn btn-default btn-xs").text("Duplicate"));
     			this.$el = $el;
     			this.grid.$el.append(this.$el);
     		}

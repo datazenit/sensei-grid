@@ -428,6 +428,36 @@
             plugin.events.trigger("cell:clear", oldValue, $td);
         };
 
+        /**
+         * Remove currently active row and trigger event
+         */
+        plugin.removeActiveRow = function () {
+
+            // get active cell
+            var $cell = plugin.getActiveCell();
+
+            // can't remove a row if there is no active cell
+            if (!$cell) {
+                return false;
+            }
+
+            // get row element
+            var $row = plugin.getCellRow($cell);
+
+            // get row data for event
+            var data = plugin.getRowData($row);
+
+            // remove row
+            $row.remove();
+
+            // trigger row:remove event
+            // could be used to persist changes in db
+            plugin.events.trigger("row:remove", $row, data);
+
+            // return status
+            return true;
+        };
+
         plugin.moveRight = function () {
 
             var $td = plugin.getActiveCell();
@@ -729,9 +759,12 @@
                     }
                     break;
                 case 8: // backspace
-                    plugin.clearActiveCell();
+                    if (e.ctrlKey || e.metaKey) {
+                        plugin.removeActiveRow();
+                    } else {
+                        plugin.clearActiveCell();
+                    }
                     break;
-
                 case 90: // undo
                     if (e.ctrlKey || e.metaKey) {
                         var edit = plugin.undo();
