@@ -64,6 +64,7 @@
         };
 
         $.fn.setActiveCell = function () {
+
             plugin.$prevRow = $("tr>.activeCell", plugin.$el).parent("tr");
             plugin.$prevRow.removeClass("activeRow");
 
@@ -137,6 +138,11 @@
         plugin.registerEditor = function (Editor) {
             var instance = new Editor(plugin);
             plugin.editors[instance.name] = instance;
+        };
+
+        plugin.registerRowAction = function (RowAction) {
+            var instance = new RowAction(plugin);
+            plugin.rowActions[instance.name] = instance;
         };
 
         plugin.render = function () {
@@ -869,6 +875,7 @@
             plugin.columns = columns;
             plugin.$el = $(this);
             plugin.editors = {};
+            plugin.rowActions = {};
             plugin.edits = [];
             plugin.editPointer = -1;
             return plugin;
