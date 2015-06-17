@@ -446,6 +446,9 @@
                 return false;
             }
 
+            // select another row
+            plugin.moveDown();
+
             // get row element
             var $row = plugin.getCellRow($cell);
 
