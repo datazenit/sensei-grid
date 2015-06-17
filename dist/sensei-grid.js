@@ -446,11 +446,16 @@
                 return false;
             }
 
-            // select another row
-            plugin.moveDown();
-
             // get row element
             var $row = plugin.getCellRow($cell);
+
+            // avoid removing empty row
+            if ($row.hasClass("sensei-grid-empty-row")) {
+                return false;
+            }
+
+            // select another row
+            plugin.moveDown();
 
             // get row data for event
             var data = plugin.getRowData($row);
