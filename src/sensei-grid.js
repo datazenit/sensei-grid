@@ -410,6 +410,11 @@
             $row.find(">td").data("saved", true);
         };
 
+        plugin.setRowDirty = function ($row) {
+            $row.addClass("sensei-grid-dirty-row").removeClass("sensei-grid-empty-row");
+            $row.find(">td").data("saved", false);
+        };
+
         plugin.deactivateCell = function () {
             var $td = plugin.getActiveCell();
             $td.removeClass("activeCell");
@@ -449,6 +454,7 @@
                 return false;
             }
 
+
             // select another row
             plugin.moveDown();
 
@@ -461,6 +467,43 @@
             // trigger row:remove event
             // could be used to persist changes in db
             plugin.events.trigger("row:remove", $row, data);
+
+            // return status
+            return true;
+        };
+
+        plugin.duplicateActiveRow = function () {
+
+            // get active cell
+            var $cell = plugin.getActiveCell();
+
+            // can't remove a row if there is no active cell
+            if (!$cell) {
+                return false;
+            }
+
+            // get row element
+            var $row = plugin.getCellRow($cell);
+
+            // avoid removing empty row
+            if ($row.hasClass("sensei-grid-empty-row")) {
+                return false;
+            }
+
+            // get current row data
+            var data = plugin.getRowData($row);
+
+            // duplicate current row
+            var $newRow = $(plugin.renderRow(data, false, true));
+
+            // insert row below current one
+            $newRow.insertAfter($row);
+
+            // move focus down
+            plugin.moveDown();
+
+            // trigger row:duplicate event
+            plugin.events.trigger("row:duplicate", $newRow);
 
             // return status
             return true;
@@ -707,10 +750,10 @@
             var preventDefault = true;
 
             // all keyCodes that will be used
-            var codes = [8, 9, 13, 27, 37, 38, 39, 40, 90, 89];
+            var codes = [8, 9, 13, 27, 37, 38, 39, 40, 90, 89, 68];
 
             // specific keyCodes that won't be hijacked from the editor
-            var editorCodes = [8, 37, 38, 39, 40];
+            var editorCodes = [8, 37, 38, 39, 40, 68];
 
             if ((plugin.getActiveCell().length === 0 && !plugin.isEditing) || !_.contains(codes, e.which)) {
                 return;
@@ -813,6 +856,11 @@
                         }
                     }
                     break;
+                case 68: // keypress "d" duplicate row
+                    if (e.ctrlKey || e.shiftKey) {
+                        plugin.duplicateActiveRow();
+                    }
+                    break;
             }
 
             if (preventDefault) {
@@ -878,11 +926,15 @@
             }
         };
 
-        plugin.renderRow = function (item, saved) {
+        plugin.renderRow = function (item, saved, dirty) {
             var tr = document.createElement("tr");
 
             if (!saved) {
                 tr.className = "sensei-grid-empty-row";
+            }
+
+            if (dirty) {
+                tr.className = "sensei-grid-dirty-row";
             }
 
             _.each(plugin.columns, function (column) {
