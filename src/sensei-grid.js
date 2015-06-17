@@ -157,6 +157,13 @@
                 editor.getElement().hide();
             });
 
+            // render row actions
+            _.each(plugin.rowActions, function (rowAction) {
+                rowAction.initialize();
+                rowAction.render();
+                rowAction.getElement().hide();
+            });
+
             plugin.bindEvents();
         };
 

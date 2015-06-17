@@ -101,3 +101,16 @@
     right: 7px;
     top: 13px;
 }
+
+.sensei-grid-basic-row-actions {
+    position: absolute;
+    right: 0;
+    width: auto;
+    background: white;
+    /*border: 1px solid #ccc;*/
+    margin-left: 5px;   
+}
+
+.sensei-grid-basic-row-actions .btn {
+    margin-right: 2px;
+}

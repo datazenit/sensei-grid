@@ -44,7 +44,7 @@ $(function () {
     //grid.registerEditor(DisabledEditor);
 
     // register row actions
-    grid.registerRowAction(BasicRowActions);
+    // grid.registerRowAction(BasicRowActions);
 
     // example listeners on grid events
     grid.events.on("editor:save", function (data, $cell) {
