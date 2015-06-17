@@ -31,8 +31,8 @@
         name: "BasicRowActions",
         render: function () {
             if (!this.el) {
-                this.el = document.createElement("div");
-                this.el.className = "sensei-grid-row-action sensei-grid-basic-row-actions";
+            	var className = "sensei-grid-row-action sensei-grid-basic-row-actions";
+                this.el = $("<div>").addClass(className);
                 this.grid.$el.append(this.el);
             }
         }
