@@ -167,7 +167,7 @@
 
         plugin.addEdit = function (edit){
             // the pointer is at the last element in the edits array; push and exit
-            if (plugin.editPointer == plugin.edits.length - 1) {
+            if (plugin.editPointer === plugin.edits.length - 1) {
                 plugin.editPointer += 1;
                 plugin.edits.push(edit);
 
@@ -200,7 +200,7 @@
                 plugin.editPointer -= 1;
                 return edit;
             }
-        }
+        };
 
         plugin.bindEvents = function () {
             // unbind previous events
@@ -747,20 +747,20 @@
                     break;
                 case 89: // redo
                     if (e.ctrlKey || e.metaKey) {
-                        var edit = plugin.redo();
+                        var redo = plugin.redo();
 
-                        if (('row' in edit) && ('column' in edit)) {
+                        if (('row' in redo) && ('column' in redo)) {
 
-                            var row = plugin.getRowByIndex(edit.row - 1);
-                            var element = plugin.getCellFromRowByIndex(row, edit.column);
+                            var currentRow = plugin.getRowByIndex(redo.row - 1);
+                            var currentEl = plugin.getCellFromRowByIndex(currentRow, redo.column);
 
                             // set value from editor to the active cell
-                            element.html($("<div>").text(edit.currentState));
+                            currentEl.html($("<div>").text(redo.currentState));
  
                             // trigger editor:save event
-                            var data = {};
-                            data[element.data("column")] = edit.currentState;
-                            plugin.events.trigger("editor:save", data, element);
+                            var localData = {};
+                            localData[currentEl.data("column")] = redo.currentState;
+                            plugin.events.trigger("editor:save", localData, currentEl);
 
                         }
                     }
