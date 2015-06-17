@@ -167,7 +167,7 @@
 
         plugin.addEdit = function (edit){
             // the pointer is at the last element in the edits array; push and exit
-            if (plugin.editPoiter == plugin.edits.length - 1) {
+            if (plugin.editPointer == plugin.edits.length - 1) {
                 plugin.editPointer += 1;
                 plugin.edits.push(edit);
 
