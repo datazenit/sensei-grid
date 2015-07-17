@@ -942,7 +942,11 @@
                 var div = document.createElement("div");
 
                 if (_.has(item, column.name)) {
-                    $(div).text(item[column.name]);
+                    if (column.allowHTML && column.allowHTML === true) {
+                        $(div).html(item[column.name]);
+                    } else {
+                        $(div).text(item[column.name]);
+                    }
                 }
 
                 $(td).data("column", column.name);

@@ -58,7 +58,26 @@
         </p>
     </div>
 
-    <div class="sensei-grid"></div>
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#defaultdemo" role="tab" data-toggle="tab">Full Demo</a></li>
+        <li><a href="#htmldemo" role="tab" data-toggle="tab">HTML in Grid Demo</a></li>
+    </ul>
+    <br>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="defaultdemo">
+            <div class="sensei-grid sensei-grid-default"></div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="htmldemo">
+            <div class="sensei-grid sensei-grid-html"></div>
+            <div class="alert alert-info">HTML can be allowed in cells by setting <code>allowHTML: true</code> in column definition object.</div>
+        </div>
+    </div>
+
+</div>
 
     <table class="table">
         <thead>

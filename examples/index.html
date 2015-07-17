@@ -14,7 +14,7 @@
     <link rel="stylesheet" type="text/css" href="../lib/summernote/dist/summernote.css"/>
 
     <!-- Sensei Grid CSS -->
-    <link rel="stylesheet" type="text/css" href="../src/css/sensei-grid.css?v=20150717023616"/>
+    <link rel="stylesheet" type="text/css" href="../src/css/sensei-grid.css?v=20150717025831"/>
 
     <!-- JS dependencies -->
     <script src="../lib/jquery/dist/jquery.min.js"></script>
@@ -25,10 +25,10 @@
     <script src="../lib/summernote/dist/summernote.js"></script>
 
     <!-- Sensei Grid JS -->
-    <script src="../src/sensei-grid.js?v=20150717023616"></script>
-    <script src="../src/sensei-editors.js?v=20150717023616"></script>
-    <script src="../src/sensei-row-actions.js?v=20150717023616"></script>
-    <script src="example.js?v=20150717023616"></script>
+    <script src="../src/sensei-grid.js?v=20150717025831"></script>
+    <script src="../src/sensei-editors.js?v=20150717025831"></script>
+    <script src="../src/sensei-row-actions.js?v=20150717025831"></script>
+    <script src="example.js?v=20150717025831"></script>
 
     <!-- Custom CSS for this example -->
     <style type="text/css">
@@ -58,7 +58,26 @@
         </p>
     </div>
 
-    <div class="sensei-grid"></div>
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="active"><a href="#defaultdemo" role="tab" data-toggle="tab">Full Demo</a></li>
+        <li><a href="#htmldemo" role="tab" data-toggle="tab">HTML in Grid Demo</a></li>
+    </ul>
+    <br>
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="defaultdemo">
+            <div class="sensei-grid sensei-grid-default"></div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="htmldemo">
+            <div class="sensei-grid sensei-grid-html"></div>
+            <div class="alert alert-info">HTML can be allowed in cells by setting <code>allowHTML: true</code> in column definition object.</div>
+        </div>
+    </div>
+
+</div>
 
     <table class="table">
         <thead>

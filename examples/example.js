@@ -33,7 +33,7 @@ $(function () {
 
     // initialize grid
     var options = {emptyRow: true, sortable: false};
-	var grid = $(".sensei-grid").grid(data, columns, options);
+	var grid = $(".sensei-grid-default").grid(data, columns, options);
 
     // register editors that are bundled with sensei grid
     grid.registerEditor(BasicEditor);
@@ -88,4 +88,32 @@ $(function () {
     console.groupEnd();
 
     window.grid = grid;
+
+    // html demo
+
+    // generate data
+    var data2 = [];
+    for (var i = 0; i < 6; ++i) {
+        data2.push({
+            "id": i + 1,
+            "body": "The <mark>quick, brown</mark> fox <b>jumps</b> over a <em>lazy</em> <u>dog</u>.",
+            "title": function () {
+                var num = Math.round(Math.random() * 1000);
+                if (num > 500) {
+                    return "<span style='color:green'>Test " + num + "</span>";
+                } else {
+                    return "<span style='color:red'>Test " + num + "</span>";
+                }
+            }
+        });
+    }
+
+    var columns2 = [
+        {name: "id", type: "int"},
+        {name: "body", type: "string", editor: "TextareaEditor", allowHTML: true},
+        {name: "title", type: "string", allowHTML: true}
+    ];
+
+    var grid2 = $(".sensei-grid-html").grid(data2, columns2, options);
+    grid2.render();
 });
