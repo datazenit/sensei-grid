@@ -753,7 +753,7 @@
             var codes = [8, 9, 13, 27, 37, 38, 39, 40, 90, 89, 68];
 
             // specific keyCodes that won't be hijacked from the editor
-            var editorCodes = [8, 37, 38, 39, 40, 68];
+            var editorCodes = [8, 37, 38, 39, 40, 68, 90, 89];
 
             if ((plugin.getActiveCell().length === 0 && !plugin.isEditing) || !_.contains(codes, e.which)) {
                 return;
