@@ -2,8 +2,6 @@
 
 Simple data grid library written in JavaScript. The data grid is part of [Datazenit](http://datazenit.com), a web-based database administration tool.
 
-**Currently not intended for production use.** This is the first public release, and the project is currently under active development.
-
 Dependencies: jQuery and underscore.js/lodash. The example in this repository also uses Twitter Bootstrap for default styles.
 
 ## Demo and Screenshot
@@ -27,7 +25,7 @@ If you don't want to use bower, just download an archive from the [latest releas
 When you have obtained a copy of Sensei Grid, you must include all dependecies, sensei-grid.js and sensei-grid.css.
 Sensei Grid depends on jQuery and lodash/underscore.js. For your convenience all dependecies can be found in ``lib/`` folder.
 
-*Warning:* By default Sensei Grid does not apply any styles to the table. It means that you need to create your own 
+*Warning:* By default Sensei Grid does not apply any styles to the table. It means that you need to create your own
 stylesheet or you can just use bootstrap.css as shown in the example below.
 
 ```html
@@ -89,6 +87,7 @@ grid.render();
 
 Planned for the upcoming releases:
 
+* ~~Delete/duplicate row keyboard shortcut~~
 * ~~New row support~~
 * ~~Event callbacks (e.g., save, load, render)~~
 * ~~Field types (e.g., string, int, float)~~
@@ -99,4 +98,4 @@ Planned for the upcoming releases:
 * Touch support for mobile devices
 * ~~Column sorting callbacks~~
 * Column resizing (to be discussed)
-* Implement undo/redo (to be discussed)
+* ~~Implement undo/redo (to be discussed)~~
