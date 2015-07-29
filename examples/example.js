@@ -115,5 +115,7 @@ $(function () {
     ];
 
     var grid2 = $(".sensei-grid-html").grid(data2, columns2, options);
+    grid2.registerEditor(BasicEditor);
+    grid2.registerEditor(TextareaEditor);
     grid2.render();
 });
