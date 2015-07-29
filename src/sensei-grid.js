@@ -806,6 +806,8 @@
                             plugin.move("up");
                         } else if (e.ctrlKey && !e.shiftKey) {
                             plugin.move("down");
+                        } else if (e.shiftKey) {
+                            plugin.activeEditor.setValue(plugin.activeEditor.getValue() + "\n");
                         } else {
                             if (!plugin.preventEnter) {
                                 plugin.exitEditor();
