@@ -452,6 +452,9 @@
             // get row element
             var $row = plugin.getCellRow($cell);
 
+            // get row index
+            var row = $row.index();
+
             // avoid removing empty row
             if ($row.hasClass("sensei-grid-empty-row")) {
                 return false;
@@ -464,12 +467,12 @@
             // get row data for event
             var data = plugin.getRowData($row);
 
+            // trigger row:remove event before actual removal
+            // could be used to persist changes in db
+            plugin.events.trigger("row:remove", data, row, $row);
+
             // remove row
             $row.remove();
-
-            // trigger row:remove event
-            // could be used to persist changes in db
-            plugin.events.trigger("row:remove", $row, data);
 
             // return status
             return true;

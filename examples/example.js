@@ -65,6 +65,9 @@ $(function () {
     grid.events.on("row:select", function ($row) {
         console.info("row select:", $row);
     });
+    grid.events.on("row:remove", function (data, row, $row) {
+        console.info("row remove:", data, row, $row);
+    });
     grid.events.on("row:save", function (data, $row, source) {
         console.info("row save:", source, data);
         // save row via ajax or any other way

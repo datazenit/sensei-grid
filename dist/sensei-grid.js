@@ -18,7 +18,8 @@
             defaults = {
                 emptyRow: false,
                 sortable: true,
-                tableClass: "table table-bordered table-condensed"
+                tableClass: "table table-bordered table-condensed",
+                disableKeys: []
             };
 
         plugin.name = null;
@@ -456,6 +457,9 @@
             // get row element
             var $row = plugin.getCellRow($cell);
 
+            // get row index
+            var row = $row.index();
+
             // avoid removing empty row
             if ($row.hasClass("sensei-grid-empty-row")) {
                 return false;
@@ -468,12 +472,12 @@
             // get row data for event
             var data = plugin.getRowData($row);
 
+            // trigger row:remove event before actual removal
+            // could be used to persist changes in db
+            plugin.events.trigger("row:remove", data, row, $row);
+
             // remove row
             $row.remove();
-
-            // trigger row:remove event
-            // could be used to persist changes in db
-            plugin.events.trigger("row:remove", $row, data);
 
             // return status
             return true;
@@ -770,6 +774,11 @@
             var editorCodes = [8, 37, 38, 39, 40, 68, 90, 89];
 
             if ((plugin.getActiveCell().length === 0 && !plugin.isEditing) || !_.contains(codes, e.which)) {
+                return;
+            }
+
+            if (_.contains(plugin.config.disableKeys, e.which)) {
+                e.preventDefault();
                 return;
             }
 
