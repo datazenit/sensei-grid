@@ -19,7 +19,8 @@
                 emptyRow: false,
                 sortable: true,
                 tableClass: "table table-bordered table-condensed",
-                disableKeys: []
+                disableKeys: [],
+                moveOnRowRemove: true
             };
 
         plugin.name = null;
@@ -218,7 +219,7 @@
 
         plugin.bindEvents = function () {
             // unbind previous events
-            // plugin.unbindEvents();
+            plugin.unbindEvents();
             
             plugin.$el.find(".sensei-grid-tbody>tr>td").on("click.grid."+plugin.name, plugin.clickCell);
             plugin.$el.find(".sensei-grid-tbody>tr>td").on("dblclick.grid", plugin.dblClickCell);
@@ -467,7 +468,9 @@
 
 
             // select another row
-            plugin.moveDown();
+            if (plugin.config["moveOnRowRemove"]) {
+                plugin.moveDown();                
+            }
 
             // get row data for event
             var data = plugin.getRowData($row);

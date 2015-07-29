@@ -32,7 +32,7 @@ $(function () {
 	];
 
     // initialize grid
-    var options = {emptyRow: true, sortable: false, disableKeys: []};
+    var options = {emptyRow: true, sortable: false, disableKeys: [], moveOnRowRemove: false};
 	var grid = $(".sensei-grid-default").grid(data, columns, options);
 
     // register editors that are bundled with sensei grid
