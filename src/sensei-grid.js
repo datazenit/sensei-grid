@@ -648,11 +648,17 @@
                         "column": $td.index()
                     };
 
+                    var allowHTML = $td.data("allowHTML");
+
                     // save the state prior to edit
                     plugin.addEdit(edit);
 
                     // set value from editor to the active cell
-                    $td.html($("<div>").text(val));
+                    if (allowHTML) {
+                        $td.html($("<div>").html(val));
+                    } else {
+                        $td.html($("<div>").text(val));
+                    }
 
                     // trigger editor:save event
                     var data = {};
@@ -736,7 +742,8 @@
 
             // set value in editor
             var column = $td.data("column");
-            var value = $td.text();
+            var allowHTML = $td.data("allowHTML");
+            var value = allowHTML ? $td.find(">div").html() : $td.text();
             plugin.activeEditor.setValue(value);
 
             // trigger editor:load event
@@ -951,6 +958,7 @@
                     }
                 }
 
+                $(td).data("allowHTML", column.allowHTML);
                 $(td).data("column", column.name);
                 $(td).data("type", column.type || "string");
                 $(td).data("editor", column.editor || "BasicEditor");

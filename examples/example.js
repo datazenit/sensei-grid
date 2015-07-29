@@ -87,8 +87,6 @@ $(function () {
     console.log("grid.getGridData():", grid.getGridData());
     console.groupEnd();
 
-    window.grid = grid;
-
     // html demo
 
     // generate data
@@ -118,4 +116,8 @@ $(function () {
     grid2.registerEditor(BasicEditor);
     grid2.registerEditor(TextareaEditor);
     grid2.render();
+
+    // export grids for tinkering
+    window.grid = grid;
+    window.grid2 = grid2;
 });
