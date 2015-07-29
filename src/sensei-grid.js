@@ -7,7 +7,7 @@
     // current event model and forced focus causes grid to get scrolled in area
     // when editor moves/closes which is unnecessary
 
-    $.fn.grid = function (data, columns, options) {
+    $.fn.grid = function (data, columns, options, name) {
 
         var plugin = this,
             defaults = {
@@ -16,6 +16,7 @@
                 tableClass: "table table-bordered table-condensed"
             };
 
+        plugin.name = null;
         plugin.isEditing = false;
         plugin.$prevRow = null;
         plugin.editorProps = {};
@@ -63,24 +64,27 @@
             return text.replace(/\r\n/g, "\n");
         };
 
-        $.fn.setActiveCell = function () {
+        plugin.setActiveCell = function ($el) {
 
-            plugin.$prevRow = $("tr>.activeCell", plugin.$el).parent("tr");
+            console.debug("setActiveCell", plugin.name, $el, plugin.$el);
+            // console.trace();
+
+            plugin.$prevRow = $(".sensei-grid-tbody>tr>.activeCell", plugin.$el).parent("tr");
             plugin.$prevRow.removeClass("activeRow");
 
-            $("tr>.activeCell", plugin.$el).removeClass("activeCell");
-            $(this).addClass("activeCell");
-            $(this).parent("tr").addClass("activeRow");
+            $(".sensei-grid-tbody>tr>.activeCell", plugin.$el).removeClass("activeCell");
+            $el.addClass("activeCell");
+            $el.parent("tr").addClass("activeRow");
 
             // redraw element to fix border style in firefox
             // this should be called only for firefox, can cause performance issues on large grids
-            redraw($(this).parent("tr"));
+            redraw($el.parent("tr"));
 
             // trigger cell:select event
-            plugin.events.trigger("cell:select", $(this));
+            plugin.events.trigger("cell:select", $el);
 
-            if (plugin.$prevRow.index() !== $(this).parent("tr").index()) {
-                plugin.events.trigger("row:select", $(this).parent("tr"));
+            if (plugin.$prevRow.index() !== $el.parent("tr").index()) {
+                plugin.events.trigger("row:select", $el.parent("tr"));
                 if (plugin.$prevRow.hasClass("sensei-grid-dirty-row") && plugin.isEditing) {
                     // save editor while keeping it open before trigger row:save event
                     // otherwise the value is not present in row data
@@ -115,6 +119,7 @@
         };
         plugin.events.trigger = function (event) {
             var args = Array.prototype.slice.call(arguments, 1);
+            // console.log("trigger event", this._events, this, plugin.$el, args);
             if (_.has(this._events, event)) {
                 var events = this._events[event];
                 _.each(events, function (e) {
@@ -211,17 +216,23 @@
 
         plugin.bindEvents = function () {
             // unbind previous events
-            plugin.unbindEvents();
+            // plugin.unbindEvents();
+            var $tds = plugin.$el.find(".sensei-grid-tbody>tr>td");
+            console.group("bindEvents", plugin.name);
+            console.log(plugin.$el.find(".sensei-grid-tbody>tr>td").on("click.grid"));
+            console.log($tds.on("click.grid"));
+            console.groupEnd();
 
-            plugin.$el.on("click.grid", "tr>td", plugin.clickCell);
-            plugin.$el.on("dblclick.grid", "tr>td", plugin.dblClickCell);
+            plugin.$el.find(".sensei-grid-tbody>tr>td").on("click.grid."+plugin.name, plugin.clickCell);
+            plugin.$el.find(".sensei-grid-tbody>tr>td").on("dblclick.grid", plugin.dblClickCell);
             plugin.$el.on("blur.grid", plugin.blur);
             plugin.$el.on("keydown.grid", plugin.keydown);
-            plugin.$el.on("click.grid", "tr>th.sensei-grid-sortable", plugin.sort);
+            plugin.$el.find(".sensei-grid-tbody>tr>th.sensei-grid-sortable").on("click.grid", plugin.sort);
             $(document).on("click.grid", plugin.editorBlur);
         };
 
         plugin.unbindEvents = function () {
+
             plugin.$el.off(".grid");
             $(document).off(".grid");
         };
@@ -360,7 +371,7 @@
         };
 
         plugin.getRowByIndex = function (index) {
-            var $row = plugin.$el.find("tbody>tr").eq(index);
+            var $row = plugin.$el.find(".sensei-grid-tbody>tr").eq(index);
             if ($row.length === 0) {
                 throw new Error("Row does not exist");
             }
@@ -387,7 +398,7 @@
         };
 
         plugin.getRows = function () {
-            return plugin.$el.find("tbody>tr");
+            return plugin.$el.find(".sensei-grid-tbody>tr");
         };
 
         plugin.getGridData = function () {
@@ -514,12 +525,12 @@
             var $td = plugin.getActiveCell();
 
             if ($td.next().length > 0) {
-                $td.next().setActiveCell();
+                plugin.setActiveCell($td.next());
             } else {
                 // try next row
                 var $nextRow = $td.parent("tr").next();
                 if ($nextRow.length > 0) {
-                    $("td:first", $nextRow).setActiveCell();
+                    plugin.setActiveCell($("td:first", $nextRow));
                 }
             }
         };
@@ -533,9 +544,9 @@
                 var index = $td.index();
                 var $upCell = $("td", $prevRow).eq(index);
                 if ($upCell.length > 0) {
-                    $upCell.setActiveCell();
+                    plugin.setActiveCell($upCell);
                 } else {
-                    $("td:last", $prevRow).setActiveCell();
+                    plugin.setActiveCell($("td:last", $prevRow));
                 }
             }
         };
@@ -545,12 +556,12 @@
             var $td = plugin.getActiveCell();
 
             if ($td.prev().length > 0) {
-                $td.prev().setActiveCell();
+                plugin.setActiveCell($td.prev());
             } else {
                 // try next row
                 var $prevRow = $td.parent("tr").prev();
                 if ($prevRow.length > 0) {
-                    $("td:last", $prevRow).setActiveCell();
+                    plugin.setActiveCell($("td:last", $prevRow));
                 }
             }
         };
@@ -564,9 +575,9 @@
                 var index = $td.index();
                 var $downCell = $("td", $nextRow).eq(index);
                 if ($downCell.length > 0) {
-                    $downCell.setActiveCell();
+                    plugin.setActiveCell($downCell);
                 } else {
-                    $("td:first", $nextRow).setActiveCell();
+                    plugin.setActiveCell($("td:first", $nextRow));
                 }
             }
         };
@@ -674,8 +685,8 @@
         };
 
         plugin.assureEmptyRow = function () {
-            if (plugin.config["emptyRow"] && plugin.$el.find(">table>tbody>tr.sensei-grid-empty-row").length === 0) {
-                var $tbody = plugin.$el.find(">table>tbody");
+            if (plugin.config["emptyRow"] && plugin.$el.find(".sensei-grid-tbody>tr.sensei-grid-empty-row").length === 0) {
+                var $tbody = plugin.$el.find(".sensei-grid-tbody");
                 var $row = plugin.renderRow(null, false);
                 $tbody.append($row);
             }
@@ -700,7 +711,7 @@
 
             // need to regain focus
             if (plugin.isEditing) {
-                $td.setActiveCell();
+                plugin.setActiveCell($td);
                 plugin.$el.focus();
             }
 
@@ -869,16 +880,17 @@
         };
 
         plugin.clickCell = function (e) {
+            console.log("clickCell", plugin.name, e, $(this));
             e.preventDefault();
             if (plugin.isEditing) {
                 plugin.exitEditor();
             }
-            $(this).setActiveCell();
+            plugin.setActiveCell($(this));
         };
 
         plugin.dblClickCell = function (e) {
             e.preventDefault();
-            $(this).setActiveCell();
+            plugin.setActiveCell($(this));
             plugin.editCell();
         };
 
@@ -909,7 +921,7 @@
         };
 
         plugin.renderData = function () {
-            var $tbody = $("tbody", plugin.$el);
+            var $tbody = $(".sensei-grid-tbody", plugin.$el);
 
             // remove existing content from tbody
             $tbody.html(null);
@@ -965,26 +977,37 @@
             var thead = document.createElement("thead");
             var tbody = document.createElement("tbody");
 
+            tbody.className = "sensei-grid-tbody";
+            thead.className = "sensei-grid-thead";
+            table.className = plugin.config.tableClass;
+
             table.appendChild(thead);
             table.appendChild(tbody);
-            table.className = plugin.config.tableClass;
 
             plugin.$el.html(table);
             plugin.$el.attr("tabindex", -1);
         };
 
-        plugin.init = function (data, columns, options) {
+        plugin.init = function (data, columns, options, name) {
+
+            console.info("plugin.init", arguments);
+
             plugin.config = $.extend({}, defaults, options);
             plugin.data = data;
             plugin.columns = columns;
+            plugin.name = name;
             plugin.$el = $(this);
             plugin.editors = {};
             plugin.rowActions = {};
             plugin.edits = [];
             plugin.editPointer = -1;
+
+            // reset internal events
+            // plugin.events._events = {};
+
             return plugin;
         };
 
-        return plugin.init(data, columns, options);
+        return plugin.init(data, columns, options, name);
     };
 })(jQuery);
