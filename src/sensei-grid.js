@@ -213,7 +213,6 @@
         plugin.bindEvents = function () {
             // unbind previous events
             // plugin.unbindEvents();
-            var $tds = plugin.$el.find(".sensei-grid-tbody>tr>td");
             
             plugin.$el.find(".sensei-grid-tbody>tr>td").on("click.grid."+plugin.name, plugin.clickCell);
             plugin.$el.find(".sensei-grid-tbody>tr>td").on("dblclick.grid", plugin.dblClickCell);
