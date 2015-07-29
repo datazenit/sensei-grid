@@ -13,7 +13,8 @@
             defaults = {
                 emptyRow: false,
                 sortable: true,
-                tableClass: "table table-bordered table-condensed"
+                tableClass: "table table-bordered table-condensed",
+                disableKeys: []
             };
 
         plugin.name = null;
@@ -765,6 +766,11 @@
             var editorCodes = [8, 37, 38, 39, 40, 68, 90, 89];
 
             if ((plugin.getActiveCell().length === 0 && !plugin.isEditing) || !_.contains(codes, e.which)) {
+                return;
+            }
+
+            if (_.contains(plugin.config.disableKeys, e.which)) {
+                e.preventDefault();
                 return;
             }
 
