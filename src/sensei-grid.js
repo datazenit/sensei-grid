@@ -914,7 +914,7 @@
                     th.className = "sensei-grid-sortable";
                 }
 
-                $(div).text(column.name);
+                $(div).text(column.displayName || column.name);
                 th.appendChild(div);
 
                 $(th).data("type", column.type || "string");
