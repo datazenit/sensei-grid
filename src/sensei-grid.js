@@ -775,7 +775,7 @@
                 return;
             }
 
-            if (_.contains(plugin.config.disableKeys, e.which)) {
+            if (!plugin.isEditing && _.contains(plugin.config.disableKeys, e.which)) {
                 e.preventDefault();
                 return;
             }
