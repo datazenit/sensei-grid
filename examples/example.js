@@ -32,7 +32,7 @@ $(function () {
 	];
 
     // initialize grid
-    var options = {emptyRow: true, sortable: false, disableKeys: []};
+    var options = {emptyRow: true, sortable: false, disableKeys: [], moveOnRowRemove: true};
 	var grid = $(".sensei-grid-default").grid(data, columns, options);
 
     // register editors that are bundled with sensei grid
@@ -65,6 +65,9 @@ $(function () {
     grid.events.on("row:select", function ($row) {
         console.info("row select:", $row);
     });
+    grid.events.on("row:remove", function (data, row, $row) {
+        console.info("row remove:", data, row, $row);
+    });
     grid.events.on("row:save", function (data, $row, source) {
         console.info("row save:", source, data);
         // save row via ajax or any other way
@@ -86,8 +89,6 @@ $(function () {
     console.log("grid.getCellDataByKey(2, created_at):", grid.getCellDataByKey(2, "created_at"));
     console.log("grid.getGridData():", grid.getGridData());
     console.groupEnd();
-
-    window.grid = grid;
 
     // html demo
 
@@ -115,5 +116,11 @@ $(function () {
     ];
 
     var grid2 = $(".sensei-grid-html").grid(data2, columns2, options);
+    grid2.registerEditor(BasicEditor);
+    grid2.registerEditor(TextareaEditor);
     grid2.render();
+
+    // export grids for tinkering
+    window.grid = grid;
+    window.grid2 = grid2;
 });

@@ -136,8 +136,6 @@
         types: [],
         name: "SelectEditor",
         render: function () {
-            console.log("CustomEditor.render");
-
             if (!this.editor) {
                 this.editor = document.createElement("div");
                 this.editor.className = "sensei-grid-editor sensei-grid-custom-editor";
@@ -168,7 +166,6 @@
             return $("select", this.editor).val();
         },
         setValue: function (val) {
-            console.log("Set selectbox value", val, $("select>option"));
             $("select>option", this.editor).filter(function () {
                 return $(this).val() === val;
             }).attr("selected", "selected");
