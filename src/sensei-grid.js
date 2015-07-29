@@ -66,9 +66,6 @@
 
         plugin.setActiveCell = function ($el) {
 
-            console.debug("setActiveCell", plugin.name, $el, plugin.$el);
-            // console.trace();
-
             plugin.$prevRow = $(".sensei-grid-tbody>tr>.activeCell", plugin.$el).parent("tr");
             plugin.$prevRow.removeClass("activeRow");
 
@@ -119,7 +116,6 @@
         };
         plugin.events.trigger = function (event) {
             var args = Array.prototype.slice.call(arguments, 1);
-            // console.log("trigger event", this._events, this, plugin.$el, args);
             if (_.has(this._events, event)) {
                 var events = this._events[event];
                 _.each(events, function (e) {
@@ -218,11 +214,7 @@
             // unbind previous events
             // plugin.unbindEvents();
             var $tds = plugin.$el.find(".sensei-grid-tbody>tr>td");
-            console.group("bindEvents", plugin.name);
-            console.log(plugin.$el.find(".sensei-grid-tbody>tr>td").on("click.grid"));
-            console.log($tds.on("click.grid"));
-            console.groupEnd();
-
+            
             plugin.$el.find(".sensei-grid-tbody>tr>td").on("click.grid."+plugin.name, plugin.clickCell);
             plugin.$el.find(".sensei-grid-tbody>tr>td").on("dblclick.grid", plugin.dblClickCell);
             plugin.$el.on("blur.grid", plugin.blur);
@@ -880,7 +872,6 @@
         };
 
         plugin.clickCell = function (e) {
-            console.log("clickCell", plugin.name, e, $(this));
             e.preventDefault();
             if (plugin.isEditing) {
                 plugin.exitEditor();
@@ -990,8 +981,6 @@
 
         plugin.init = function (data, columns, options, name) {
 
-            console.info("plugin.init", arguments);
-
             plugin.config = $.extend({}, defaults, options);
             plugin.data = data;
             plugin.columns = columns;
@@ -1001,9 +990,6 @@
             plugin.rowActions = {};
             plugin.edits = [];
             plugin.editPointer = -1;
-
-            // reset internal events
-            // plugin.events._events = {};
 
             return plugin;
         };
