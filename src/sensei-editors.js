@@ -173,7 +173,7 @@
         getValue: function () {
             var val = $("select", this.editor).val();
             if (_.has(this.props, "values")) {
-                var opt = $.grep(this.props["values"], function(e){ return e.value == val || e == val; })[0];
+                var opt = $.grep(this.props["values"], function(e){ return e.value === val || e === val; })[0];
                 if (_.isObject(opt)) {
                     val = opt.display || opt.value;
                 } else {
