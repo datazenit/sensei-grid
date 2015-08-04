@@ -150,24 +150,41 @@
                 var $select = this.getElement().find("select");
                 $select.html(null);
 
-                _.each(this.props["values"], function (val) {
+                _.each(this.props["values"], function (opt) {
                     var option = document.createElement("option");
-                    option.value = val;
-                    option.innerHTML = val;
+                    if (_.isObject(opt)) {
+                        option.value = opt.value;
+                        option.innerHTML = opt.display || opt.value;
+                    } else {
+                        option.value = opt;
+                        option.innerHTML = opt;
+                    }
                     $select.append(option);
-                });   
+                });
             }
         },
         show: function () {
             this.renderValues();
             this.getElement().show();
         },
-        getValue: function () {
+        getTriggerValue: function () {
             return $("select", this.editor).val();
+        },
+        getValue: function () {
+            var val = $("select", this.editor).val();
+            if (_.has(this.props, "values")) {
+                var opt = $.grep(this.props["values"], function(e){ return e.value == val || e == val; })[0];
+                if (_.isObject(opt)) {
+                    val = opt.display || opt.value;
+                } else {
+                    val = opt;
+                }
+            }
+            return val;
         },
         setValue: function (val) {
             $("select>option", this.editor).filter(function () {
-                return $(this).val() === val;
+                return ($(this).val() === val || $(this).html() === val);
             }).attr("selected", "selected");
             $("select").focus();
         }

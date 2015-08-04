@@ -670,6 +670,9 @@
                     // trigger editor:save event
                     var data = {};
                     data[$td.data("column")] = val;
+                    if (_.isFunction(plugin.activeEditor.getTriggerValue)) {
+                        data[$td.data("column")] = plugin.activeEditor.getTriggerValue();
+                    }
                     plugin.events.trigger("editor:save", data, $td);
 
                     // remove empty row status from current row and assure that
