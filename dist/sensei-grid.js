@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.3.7
+ * sensei-grid v0.3.8
  * Copyright (c) 2015 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -780,7 +780,7 @@
                 return;
             }
 
-            if (_.contains(plugin.config.disableKeys, e.which)) {
+            if (!plugin.isEditing && _.contains(plugin.config.disableKeys, e.which)) {
                 e.preventDefault();
                 return;
             }
