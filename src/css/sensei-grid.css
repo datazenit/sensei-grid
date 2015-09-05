@@ -1,5 +1,11 @@
 .sensei-grid {
     outline: none;
+    /** disable selection */
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 .sensei-grid>table {
 	empty-cells: show;
@@ -12,7 +18,7 @@
 .sensei-grid>table td>div,
 .sensei-grid>table th>div {
     overflow: hidden;
-    /* transparent border fixes another firefox quirk 
+    /* transparent border fixes another firefox quirk
     when cell width is calculated incorrectly */
     border: 1px solid transparent;
 }
@@ -66,7 +72,7 @@
 }
 .sensei-grid-editor textarea {
 	/** fixes bottom gap */
-	vertical-align: top; 
+	vertical-align: top;
 }
 
 .sensei-grid-date-editor .picker__holder {
@@ -108,7 +114,7 @@
     width: auto;
     background: white;
     /*border: 1px solid #ccc;*/
-    margin-left: 5px;   
+    margin-left: 5px;
 }
 
 .sensei-grid-basic-row-actions .btn {
