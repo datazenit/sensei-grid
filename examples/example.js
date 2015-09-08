@@ -1,7 +1,7 @@
 $(function () {
 
     // define select editor properties
-    var authors = {"values": ["Bob", "John", "Alice", "Jane"]};
+    var authors = {"values": [{value: 1, display: "Bob"}, {value: 2, display: "John"}, {value: 3, display: "Alice"}, {value: 4, display: "Jane"}]};
     var statuses = {"values": ["In progress", "Completed", "Done", "Verified"]};
 
     // generate data
@@ -13,7 +13,7 @@ $(function () {
             "is_admin": true,
             "status": _.shuffle(statuses.values)[0],
             "body": "The quick, brown fox jumps over a lazy dog.",
-            "author": _.shuffle(authors.values)[0],
+            "author": _.shuffle(authors.values)[0].display,
 			"title": "Test " + i + Math.round(Math.random() * 1000),
 			"count": Math.round(Math.random() * 100)
 		});
@@ -23,7 +23,7 @@ $(function () {
 	var columns = [
 		{name: "id", type: "int"},
         {name: "is_admin", type: "boolean", editor: "BooleanEditor"},
-        {name: "created_at", type: "string", editor: "DateEditor"},
+        {name: "created_at", type: "string", editor: "DateEditor", displayName: "Created"},
         {name: "author", type: "string", editor: "SelectEditor", editorProps: authors},
         {name: "body", type: "string", editor: "TextareaEditor"},
 		{name: "status", type: "string", editor: "SelectEditor", editorProps: statuses},

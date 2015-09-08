@@ -670,6 +670,9 @@
                     // trigger editor:save event
                     var data = {};
                     data[$td.data("column")] = val;
+                    if (_.isFunction(plugin.activeEditor.getTriggerValue)) {
+                        data[$td.data("column")] = plugin.activeEditor.getTriggerValue();
+                    }
                     plugin.events.trigger("editor:save", data, $td);
 
                     // remove empty row status from current row and assure that
@@ -806,6 +809,8 @@
                             plugin.move("up");
                         } else if (e.ctrlKey && !e.shiftKey) {
                             plugin.move("down");
+                        } else if (e.shiftKey) {
+                            plugin.activeEditor.setValue(plugin.activeEditor.getValue() + "\n");
                         } else {
                             if (!plugin.preventEnter) {
                                 plugin.exitEditor();
@@ -914,7 +919,7 @@
                     th.className = "sensei-grid-sortable";
                 }
 
-                $(div).text(column.name);
+                $(div).text(column.displayName || column.name);
                 th.appendChild(div);
 
                 $(th).data("type", column.type || "string");
