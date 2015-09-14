@@ -138,6 +138,9 @@
         };
 
         plugin.isSillyFirefox = function () {
+            if (!plugin.$el.find("td:first").position()) {
+              return false;
+            }
             var tableLeft = plugin.$el.position().left;
             var cellLeft = plugin.$el.find("td:first").position().left;
             return cellLeft !== tableLeft;
@@ -209,7 +212,7 @@
         plugin.undo = function () {
             if (plugin.editPointer < 0) {
                 return [];
-                
+
             } else {
                 var edit = plugin.edits[plugin.editPointer];
                 plugin.editPointer -= 1;
@@ -220,7 +223,7 @@
         plugin.bindEvents = function () {
             // unbind previous events
             plugin.unbindEvents();
-            
+
             plugin.$el.find(".sensei-grid-tbody>tr>td").on("click.grid."+plugin.name, plugin.clickCell);
             plugin.$el.find(".sensei-grid-tbody>tr>td").on("dblclick.grid", plugin.dblClickCell);
             plugin.$el.on("blur.grid", plugin.blur);
@@ -469,7 +472,7 @@
 
             // select another row
             if (plugin.config["moveOnRowRemove"]) {
-                plugin.moveDown();                
+                plugin.moveDown();
             }
 
             // get row data for event
@@ -853,7 +856,7 @@
 
                             // set value from editor to the active cell
                             element.html($("<div>").text(edit.previousState));
- 
+
                             // trigger editor:save event
                             var data = {};
                             data[element.data("column")] = edit.previousState;
@@ -873,7 +876,7 @@
 
                             // set value from editor to the active cell
                             currentEl.html($("<div>").text(redo.currentState));
- 
+
                             // trigger editor:save event
                             var localData = {};
                             localData[currentEl.data("column")] = redo.currentState;
