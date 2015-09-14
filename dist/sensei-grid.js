@@ -20,7 +20,8 @@
                 sortable: true,
                 tableClass: "table table-bordered table-condensed",
                 disableKeys: [],
-                moveOnRowRemove: true
+                moveOnRowRemove: true,
+                readonly: false
             };
 
         plugin.name = null;
@@ -72,6 +73,11 @@
         };
 
         plugin.setActiveCell = function ($el) {
+
+            // disable setting active cell when in read only mode
+            if (plugin.config.readonly) {
+              return;
+            }
 
             plugin.$prevRow = $(".sensei-grid-tbody>tr>.activeCell", plugin.$el).parent("tr");
             plugin.$prevRow.removeClass("activeRow");
@@ -620,8 +626,10 @@
         };
 
         plugin.editCell = function () {
-            // currently this function is just a wrapper around showEditor
-            plugin.showEditor();
+            // disable editor when in read only mode
+            if (!plugin.config.readonly) {
+                plugin.showEditor();
+            }
         };
 
         plugin.getEditor = function () {

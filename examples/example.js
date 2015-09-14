@@ -159,7 +159,13 @@ $(function() {
 	grid2.registerEditor(TextareaEditor);
 	grid2.render();
 
+  options.readonly = true;
+  options.emptyRow = false;
+	var grid3 = $(".sensei-grid-readonly").grid(data, columns, options);
+	grid3.render();
+
 	// export grids for tinkering
 	window.grid = grid;
 	window.grid2 = grid2;
+	window.grid3 = grid3;
 });
