@@ -16,7 +16,8 @@
                 tableClass: "table table-bordered table-condensed",
                 disableKeys: [],
                 moveOnRowRemove: true,
-                readonly: false
+                readonly: false,
+                emptyGridMessage: null
             };
 
         plugin.name = null;
@@ -955,6 +956,14 @@
                 // render empty row at the end of table
                 var tr = plugin.renderRow(null, false);
                 $tbody.append(tr);
+            }
+
+            // check if grid is empty and if empty grid message is set
+            if (_.isEmpty(plugin.data) && plugin.config.emptyGridMessage) {
+                // render row with empty grid message
+                var emptyCell = $("<td colspan=999>").text(plugin.config.emptyGridMessage);
+                var emptyRow = $("<tr>").append(emptyCell);
+                $tbody.html(emptyRow);
             }
         };
 
