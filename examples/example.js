@@ -30,10 +30,12 @@ $(function() {
 	}, {
 		name: "is_admin",
 		type: "boolean",
-		editor: "BooleanEditor"
+		editor: "BooleanEditor",
+    display: "admin"
 	}, {
 		name: "created_at",
 		type: "string",
+    display: "created at",
 		editor: "DateEditor"
 	}, {
 		name: "author",

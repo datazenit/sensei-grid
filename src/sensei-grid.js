@@ -918,6 +918,7 @@
         plugin.renderColumns = function () {
             var $thead = $("thead", plugin.$el);
             var tr = document.createElement("tr");
+
             _.each(plugin.columns, function (column) {
                 var th = document.createElement("th");
                 var div = document.createElement("div");
@@ -926,9 +927,10 @@
                     th.className = "sensei-grid-sortable";
                 }
 
-                $(div).text(column.name);
+                $(div).text(column.display ? column.display : column.name);
                 th.appendChild(div);
 
+                $(th).data("name", column.name);
                 $(th).data("type", column.type || "string");
                 $(th).data("editor", column.editor || "BasicEditor");
 
