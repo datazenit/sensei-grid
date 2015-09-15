@@ -995,6 +995,11 @@
                     }
                 }
 
+                // check if nowrap needs to be disabled
+                if (column.wrap === true) {
+                  $(td).css("white-space", "normal");
+                }
+
                 $(td).data("allowHTML", column.allowHTML);
                 $(td).data("column", column.name);
                 $(td).data("type", column.type || "string");
