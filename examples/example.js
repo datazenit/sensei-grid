@@ -166,8 +166,7 @@ $(function() {
 	var grid3 = $(".sensei-grid-readonly").grid(data, columns, options);
 	grid3.render();
 
-	// export grids for tinkering
-	window.grid = grid;
-	window.grid2 = grid2;
-	window.grid3 = grid3;
+	var grid4 = $(".sensei-grid-rowactions").grid(data, columns, options);
+	grid4.render();
+
 });
