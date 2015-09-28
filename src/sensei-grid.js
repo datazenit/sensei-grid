@@ -159,6 +159,16 @@
         };
 
         plugin.render = function () {
+
+            // render row actions
+            plugin.rowElements = [];
+            _.each(plugin.rowActions, function (rowAction) {
+                rowAction.initialize();
+                plugin.rowElements.push("<div>" + rowAction.rowElement() + "</div>");
+                // rowAction.render();
+                // rowAction.getElement().hide();
+            });
+
             plugin.renderBaseTable();
             plugin.renderColumns();
             plugin.renderData();
@@ -168,13 +178,6 @@
                 editor.initialize();
                 editor.render();
                 editor.getElement().hide();
-            });
-
-            // render row actions
-            _.each(plugin.rowActions, function (rowAction) {
-                rowAction.initialize();
-                rowAction.render();
-                rowAction.getElement().hide();
             });
 
             plugin.bindEvents();
@@ -645,14 +648,17 @@
                 }
                 return plugin.editors[editorName];
             } else {
-                throw Error("Editor not found: " + editorName);
+                // throw Error("Editor not found: " + editorName);
+                // editor not found, skip cell
+                console.info("Editor not found, skipping cell: " + editorName);
+                return false;
             }
         };
 
         plugin.saveEditor = function (keepEditor) {
 
             // save editor if is active
-            if (plugin.isEditing) {
+            if (plugin.isEditing && plugin.activeEditor) {
 
                 var $td = plugin.getActiveCell();
                 var val = plugin.activeEditor.getValue();
@@ -695,7 +701,7 @@
             }
 
             // hide editor if needed
-            if (!keepEditor) {
+            if (!keepEditor && plugin.activeEditor) {
                 plugin.getEditor().hide();
             }
         };
@@ -742,6 +748,12 @@
         };
 
         plugin.showEditor = function () {
+
+            if (!plugin.getEditorInstance()) {
+              plugin.exitEditor();
+              plugin.isEditing = true;
+              return;
+            }
 
             // set active editor instance
             plugin.activeEditor = plugin.getEditorInstance();
@@ -792,7 +804,9 @@
                 return;
             }
 
-            if (plugin.isEditing && _.contains(editorCodes, e.which)) {
+            // if editor is editing and active editor can be found, prevent
+            // keystrokes that could intervene with editor
+            if (plugin.isEditing && plugin.getEditor() && _.contains(editorCodes, e.which)) {
                 return;
             } else {
                 e.preventDefault();
@@ -940,6 +954,13 @@
 
                 tr.appendChild(th);
             });
+
+            if (!_.isEmpty(plugin.rowElements)) {
+              var th = document.createElement("th");
+              th.innerHTML = "<em>Actions</em>";
+              tr.appendChild(th);
+            }
+
             $thead.append(tr);
         };
 
@@ -1006,6 +1027,16 @@
                 td.appendChild(div);
                 tr.appendChild(td);
             });
+
+            if (!_.isEmpty(plugin.rowElements) &&
+              _.isArray(plugin.rowElements)) {
+              // append row actions to tr element
+              var td = document.createElement("td");
+              td.innerHTML = plugin.rowElements.join("<br>");
+              $(td).data("action", true);
+              tr.appendChild(td);
+            }
+
             return tr;
         };
 
