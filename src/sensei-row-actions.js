@@ -63,15 +63,15 @@
     }
 	});
 
-	root.DemoRowAction2 = RowAction.extend({
-		name: "DemoRowAction2",
+	root.DeleteRowAction = RowAction.extend({
+		name: "DeleteRowAction",
     rowElement: function () {
       return "<button class='btn btn-danger btn-xs'>Delete</button>";
     },
     triggerEvent: {event: "click", selector: ".btn"},
     trigger: function (e) {
       var $activeCell = e.data.$activeCell;
-      console.log("DemoRowAction2.trigger", $activeCell);
+      console.log("DeleteRowAction.trigger", $activeCell);
 
       // get button from active cell
       var $btn = $activeCell.find(".btn");
@@ -88,7 +88,7 @@
           $btn.addClass("btn-danger")
             .text("Deleted");
           grid.removeRow($row);
-        }, 1000);
+        }, 500);
       }
     }
 	});

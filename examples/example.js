@@ -166,15 +166,14 @@ $(function() {
 	var grid3 = $(".sensei-grid-readonly").grid(data, columns, options);
 	grid3.render();
 
-  options.readonly = true;
-  options.emptyRow = true;
+  options.readonly = false;
 	var grid4 = $(".sensei-grid-rowactions").grid(data, columns2, options);
 	grid4.registerEditor(BasicEditor);
 	grid4.registerEditor(TextareaEditor);
 
   // register demo row action
   grid4.registerRowAction(DemoRowAction);
-  grid4.registerRowAction(DemoRowAction2);
+  grid4.registerRowAction(DeleteRowAction);
 
 	grid4.render();
 
