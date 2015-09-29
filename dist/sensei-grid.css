@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.3.8
+ * sensei-grid v0.3.9
  * Copyright (c) 2015 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -124,4 +124,9 @@
 
 .sensei-grid-basic-row-actions .btn {
     margin-right: 2px;
+}
+
+.sensei-grid td.row-action {
+    width:1%;
+    white-space:nowrap;
 }

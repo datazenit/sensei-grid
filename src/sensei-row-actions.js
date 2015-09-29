@@ -1,4 +1,4 @@
-(function($) {
+(function() {
 	var root = this;
 
 	var RowAction = function(grid) {
@@ -30,7 +30,7 @@
     _.bindAll(this, "trigger");
   };
 	RowAction.prototype.triggerEvent = null;
-	RowAction.prototype.trigger = function($activeCell) {};
+	RowAction.prototype.trigger = function(/** $activeCell */) {};
 	RowAction.prototype.rowElement = function() {
 		throw new Error("Not yet implemented");
 	};

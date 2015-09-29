@@ -479,7 +479,7 @@
 
           // remove row
           $row.remove();
-        }
+        };
 
         /**
          * Remove currently active row and trigger event

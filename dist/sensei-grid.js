@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.3.8
+ * sensei-grid v0.3.9
  * Copyright (c) 2015 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -103,6 +103,11 @@
                     plugin.events.trigger("row:save", plugin.getRowData(plugin.$prevRow), plugin.$prevRow, "row:select");
                 }
             }
+
+            // @todo remove
+            // focus first row action, if current cell is row action cell
+            // if ($el.data("action") === true) {
+            // }
         };
 
         // fixes inconsistent position in firefox/chrome
@@ -164,6 +169,15 @@
         };
 
         plugin.render = function () {
+
+            // render row actions
+            plugin.rowElements = {};
+            _.each(plugin.rowActions, function (rowAction) {
+                rowAction.initialize();
+                var rowEl = "<div>" + rowAction.rowElement() + "</div>";
+                plugin.rowElements[rowAction.name] = rowEl;
+            });
+
             plugin.renderBaseTable();
             plugin.renderColumns();
             plugin.renderData();
@@ -173,13 +187,6 @@
                 editor.initialize();
                 editor.render();
                 editor.getElement().hide();
-            });
-
-            // render row actions
-            _.each(plugin.rowActions, function (rowAction) {
-                rowAction.initialize();
-                rowAction.render();
-                rowAction.getElement().hide();
             });
 
             plugin.bindEvents();
@@ -452,6 +459,33 @@
             plugin.events.trigger("cell:clear", oldValue, $td);
         };
 
+        plugin.removeRow = function ($row) {
+
+          // get row index
+          var row = $row.index();
+
+          // avoid removing empty row
+          if ($row.hasClass("sensei-grid-empty-row")) {
+              return false;
+          }
+
+          // select another row
+          if (plugin.config["moveOnRowRemove"]) {
+              // @todo move up, if there are no rows below
+              plugin.moveDown();
+          }
+
+          // get row data for event
+          var data = plugin.getRowData($row);
+
+          // trigger row:remove event before actual removal
+          // could be used to persist changes in db
+          plugin.events.trigger("row:remove", data, row, $row);
+
+          // remove row
+          $row.remove();
+        };
+
         /**
          * Remove currently active row and trigger event
          */
@@ -468,29 +502,8 @@
             // get row element
             var $row = plugin.getCellRow($cell);
 
-            // get row index
-            var row = $row.index();
-
-            // avoid removing empty row
-            if ($row.hasClass("sensei-grid-empty-row")) {
-                return false;
-            }
-
-
-            // select another row
-            if (plugin.config["moveOnRowRemove"]) {
-                plugin.moveDown();
-            }
-
-            // get row data for event
-            var data = plugin.getRowData($row);
-
-            // trigger row:remove event before actual removal
-            // could be used to persist changes in db
-            plugin.events.trigger("row:remove", data, row, $row);
-
-            // remove row
-            $row.remove();
+            // remove actual row
+            plugin.removeRow($row);
 
             // return status
             return true;
@@ -650,14 +663,17 @@
                 }
                 return plugin.editors[editorName];
             } else {
-                throw Error("Editor not found: " + editorName);
+                // throw Error("Editor not found: " + editorName);
+                // editor not found, skip cell
+                console.info("Editor not found, skipping cell: " + editorName);
+                return false;
             }
         };
 
         plugin.saveEditor = function (keepEditor) {
 
             // save editor if is active
-            if (plugin.isEditing) {
+            if (plugin.isEditing && plugin.activeEditor) {
 
                 var $td = plugin.getActiveCell();
                 var val = plugin.activeEditor.getValue();
@@ -700,7 +716,7 @@
             }
 
             // hide editor if needed
-            if (!keepEditor) {
+            if (!keepEditor && plugin.activeEditor) {
                 plugin.getEditor().hide();
             }
         };
@@ -747,6 +763,12 @@
         };
 
         plugin.showEditor = function () {
+
+            if (!plugin.getEditorInstance()) {
+              plugin.exitEditor();
+              plugin.isEditing = true;
+              return;
+            }
 
             // set active editor instance
             plugin.activeEditor = plugin.getEditorInstance();
@@ -797,7 +819,9 @@
                 return;
             }
 
-            if (plugin.isEditing && _.contains(editorCodes, e.which)) {
+            // if editor is editing and active editor can be found, prevent
+            // keystrokes that could intervene with editor
+            if (plugin.isEditing && plugin.getEditor() && _.contains(editorCodes, e.which)) {
                 return;
             } else {
                 e.preventDefault();
@@ -817,19 +841,39 @@
                     plugin.move("down");
                     break;
                 case 13: // enter
-                    // the code below must be refactored
+
+                    var isRowAction = false;
+                    var $activeCell = plugin.getActiveCell();
+
+                    if ($activeCell && $activeCell.data("action")) {
+                      var rowActionName = $activeCell.data("action-name");
+                      if (plugin.rowActions[rowActionName]) {
+                        plugin.rowActions[rowActionName].trigger({data:
+                          {$activeCell: $activeCell}});
+                      }
+
+                      isRowAction = true;
+                    }
+
+                    // @todo the code below must be refactored
                     if (plugin.isEditing) {
                         if (e.ctrlKey && e.shiftKey) {
                             plugin.move("up");
                         } else if (e.ctrlKey && !e.shiftKey) {
                             plugin.move("down");
                         } else {
-                            if (!plugin.preventEnter) {
+                            // enter on row action should not
+                            // change editor state
+                            if (!plugin.preventEnter && !isRowAction) {
                                 plugin.exitEditor();
                             }
                         }
                     } else {
-                        plugin.editCell();
+
+                        // enter on row action should not change editor state
+                        if (!isRowAction) {
+                          plugin.editCell();
+                        }
                     }
                     break;
                 case 27: // esc
@@ -945,6 +989,13 @@
 
                 tr.appendChild(th);
             });
+
+            // if (!_.isEmpty(plugin.rowElements)) {
+            //   var th = document.createElement("th");
+            //   th.innerHTML = "";
+            //   tr.appendChild(th);
+            // }
+
             $thead.append(tr);
         };
 
@@ -1011,6 +1062,26 @@
                 td.appendChild(div);
                 tr.appendChild(td);
             });
+
+            if (!_.isEmpty(plugin.rowElements)) {
+              // append row actions to tr element
+              _.each(plugin.rowElements, function (rowEl, name) {
+                var td = document.createElement("td");
+                td.innerHTML = rowEl;
+                $(td).data("action", true);
+                $(td).data("action-name", name);
+                $(td).addClass("row-action");
+
+                // if row action has defined trigger event, bind it to $(td) el
+                var rowAction = plugin.rowActions[name];
+                if (rowAction.triggerEvent && rowAction.triggerEvent.event && rowAction.triggerEvent.selector) {
+                  $(td).on(rowAction.triggerEvent.event, rowAction.triggerEvent.selector, {$activeCell: $(td)}, rowAction.trigger);
+                }
+
+                tr.appendChild(td);
+              });
+            }
+
             return tr;
         };
 
