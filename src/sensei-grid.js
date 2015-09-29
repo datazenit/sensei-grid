@@ -98,6 +98,11 @@
                     plugin.events.trigger("row:save", plugin.getRowData(plugin.$prevRow), plugin.$prevRow, "row:select");
                 }
             }
+
+            // @todo remove
+            // focus first row action, if current cell is row action cell
+            // if ($el.data("action") === true) {
+            // }
         };
 
         // fixes inconsistent position in firefox/chrome
@@ -161,12 +166,11 @@
         plugin.render = function () {
 
             // render row actions
-            plugin.rowElements = [];
+            plugin.rowElements = {};
             _.each(plugin.rowActions, function (rowAction) {
                 rowAction.initialize();
-                plugin.rowElements.push("<div>" + rowAction.rowElement() + "</div>");
-                // rowAction.render();
-                // rowAction.getElement().hide();
+                var rowEl = "<div>" + rowAction.rowElement() + "</div>";
+                plugin.rowElements[rowAction.name] = rowEl;
             });
 
             plugin.renderBaseTable();
@@ -450,6 +454,33 @@
             plugin.events.trigger("cell:clear", oldValue, $td);
         };
 
+        plugin.removeRow = function ($row) {
+
+          // get row index
+          var row = $row.index();
+
+          // avoid removing empty row
+          if ($row.hasClass("sensei-grid-empty-row")) {
+              return false;
+          }
+
+          // select another row
+          if (plugin.config["moveOnRowRemove"]) {
+              // @todo move up, if there are no rows below
+              plugin.moveDown();
+          }
+
+          // get row data for event
+          var data = plugin.getRowData($row);
+
+          // trigger row:remove event before actual removal
+          // could be used to persist changes in db
+          plugin.events.trigger("row:remove", data, row, $row);
+
+          // remove row
+          $row.remove();
+        }
+
         /**
          * Remove currently active row and trigger event
          */
@@ -466,29 +497,8 @@
             // get row element
             var $row = plugin.getCellRow($cell);
 
-            // get row index
-            var row = $row.index();
-
-            // avoid removing empty row
-            if ($row.hasClass("sensei-grid-empty-row")) {
-                return false;
-            }
-
-
-            // select another row
-            if (plugin.config["moveOnRowRemove"]) {
-                plugin.moveDown();
-            }
-
-            // get row data for event
-            var data = plugin.getRowData($row);
-
-            // trigger row:remove event before actual removal
-            // could be used to persist changes in db
-            plugin.events.trigger("row:remove", data, row, $row);
-
-            // remove row
-            $row.remove();
+            // remove actual row
+            plugin.removeRow($row);
 
             // return status
             return true;
@@ -826,19 +836,39 @@
                     plugin.move("down");
                     break;
                 case 13: // enter
-                    // the code below must be refactored
+
+                    var isRowAction = false;
+                    var $activeCell = plugin.getActiveCell();
+
+                    if ($activeCell && $activeCell.data("action")) {
+                      var rowActionName = $activeCell.data("action-name");
+                      if (plugin.rowActions[rowActionName]) {
+                        plugin.rowActions[rowActionName].trigger({data:
+                          {$activeCell: $activeCell}});
+                      }
+
+                      isRowAction = true;
+                    }
+
+                    // @todo the code below must be refactored
                     if (plugin.isEditing) {
                         if (e.ctrlKey && e.shiftKey) {
                             plugin.move("up");
                         } else if (e.ctrlKey && !e.shiftKey) {
                             plugin.move("down");
                         } else {
-                            if (!plugin.preventEnter) {
+                            // enter on row action should not
+                            // change editor state
+                            if (!plugin.preventEnter && !isRowAction) {
                                 plugin.exitEditor();
                             }
                         }
                     } else {
-                        plugin.editCell();
+
+                        // enter on row action should not change editor state
+                        if (!isRowAction) {
+                          plugin.editCell();
+                        }
                     }
                     break;
                 case 27: // esc
@@ -955,11 +985,11 @@
                 tr.appendChild(th);
             });
 
-            if (!_.isEmpty(plugin.rowElements)) {
-              var th = document.createElement("th");
-              th.innerHTML = "<em>Actions</em>";
-              tr.appendChild(th);
-            }
+            // if (!_.isEmpty(plugin.rowElements)) {
+            //   var th = document.createElement("th");
+            //   th.innerHTML = "";
+            //   tr.appendChild(th);
+            // }
 
             $thead.append(tr);
         };
@@ -1028,13 +1058,23 @@
                 tr.appendChild(td);
             });
 
-            if (!_.isEmpty(plugin.rowElements) &&
-              _.isArray(plugin.rowElements)) {
+            if (!_.isEmpty(plugin.rowElements)) {
               // append row actions to tr element
-              var td = document.createElement("td");
-              td.innerHTML = plugin.rowElements.join("<br>");
-              $(td).data("action", true);
-              tr.appendChild(td);
+              _.each(plugin.rowElements, function (rowEl, name) {
+                var td = document.createElement("td");
+                td.innerHTML = rowEl;
+                $(td).data("action", true);
+                $(td).data("action-name", name);
+                $(td).addClass("row-action");
+
+                // if row action has defined trigger event, bind it to $(td) el
+                var rowAction = plugin.rowActions[name];
+                if (rowAction.triggerEvent && rowAction.triggerEvent.event && rowAction.triggerEvent.selector) {
+                  $(td).on(rowAction.triggerEvent.event, rowAction.triggerEvent.selector, {$activeCell: $(td)}, rowAction.trigger);
+                }
+
+                tr.appendChild(td);
+              });
             }
 
             return tr;

@@ -120,3 +120,8 @@
 .sensei-grid-basic-row-actions .btn {
     margin-right: 2px;
 }
+
+.sensei-grid td.row-action {
+    width:1%;
+    white-space:nowrap;
+}

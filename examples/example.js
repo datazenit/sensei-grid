@@ -166,11 +166,16 @@ $(function() {
 	var grid3 = $(".sensei-grid-readonly").grid(data, columns, options);
 	grid3.render();
 
-  options.readonly = false;
+  options.readonly = true;
+  options.emptyRow = true;
 	var grid4 = $(".sensei-grid-rowactions").grid(data, columns2, options);
 	grid4.registerEditor(BasicEditor);
 	grid4.registerEditor(TextareaEditor);
-  grid4.registerRowAction(DemoRowActions);
+
+  // register demo row action
+  grid4.registerRowAction(DemoRowAction);
+  grid4.registerRowAction(DemoRowAction2);
+
 	grid4.render();
 
 });

@@ -26,63 +26,71 @@
 
 		return child;
 	};
-	// RowAction.prototype.initialize = function() {};
-	// RowAction.prototype.show = function() {
-	// 	throw new Error("Not yet implemented");
-	// };
-	// RowAction.prototype.hide = function() {
-	// 	throw new Error("Not yet implemented");
-	// };
-	// RowAction.prototype.getElement = function() {
-	// 	return this.$el;
-	// };
+	RowAction.prototype.initialize = function() {
+    _.bindAll(this, "trigger");
+  };
+	RowAction.prototype.triggerEvent = null;
+	RowAction.prototype.trigger = function($activeCell) {};
+	RowAction.prototype.rowElement = function() {
+		throw new Error("Not yet implemented");
+	};
 
-	root.DemoRowActions = RowAction.extend({
-		name: "DemoRowActions",
-		initialize: function() {
-			// _.bindAll(this, "show", "hide");
-			// this.grid.events.on("row:select", this.show);
-			// this.grid.events.on("cell:deactivate", this.hide);
-		},
-		// show: function($row) {
-		// 	console.log("BasicRowActions.show");
-		// 	this.getElement().show();
-		// 	this.updatePosition($row);
-		// },
-		// updatePosition: function($row) {
-		// 	// update position and dimensions
-		// 	var $grid = $row.parents(".sensei-grid");
-		// 	var top = $row.position().top;
-		// 	var height = $row.height() + 1;
-		// 	var left = $grid.width() + $grid.position().left;
-		// 	this.getElement().css({
-		// 		top: top,
-		// 		height: height,
-		// 		left: left
-		// 	});
-		// },
-		// hide: function() {
-		// 	console.log("BasicRowActions.hide");
-		// 	this.getElement().hide();
-		// },
+	root.DemoRowAction = RowAction.extend({
+		name: "DemoRowAction",
     rowElement: function () {
-      return "<button class='btn btn-default btn-xs'>Delete</button>";
+      return "<button class='btn btn-default btn-xs'>Demo</button>";
+    },
+    triggerEvent: {event: "click", selector: ".btn"},
+    trigger: function (e) {
+      var $activeCell = e.data.$activeCell;
+      console.log("DemoRowAction.trigger", $activeCell);
+
+      // get button from active cell
+      var $btn = $activeCell.find(".btn");
+
+      // simulate some loading action on demo button
+      if (!$btn.prop("disabled")) {
+        $btn.prop("disabled", true)
+          .removeClass("btn-success")
+          .text("Loading...");
+
+        setTimeout(function () {
+          $btn.prop("disabled", false)
+            .addClass("btn-success")
+            .text("Success");
+        }, 1000);
+      }
     }
-    //,
-		// render: function() {
-		// 	console.log("BasicRowActions.render");
-		// 	if (!this.$el) {
-    //
-    //     var el = "<td><button class=btn btn-default>Delete</button></td>";
-    //
-		// 		// var className = "sensei-grid-row-action sensei-grid-basic-row-actions";
-		// 		// var $el = $("<div>").addClass(className);
-		// 		// $el.append($("<a>").addClass("btn btn-default btn-xs").text("Delete"));
-		// 		// $el.append($("<a>").addClass("btn btn-default btn-xs").text("Duplicate"));
-		// 		// this.$el = $el;
-		// 		// this.grid.$el.append(this.$el);
-		// 	}
-		// }
+	});
+
+	root.DemoRowAction2 = RowAction.extend({
+		name: "DemoRowAction2",
+    rowElement: function () {
+      return "<button class='btn btn-danger btn-xs'>Delete</button>";
+    },
+    triggerEvent: {event: "click", selector: ".btn"},
+    trigger: function (e) {
+      var $activeCell = e.data.$activeCell;
+      console.log("DemoRowAction2.trigger", $activeCell);
+
+      // get button from active cell
+      var $btn = $activeCell.find(".btn");
+
+      // simulate some loading action on demo button
+      if (!$btn.prop("disabled")) {
+        $btn.prop("disabled", true)
+          .text("Deleting...");
+
+        var grid = this.grid;
+        var $row = this.grid.getCellRow($activeCell);
+
+        setTimeout(function () {
+          $btn.addClass("btn-danger")
+            .text("Deleted");
+          grid.removeRow($row);
+        }, 1000);
+      }
+    }
 	});
 
 	// export
