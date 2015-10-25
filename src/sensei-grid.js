@@ -677,6 +677,7 @@
 
                     // stores the original content and records the cell row and column
                     var edit = {
+                        "type":"cell",
                         "previousState": plugin.getCellData($td),
                         "currentState": val,
                         "row": plugin.getRowData(plugin.getCellRow($td))["id"],
@@ -897,18 +898,22 @@
                     if (e.ctrlKey || e.metaKey) {
                         var edit = plugin.undo();
 
-                        if (('row' in edit) && ('column' in edit)) {
+                        if (edit.type === 'cell') {
+                            if (('row' in edit) && ('column' in edit)) {
 
-                            var row = plugin.getRowByIndex(edit.row - 1);
-                            var element = plugin.getCellFromRowByIndex(row, edit.column);
+                                var row = plugin.getRowByIndex(edit.row - 1);
+                                var element = plugin.getCellFromRowByIndex(row, edit.column);
 
-                            // set value from editor to the active cell
-                            element.html($("<div>").text(edit.previousState));
+                                // set value from editor to the active cell
+                                element.html($("<div>").text(edit.previousState));
 
-                            // trigger editor:save event
-                            var data = {};
-                            data[element.data("column")] = edit.previousState;
-                            plugin.events.trigger("editor:save", data, element);
+                                // trigger editor:save event
+                                var data = {};
+                                data[element.data("column")] = edit.previousState;
+                                plugin.events.trigger("editor:save", data, element);
+
+                            }
+                        } else if (edit.type === 'row') {
 
                         }
                     }
