@@ -17,7 +17,8 @@
                 disableKeys: [],
                 moveOnRowRemove: true,
                 readonly: false,
-                emptyGridMessage: null
+                emptyGridMessage: null,
+                skipOnDuplicate: null
             };
 
         plugin.name = null;
@@ -524,6 +525,11 @@
 
             // get current row data
             var data = plugin.getRowData($row);
+
+            // check if we need to skip some values
+            if (!_.isEmpty(plugin.config.skipOnDuplicate)) {
+              data = _.omit(data, plugin.config.skipOnDuplicate);
+            }
 
             // duplicate current row
             var $newRow = $(plugin.renderRow(data, false, true));

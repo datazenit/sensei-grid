@@ -61,11 +61,19 @@ $(function() {
 
 	// initialize grid
 	var options = {
+    // add an empty row at the end of grid
 		emptyRow: true,
+    // enable sortable callbacks
 		sortable: false,
+    // disable specific keys
 		disableKeys: [],
-		moveOnRowRemove: true
+    // move active cell when a row is removed
+		moveOnRowRemove: true,
+    // skip these cells on duplicate action
+    skipOnDuplicate: ["id"]
 	};
+
+  // initialize grid with data, column mapping and options
 	var grid = $(".sensei-grid-default").grid(data, columns, options);
 
 	// register editors that are bundled with sensei grid
