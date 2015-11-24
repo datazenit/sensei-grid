@@ -22,7 +22,8 @@
                 disableKeys: [],
                 moveOnRowRemove: true,
                 readonly: false,
-                emptyGridMessage: null
+                emptyGridMessage: null,
+                skipOnDuplicate: null
             };
 
         plugin.name = null;
@@ -242,7 +243,7 @@
             plugin.$el.find(".sensei-grid-tbody>tr>td").on("dblclick.grid", plugin.dblClickCell);
             plugin.$el.on("blur.grid", plugin.blur);
             plugin.$el.on("keydown.grid", plugin.keydown);
-            plugin.$el.find(".sensei-grid-tbody>tr>th.sensei-grid-sortable").on("click.grid", plugin.sort);
+            plugin.$el.find(".sensei-grid-thead .sensei-grid-sortable").on("click.grid", plugin.sort);
             $(document).on("click.grid", plugin.editorBlur);
         };
 
@@ -254,7 +255,7 @@
 
         plugin.sort = function () {
             // get column value
-            var col = $(this).text();
+            var col = $(this).data("name");
             var order = "asc";
 
             // remove previous sorting icon
@@ -275,7 +276,7 @@
             // trigger callback
             plugin.events.trigger("column:sort", col, order, $(this));
 
-            plugin.renderData();
+            //plugin.renderData();
         };
 
         plugin.editorBlur = function (e) {
@@ -529,6 +530,11 @@
 
             // get current row data
             var data = plugin.getRowData($row);
+
+            // check if we need to skip some values
+            if (!_.isEmpty(plugin.config.skipOnDuplicate)) {
+              data = _.omit(data, plugin.config.skipOnDuplicate);
+            }
 
             // duplicate current row
             var $newRow = $(plugin.renderRow(data, false, true));
@@ -999,8 +1005,17 @@
             $thead.append(tr);
         };
 
-        plugin.renderData = function () {
+        /**
+         * Render grid data
+         * @param data Optional array of grid data, it will override existing data array
+         */
+        plugin.renderData = function (data) {
             var $tbody = $(".sensei-grid-tbody", plugin.$el);
+
+            // override existing data array
+            if (data) {
+              plugin.data = data;
+            }
 
             // remove existing content from tbody
             $tbody.html(null);

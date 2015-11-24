@@ -64,7 +64,7 @@ $(function() {
     // add an empty row at the end of grid
 		emptyRow: true,
     // enable sortable callbacks
-		sortable: false,
+		sortable: true,
     // disable specific keys
 		disableKeys: [],
     // move active cell when a row is removed
@@ -118,6 +118,16 @@ $(function() {
 		}, 1000);
 	});
 
+  // implement basic sorting
+  grid.events.on("column:sort", function(col, order, $el) {
+    console.info("column sort:", col, order, $el);
+    var sorted = _.sortBy(data, col);
+    if (order === "desc") {
+      sorted = sorted.reverse();
+    }
+    grid.renderData(sorted);
+  });
+
 	// render grid
 	grid.render();
 
@@ -163,6 +173,9 @@ $(function() {
 		type: "string",
 		allowHTML: true
 	}];
+
+  // disable sorting for rest of the grids
+  options.sortable = false;
 
 	var grid2 = $(".sensei-grid-html").grid(data2, columns2, options);
 	grid2.registerEditor(BasicEditor);
