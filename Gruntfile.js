@@ -79,6 +79,10 @@ module.exports = function (grunt) {
             preprocess: {
                 files: ['src/examples/*.html'],
                 tasks: ['preprocess']
+            },
+            tests: {
+                files: ['test/*.js'],
+                tasks: ['jasmine']
             }
         },
         preprocess: {

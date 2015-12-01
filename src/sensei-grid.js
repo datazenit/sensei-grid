@@ -12,7 +12,7 @@
         var plugin = this,
             defaults = {
                 emptyRow: false,
-                sortable: true,
+                sortable: false,
                 tableClass: "table table-bordered table-condensed",
                 disableKeys: [],
                 moveOnRowRemove: true,
