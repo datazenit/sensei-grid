@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.3.10
+ * sensei-grid v0.3.11
  * Copyright (c) 2015 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -17,7 +17,7 @@
         var plugin = this,
             defaults = {
                 emptyRow: false,
-                sortable: true,
+                sortable: false,
                 tableClass: "table table-bordered table-condensed",
                 disableKeys: [],
                 moveOnRowRemove: true,

@@ -76,6 +76,19 @@ Render data grid in ``.example`` container.
 grid.render();
 ```
 
+## Bundled editors
+
+By default Sensei Grid is bundled with several grid editors that can be registered for a data grid.
+
+List of available editors:
+
+- BasicEditor - simple text field to edit basic data
+- BooleanEditor - checkbox editor for boolean values (true/false)
+- TextareaEditor - large text field for editing large text
+- SelectEditor - dropdown select box to choose a value from a list
+- DateEditor - datetime editor to choose a specific date from a calendar, provided by pickadate.js
+- DisabledEditor - sample editor that can't be edited
+
 ## Blog posts
 
 * [Work and open source #2: Sensei Grid](http://lauris.github.io/datazenit/2014/08/29/open-source-work-2-sensei-grid/)
