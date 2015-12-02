@@ -193,6 +193,18 @@
             plugin.bindEvents();
         };
 
+        plugin.updateData = function (data) {
+          plugin.renderData(data);
+
+          // render each editor
+          //_.each(plugin.editors, function (editor) {
+          //  editor.initialize();
+          //  editor.render();
+          //  editor.getElement().hide();
+          //});
+          plugin.bindEvents();
+        };
+
         plugin.destroy = function () {
             plugin.unbindEvents();
             plugin.$el.remove();
@@ -239,7 +251,7 @@
             // unbind previous events
             plugin.unbindEvents();
 
-            plugin.$el.find(".sensei-grid-tbody>tr>td").on("click.grid."+plugin.name, plugin.clickCell);
+            plugin.$el.find(".sensei-grid-tbody>tr>td").on("click.grid", plugin.clickCell);
             plugin.$el.find(".sensei-grid-tbody>tr>td").on("dblclick.grid", plugin.dblClickCell);
             plugin.$el.on("blur.grid", plugin.blur);
             plugin.$el.on("keydown.grid", plugin.keydown);
@@ -248,9 +260,12 @@
         };
 
         plugin.unbindEvents = function () {
-
-            plugin.$el.off(".grid");
-            $(document).off(".grid");
+            plugin.$el.find(".sensei-grid-tbody>tr>td").off("click.grid");
+            plugin.$el.find(".sensei-grid-tbody>tr>td").off("dblclick.grid");
+            plugin.$el.off("blur.grid");
+            plugin.$el.off("keydown.grid");
+            plugin.$el.find(".sensei-grid-thead .sensei-grid-sortable").off("click.grid");
+            $(document).off("click.grid");
         };
 
         plugin.sort = function () {

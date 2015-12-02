@@ -125,7 +125,7 @@ $(function() {
     if (order === "desc") {
       sorted = sorted.reverse();
     }
-    grid.renderData(sorted);
+    grid.updateData(sorted);
   });
 
 	// render grid
@@ -197,5 +197,7 @@ $(function() {
   grid4.registerRowAction(DeleteRowAction);
 
 	grid4.render();
+
+  window.grids = [grid,grid2,grid3,grid4];
 
 });
