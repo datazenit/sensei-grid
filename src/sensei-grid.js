@@ -18,7 +18,8 @@
                 moveOnRowRemove: true,
                 readonly: false,
                 emptyGridMessage: null,
-                skipOnDuplicate: null
+                skipOnDuplicate: null,
+                initialSort: null
             };
 
         plugin.name = null;
@@ -178,6 +179,18 @@
             plugin.renderColumns();
             plugin.renderData();
 
+            // check if we need to show initial sorting
+            if (plugin.config.sortable && _.isObject(plugin.config.initialSort)) {
+              var col = plugin.config.initialSort.col;
+              var $col = plugin.$el.find("th").filter(function () {
+                return $(this).data("name") === col;
+              });
+              if ($col) {
+                plugin.showSortingIndicator($col, plugin.config.initialSort.order);
+              }
+            }
+
+
             // render each editor
             _.each(plugin.editors, function (editor) {
                 editor.initialize();
@@ -256,25 +269,44 @@
             $(document).off("click.grid");
         };
 
-        plugin.sort = function () {
-            // get column value
-            var col = $(this).data("name");
-            var order = "asc";
+        /**
+         * Show sorting indicator on column header
+         * @param $el Column header element
+         * @param order Sorting order: asc|desc
+         */
+        plugin.showSortingIndicator = function ($el, forceOrder) {
+            var order;
 
             // remove previous sorting icon
             plugin.$el.find("th.sensei-grid-sortable .glyphicon").remove();
 
-            if ($(this).data("order") && $(this).data("order") === "asc") {
-                order = "desc";
-                // add sorting icon
-                $(this).append($("<span>").addClass("glyphicon glyphicon-chevron-up"));
+            if (forceOrder === "desc" || ($el.data("order") && $el.data("order") === "asc")) {
+              order = "desc";
+              // add sorting icon
+              $el.append($("<span>").addClass("glyphicon glyphicon-chevron-up"));
             } else {
-                // add sorting icon
-                $(this).append($("<span>").addClass("glyphicon glyphicon-chevron-down"));
+              order = "asc";
+              // add sorting icon
+              $el.append($("<span>").addClass("glyphicon glyphicon-chevron-down"));
+            }
+
+            if (forceOrder) {
+              order = forceOrder;
             }
 
             // save sort order
-            $(this).data("order", order);
+            $el.data("order", order);
+
+            return order;
+        };
+
+        plugin.sort = function () {
+            // get column value
+            var col = $(this).data("name");
+            //var order = "asc";
+
+            // show sorting indicator on column header
+            var order = plugin.showSortingIndicator($(this), order);
 
             // trigger callback
             plugin.events.trigger("column:sort", col, order, $(this));

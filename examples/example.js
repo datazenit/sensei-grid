@@ -70,7 +70,9 @@ $(function() {
     // move active cell when a row is removed
 		moveOnRowRemove: true,
     // skip these cells on duplicate action
-    skipOnDuplicate: ["id"]
+    skipOnDuplicate: ["id"],
+    // set the initial order of table
+    initialSort: {col: "id", order: "asc"}
 	};
 
   // initialize grid with data, column mapping and options
