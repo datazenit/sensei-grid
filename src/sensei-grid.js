@@ -190,13 +190,6 @@
 
         plugin.updateData = function (data) {
           plugin.renderData(data);
-
-          // render each editor
-          //_.each(plugin.editors, function (editor) {
-          //  editor.initialize();
-          //  editor.render();
-          //  editor.getElement().hide();
-          //});
           plugin.bindEvents();
         };
 
