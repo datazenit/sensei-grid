@@ -836,14 +836,21 @@
 
           // toggle row select state
           if (forceSelect) {
-            $cell.parents("tr").addClass("selectedRow");
+            $cell.parent().addClass("selectedRow");
           } else {
-            $cell.parents("tr").toggleClass("selectedRow");
+            $cell.parent().toggleClass("selectedRow");
+          }
+
+
+          if ($cell.parent().hasClass("selectedRow")) {
+            plugin.events.trigger("row:mark", $cell.parent());
+          } else {
+            plugin.events.trigger("row:unmark", $cell.parent());
           }
         };
 
         plugin.selectAll = function () {
-          var $rows = plugin.getRows()
+          var $rows = plugin.getRows();
           $rows.each(function () {
               plugin.selectRow($(this));
           })

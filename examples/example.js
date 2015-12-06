@@ -112,6 +112,12 @@ $(function() {
 	grid.events.on("row:remove", function(data, row, $row) {
 		console.info("row remove:", data, row, $row);
 	});
+  grid.events.on("row:mark", function($row) {
+    console.info("row mark:", $row);
+  });
+  grid.events.on("row:unmark", function($row) {
+    console.info("row unmark:", $row);
+  });
 	grid.events.on("row:save", function(data, $row, source) {
 		console.info("row save:", source, data);
 		// save row via ajax or any other way
