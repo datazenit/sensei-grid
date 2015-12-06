@@ -806,6 +806,16 @@
             }
         };
 
+        plugin.selectRow = function ($row, forceSelect) {
+          // check if row can be selected
+          if (!plugin.config.selectable) {
+            return;
+          }
+
+          var $cell = $row.find(".selectable");
+          plugin.selectCell($cell, forceSelect);
+        };
+
         plugin.selectCell = function ($cell, forceSelect) {
 
           // check if "this" is a selectable cell
@@ -904,18 +914,18 @@
                 case 38: // up
 
                     // check if current cell is selectable and shift key is pressed
-                    if (e.shiftKey && $activeCell && $activeCell.hasClass("selectable")) {
+                    if (e.shiftKey && plugin.config.selectable) {
                       // select cell/row
-                      plugin.selectCell($activeCell, true);
+                      plugin.selectRow($activeCell.parent(), true);
                     }
 
                     plugin.move("up");
 
                     $nextCell = plugin.getActiveCell();
                     // check if next cell is selectable and shift key is pressed
-                    if (e.shiftKey && $nextCell && $nextCell.hasClass("selectable")) {
+                    if (e.shiftKey && plugin.config.selectable) {
                       // select cell/row
-                      plugin.selectCell($nextCell, true);
+                      plugin.selectRow($nextCell.parent(), true);
                     }
 
                     break;
@@ -925,18 +935,18 @@
                 case 40: // down
 
                     // check if current cell is selectable and shift key is pressed
-                    if (e.shiftKey && $activeCell && $activeCell.hasClass("selectable")) {
+                    if (e.shiftKey && plugin.config.selectable) {
                       // select cell/row
-                      plugin.selectCell($activeCell, true);
+                      plugin.selectRow($activeCell.parent(), true);
                     }
 
                     plugin.move("down");
 
                     $nextCell = plugin.getActiveCell();
                     // check if next cell is selectable and shift key is pressed
-                    if (e.shiftKey && $nextCell && $nextCell.hasClass("selectable")) {
+                    if (e.shiftKey && plugin.config.selectable) {
                       // select cell/row
-                      plugin.selectCell($nextCell, true);
+                      plugin.selectRow($nextCell.parent(), true);
                     }
                     break;
                 case 13: // enter
@@ -1000,12 +1010,11 @@
                     }
                     break;
                 case 32: // space
-                    // check if cell is selectable checkbox wrapper
-                    if ($activeCell && $activeCell.hasClass("selectable")) {
-                      // select cell/row
-                      plugin.selectCell($activeCell);
+                    // check if row is selectable
+                    if ($activeCell && plugin.config.selectable) {
+                      // select row
+                      plugin.selectRow($activeCell.parent());
                     }
-
                     break;
                 case 8: // backspace
                     if (e.ctrlKey || e.metaKey) {
