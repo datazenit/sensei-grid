@@ -806,7 +806,7 @@
             }
         };
 
-        plugin.selectCell = function ($cell) {
+        plugin.selectCell = function ($cell, forceSelect) {
 
           // check if "this" is a selectable cell
           // "this" will be a dom element if selectCell is called as a callback to dom event
@@ -816,11 +816,15 @@
             // toggle checkbox state because if "this" is not a dom element, selectCell is not called as callback to
             // dom event and checkbox state is unchanged
             var $checkbox = $cell.find(":checkbox");
-            $checkbox.prop("checked", !$checkbox.prop("checked"));
+            $checkbox.prop("checked", forceSelect || !$checkbox.prop("checked"));
           }
 
           // toggle row select state
-          $cell.parents("tr").toggleClass("selectedRow");
+          if (forceSelect) {
+            $cell.parents("tr").addClass("selectedRow");
+          } else {
+            $cell.parents("tr").toggleClass("selectedRow");
+          }
         };
 
         plugin.showEditor = function () {
@@ -891,18 +895,49 @@
                 e.preventDefault();
             }
 
+            var $nextCell;
+
             switch (e.which) {
                 case 37: // left
                     plugin.move("left");
                     break;
                 case 38: // up
+
+                    // check if current cell is selectable and shift key is pressed
+                    if (e.shiftKey && $activeCell && $activeCell.hasClass("selectable")) {
+                      // select cell/row
+                      plugin.selectCell($activeCell, true);
+                    }
+
                     plugin.move("up");
+
+                    $nextCell = plugin.getActiveCell();
+                    // check if next cell is selectable and shift key is pressed
+                    if (e.shiftKey && $nextCell && $nextCell.hasClass("selectable")) {
+                      // select cell/row
+                      plugin.selectCell($nextCell, true);
+                    }
+
                     break;
                 case 39: // right
                     plugin.move("right");
                     break;
                 case 40: // down
+
+                    // check if current cell is selectable and shift key is pressed
+                    if (e.shiftKey && $activeCell && $activeCell.hasClass("selectable")) {
+                      // select cell/row
+                      plugin.selectCell($activeCell, true);
+                    }
+
                     plugin.move("down");
+
+                    $nextCell = plugin.getActiveCell();
+                    // check if next cell is selectable and shift key is pressed
+                    if (e.shiftKey && $nextCell && $nextCell.hasClass("selectable")) {
+                      // select cell/row
+                      plugin.selectCell($nextCell, true);
+                    }
                     break;
                 case 13: // enter
 
@@ -1136,13 +1171,14 @@
             }
 
             if (plugin.config.selectable) {
-              var td = document.createElement("td");
+              var $td = $("<td><div></div></td>");
+              //var td = document.createElement("td");
               if (saved) {
-                var checkbox = $("<div><input type=checkbox></div>")[0];
-                td.appendChild(checkbox);
-                td.className = "selectable";
+                var $checkbox = $("<input type=checkbox>");
+                $td.find("div").append($checkbox);
+                $td.prop("class", "selectable");
               }
-              tr.appendChild(td);
+              tr.appendChild($td[0]);
             }
 
             _.each(plugin.columns, function (column) {
