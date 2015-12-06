@@ -457,6 +457,10 @@
             return plugin.$el.find(".sensei-grid-tbody>tr");
         };
 
+        plugin.getSelectedRows = function () {
+          return plugin.$el.find(".sensei-grid-tbody>tr.selectedRow");
+        };
+
         plugin.getGridData = function () {
             var $rows = plugin.getRows();
             return $rows.map(function () {
@@ -839,10 +843,10 @@
         };
 
         plugin.selectAll = function () {
-          var rows = plugin.getRows()
-          _.each(rows, function (row) {
-            plugin.selectRow($(row));
-          });
+          var $rows = plugin.getRows()
+          $rows.each(function () {
+              plugin.selectRow($(this));
+          })
         };
 
         plugin.showEditor = function () {
