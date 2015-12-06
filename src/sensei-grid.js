@@ -258,7 +258,8 @@
             plugin.$el.on("blur.grid", plugin.blur);
             plugin.$el.on("keydown.grid", plugin.keydown);
             plugin.$el.find(".sensei-grid-thead .sensei-grid-sortable").on("click.grid", plugin.sort);
-            plugin.$el.find(".sensei-grid-tbody td.selectable").on("change.grid", plugin.selectCell);
+            plugin.$el.find(".sensei-grid-tbody td.selectable :checkbox").on("change.grid", plugin.selectCell);
+            plugin.$el.find(".sensei-grid-thead th.selectable :checkbox").on("change.grid", plugin.selectAll);
             $(document).on("click.grid", plugin.editorBlur);
         };
 
@@ -268,7 +269,8 @@
             plugin.$el.off("blur.grid");
             plugin.$el.off("keydown.grid");
             plugin.$el.find(".sensei-grid-thead .sensei-grid-sortable").off("click.grid");
-            plugin.$el.find(".sensei-grid-tbody td.selectable").off("change.grid");
+            plugin.$el.find(".sensei-grid-tbody td.selectable :checkbox").off("change.grid");
+            plugin.$el.find(".sensei-grid-thead th.selectable :checkbox").off("change.grid");
             $(document).off("click.grid");
         };
 
@@ -817,11 +819,10 @@
         };
 
         plugin.selectCell = function ($cell, forceSelect) {
-
           // check if "this" is a selectable cell
           // "this" will be a dom element if selectCell is called as a callback to dom event
-          if ($(this) && $(this).hasClass("selectable")) {
-            $cell = $(this);
+          if ($(this) && $(this).is("input")) {
+            $cell = $(this).parents("td.selectable");
           } else {
             // toggle checkbox state because if "this" is not a dom element, selectCell is not called as callback to
             // dom event and checkbox state is unchanged
@@ -835,6 +836,13 @@
           } else {
             $cell.parents("tr").toggleClass("selectedRow");
           }
+        };
+
+        plugin.selectAll = function () {
+          var rows = plugin.getRows()
+          _.each(rows, function (row) {
+            plugin.selectRow($(row));
+          });
         };
 
         plugin.showEditor = function () {
