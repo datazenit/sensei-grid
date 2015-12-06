@@ -125,3 +125,13 @@
     width:1%;
     white-space:nowrap;
 }
+
+/* selectable styles */
+.sensei-grid th.selectable input,
+.sensei-grid td.selectable input {
+   margin-left: 2px;
+}
+.sensei-grid .selectedRow,
+.sensei-grid .activeRow.selectedRow {
+    background-color: #FFFFE0;
+}

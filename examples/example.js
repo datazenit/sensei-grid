@@ -72,7 +72,8 @@ $(function() {
     // skip these cells on duplicate action
     skipOnDuplicate: ["id"],
     // set the initial order of table
-    initialSort: {col: "id", order: "asc"}
+    initialSort: {col: "id", order: "asc"},
+    selectable: true
 	};
 
   // initialize grid with data, column mapping and options
