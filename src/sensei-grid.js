@@ -542,6 +542,15 @@
          */
         plugin.removeActiveRow = function () {
 
+            // check if any rows are selected
+            var $selectedRows = plugin.getSelectedRows();
+            if ($selectedRows.length > 0) {
+              $selectedRows.each(function () {
+                plugin.removeRow($(this));
+              });
+              return;
+            }
+
             // get active cell
             var $cell = plugin.getActiveCell();
 
