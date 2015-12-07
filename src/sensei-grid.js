@@ -423,7 +423,7 @@
         };
 
         plugin.getRowCells = function ($row) {
-            return $row.find("td");
+            return $row.find("td:not(.selectable)");
         };
 
         plugin.getRowByIndex = function (index) {
@@ -1204,7 +1204,7 @@
                 $tbody.append(tr);
             });
 
-            if (plugin.config["emptyRow"]) {
+            if (plugin.config.emptyRow) {
                 // render empty row at the end of table
                 var tr = plugin.renderRow(null, false);
                 $tbody.append(tr);
@@ -1236,8 +1236,8 @@
               if (saved) {
                 var $checkbox = $("<input type=checkbox>");
                 $td.find("div").append($checkbox);
-                $td.prop("class", "selectable");
               }
+              $td.prop("class", "selectable");
               tr.appendChild($td[0]);
             }
 
