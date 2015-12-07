@@ -253,34 +253,39 @@
             // unbind previous events
             plugin.unbindEvents();
 
-            plugin.$el.find(".sensei-grid-tbody>tr>td").on("click.grid", plugin.clickCell);
-            plugin.$el.find(".sensei-grid-tbody>tr>td").on("dblclick.grid", plugin.dblClickCell);
+            plugin.$el.on("click.grid", ".sensei-grid-tbody>tr>td", plugin.clickCell);
+            plugin.$el.on("dblclick.grid", ".sensei-grid-tbody>tr>td", plugin.dblClickCell);
             plugin.$el.on("blur.grid", plugin.blur);
             plugin.$el.on("keydown.grid", plugin.keydown);
-            plugin.$el.find(".sensei-grid-thead .sensei-grid-sortable").on("click.grid", plugin.sort);
-            plugin.$el.find(".sensei-grid-tbody td.selectable :checkbox").on("change.grid", plugin.selectCell);
-            plugin.$el.find(".sensei-grid-thead th.selectable :checkbox").on("change.grid", plugin.selectAll);
+            plugin.$el.on("click.grid", ".sensei-grid-thead .sensei-grid-sortable", plugin.sort);
+            plugin.$el.on("change.grid", ".sensei-grid-tbody td.selectable :checkbox", plugin.selectCell);
+            plugin.$el.on("change.grid", ".sensei-grid-thead th.selectable :checkbox", plugin.selectAll);
             $(document).on("click.grid", plugin.editorBlur);
         };
 
         plugin.unbindEvents = function () {
-            plugin.$el.find(".sensei-grid-tbody>tr>td").off("click.grid");
-            plugin.$el.find(".sensei-grid-tbody>tr>td").off("dblclick.grid");
+            plugin.$el.off("click.grid", ".sensei-grid-tbody>tr>td");
+            plugin.$el.off("dblclick.grid", ".sensei-grid-tbody>tr>td");
             plugin.$el.off("blur.grid");
             plugin.$el.off("keydown.grid");
-            plugin.$el.find(".sensei-grid-thead .sensei-grid-sortable").off("click.grid");
-            plugin.$el.find(".sensei-grid-tbody td.selectable :checkbox").off("change.grid");
-            plugin.$el.find(".sensei-grid-thead th.selectable :checkbox").off("change.grid");
+            plugin.$el.off("click.grid", plugin.sort);
+            plugin.$el.off("change.grid", ".sensei-grid-tbody td.selectable :checkbox");
+            plugin.$el.off("change.grid", ".sensei-grid-thead th.selectable :checkbox");
             $(document).off("click.grid");
         };
 
         /**
          * Show sorting indicator on column header
          * @param $el Column header element
-         * @param order Sorting order: asc|desc
+         * @param forceOrder Sorting order: asc|desc
          */
         plugin.showSortingIndicator = function ($el, forceOrder) {
             var order;
+
+            // remove row selections
+            plugin.$el.find("thead th.selectable :checkbox").prop("checked", false);
+            plugin.$el.find("tbody td.selectable :checkbox").prop("checked", false);
+            plugin.$el.find("tbody tr.selectedRow").removeClass("selectedRow");
 
             // remove previous sorting icon
             plugin.$el.find("th.sensei-grid-sortable .glyphicon").remove();
