@@ -484,6 +484,7 @@
         plugin.setRowSaved = function ($row) {
             $row.removeClass("sensei-grid-dirty-row").removeClass("sensei-grid-empty-row");
             $row.find(">td").data("saved", true);
+            $row.find(">td.selectable").html($("<input type=checkbox>"));
         };
 
         plugin.setRowDirty = function ($row) {
@@ -844,6 +845,11 @@
             } else {
               $checkbox.prop("checked", !$checkbox.prop("checked"));
             }
+          }
+
+          // don't select empty row
+          if ($cell.parent().hasClass("sensei-grid-empty-row")) {
+            return;
           }
 
           // toggle row select state
