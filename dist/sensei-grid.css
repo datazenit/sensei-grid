@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.3.13
+ * sensei-grid v0.3.14
  * Copyright (c) 2015 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -129,4 +129,14 @@
 .sensei-grid td.row-action {
     width:1%;
     white-space:nowrap;
+}
+
+/* selectable styles */
+.sensei-grid th.selectable input,
+.sensei-grid td.selectable input {
+   margin-left: 2px;
+}
+.sensei-grid .selectedRow,
+.sensei-grid .activeRow.selectedRow {
+    background-color: #FFFFE0;
 }

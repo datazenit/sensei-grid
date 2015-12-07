@@ -894,7 +894,7 @@
           var $rows = plugin.getRows();
           $rows.each(function () {
               plugin.selectRow($(this), forceSelect, forceUnselect);
-          })
+          });
         };
 
         plugin.showEditor = function () {
