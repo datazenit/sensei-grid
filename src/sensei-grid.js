@@ -812,14 +812,14 @@
             }
         };
 
-        plugin.selectRow = function ($row, forceSelect) {
+        plugin.selectRow = function ($row, forceSelect, forceUnselect) {
           // check if row can be selected
           if (!plugin.config.selectable) {
             return;
           }
 
           var $cell = $row.find(".selectable");
-          plugin.selectCell($cell, forceSelect);
+          plugin.selectCell($cell, forceSelect, forceUnselect);
         };
 
         plugin.selectCell = function ($cell, forceSelect, forceUnselect) {
@@ -835,7 +835,7 @@
             if (forceSelect) {
               $checkbox.prop("checked", true);
             } else if (forceUnselect) {
-              $checkbox.prop("checked", true);
+              $checkbox.prop("checked", false);
             } else {
               $checkbox.prop("checked", !$checkbox.prop("checked"));
             }
@@ -863,10 +863,12 @@
           var forceSelect = true;
           var forceUnselect = false;
 
+          var $checkbox = plugin.$el.find("thead th.selectable :checkbox");
+
           // check if current checkbox is unchecked
-          if ($(this) && $(this).is(":checkbox") && !$(this).is(":checked")) {
+          if ($checkbox && !$checkbox.is(":checked")) {
             forceSelect = false;
-            forceUnselect = false;
+            forceUnselect = true;
           }
 
           var $rows = plugin.getRows();
@@ -918,10 +920,10 @@
             var preventDefault = true;
 
             // all keyCodes that will be used
-            var codes = [8, 9, 13, 27, 32, 37, 38, 39, 40, 90, 89, 68];
+            var codes = [8, 9, 13, 27, 32, 37, 38, 39, 40, 65, 68, 89, 90];
 
             // specific keyCodes that won't be hijacked from the editor
-            var editorCodes = [8, 32, 37, 38, 39, 40, 68, 90, 89];
+            var editorCodes = [8, 32, 37, 38, 39, 40, 65, 68, 89, 90];
 
             // get active cell
             var $activeCell = plugin.getActiveCell();
@@ -1059,6 +1061,17 @@
                         plugin.removeActiveRow();
                     } else {
                         plugin.clearActiveCell();
+                    }
+                    break;
+                case 65: // "a" key
+                    if (e.ctrlKey || e.metaKey || e.shiftKey) {
+
+                      // toggle main selectable checkbox
+                      var $checkbox = plugin.$el.find("thead th.selectable :checkbox");
+                      $checkbox.prop("checked", !$checkbox.prop("checked"));
+
+                      // toggle select all rows
+                      plugin.selectAll();
                     }
                     break;
                 case 90: // undo
