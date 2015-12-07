@@ -1084,7 +1084,7 @@
                     }
                     break;
                 case 65: // "a" key
-                    if (e.ctrlKey || e.metaKey || e.shiftKey) {
+                    if (plugin.config.selectable && (e.ctrlKey || e.metaKey || e.shiftKey)) {
 
                       // toggle main selectable checkbox
                       var $checkbox = plugin.$el.find("thead th.selectable :checkbox");

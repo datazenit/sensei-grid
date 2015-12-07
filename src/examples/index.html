@@ -1,167 +1,186 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Sensei Grid</title>
+  <title>Sensei Grid</title>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- CSS dependecies -->
-    <link rel="stylesheet" type="text/css" href="../lib/bootstrap/dist/css/bootstrap.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../lib/pickadate/lib/themes/classic.css"/>
-    <link rel="stylesheet" type="text/css" href="../lib/pickadate/lib/themes/classic.date.css"/>
-    <link rel="stylesheet" type="text/css" href="../lib/fontawesome/css/font-awesome.min.css"/>
-    <link rel="stylesheet" type="text/css" href="../lib/summernote/dist/summernote.css"/>
+  <!-- CSS dependecies -->
+  <link rel="stylesheet" type="text/css" href="../lib/bootstrap/dist/css/bootstrap.min.css"/>
+  <link rel="stylesheet" type="text/css" href="../lib/pickadate/lib/themes/classic.css"/>
+  <link rel="stylesheet" type="text/css" href="../lib/pickadate/lib/themes/classic.date.css"/>
+  <link rel="stylesheet" type="text/css" href="../lib/fontawesome/css/font-awesome.min.css"/>
+  <link rel="stylesheet" type="text/css" href="../lib/summernote/dist/summernote.css"/>
 
-    <!-- Sensei Grid CSS -->
-    <link rel="stylesheet" type="text/css" href="../src/css/sensei-grid.css?v=<!-- @echo now -->"/>
+  <!-- Sensei Grid CSS -->
+  <link rel="stylesheet" type="text/css" href="../src/css/sensei-grid.css?v=<!-- @echo now -->"/>
 
-    <!-- JS dependencies -->
-    <script src="../lib/jquery/dist/jquery.min.js"></script>
-    <script src="../lib/lodash/dist/lodash.min.js"></script>
-    <script src="../lib/pickadate/lib/picker.js"></script>
-    <script src="../lib/pickadate/lib/picker.date.js"></script>
-    <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
-    <script src="../lib/summernote/dist/summernote.js"></script>
+  <!-- JS dependencies -->
+  <script src="../lib/jquery/dist/jquery.min.js"></script>
+  <script src="../lib/lodash/dist/lodash.min.js"></script>
+  <script src="../lib/pickadate/lib/picker.js"></script>
+  <script src="../lib/pickadate/lib/picker.date.js"></script>
+  <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
+  <script src="../lib/summernote/dist/summernote.js"></script>
 
-    <!-- Sensei Grid JS -->
-    <script src="../src/sensei-grid.js?v=<!-- @echo now -->"></script>
-    <script src="../src/sensei-editors.js?v=<!-- @echo now -->"></script>
-    <script src="../src/sensei-row-actions.js?v=<!-- @echo now -->"></script>
-    <script src="example.js?v=<!-- @echo now -->"></script>
+  <!-- Sensei Grid JS -->
+  <script src="../src/sensei-grid.js?v=<!-- @echo now -->"></script>
+  <script src="../src/sensei-editors.js?v=<!-- @echo now -->"></script>
+  <script src="../src/sensei-row-actions.js?v=<!-- @echo now -->"></script>
+  <script src="example.js?v=<!-- @echo now -->"></script>
 
-    <!-- Custom CSS for this example -->
-    <style type="text/css">
-        .example {
-            width: 940px;
-            margin: 50px auto;
-            padding: 0 20px;
-        }
-        .sensei-grid {
-            margin-bottom: 20px;
-        }
-        h1 {
-            font-weight: bold;
-            line-height: normal;
-        }
-    </style>
+  <!-- Custom CSS for this example -->
+  <style type="text/css">
+    .example {
+      width: 940px;
+      margin: 50px auto;
+      padding: 0 20px;
+    }
+
+    .sensei-grid {
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-weight: bold;
+      line-height: normal;
+    }
+  </style>
 
 </head>
 <body>
 <div class="example">
 
-    <div class="page-header">
-        <h1>Sensei Grid <small>Simple and lightweight data grid in JS/HTML</small></h1>
-        <p>
-            This is just a demo, for more info head to <a href="https://github.com/datazenit/sensei-grid">GitHub repository</a>.
-            Sensei Grid is an open source project by <a href="http://datazenit.com">Datazenit</a>.
-        </p>
-    </div>
+  <div class="page-header">
+    <h1>Sensei Grid
+      <small>Simple and lightweight data grid in JS/HTML</small>
+    </h1>
+    <p>
+      This is just a demo, for more info head to <a href="https://github.com/datazenit/sensei-grid">GitHub
+      repository</a>.
+      Sensei Grid is an open source project by <a href="http://datazenit.com">Datazenit</a>.
+    </p>
+  </div>
 
-<div>
+  <div>
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-        <li class="active"><a href="#defaultdemo" role="tab" data-toggle="tab">Full Demo</a></li>
-        <li><a href="#htmldemo" role="tab" data-toggle="tab">HTML in Grid Demo</a></li>
-        <li><a href="#readonly" role="tab" data-toggle="tab">Read-only Grid</a></li>
-        <li><a href="#rowactions" role="tab" data-toggle="tab">Row Actions</a></li>
+      <li class="active"><a href="#defaultdemo" role="tab" data-toggle="tab">Full Demo</a></li>
+      <li><a href="#htmldemo" role="tab" data-toggle="tab">HTML in Grid Demo</a></li>
+      <li><a href="#readonly" role="tab" data-toggle="tab">Read-only Grid</a></li>
+      <li><a href="#rowactions" role="tab" data-toggle="tab">Row Actions</a></li>
     </ul>
     <br>
     <!-- Tab panes -->
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="defaultdemo">
-            <div class="sensei-grid sensei-grid-default"></div>
+      <div role="tabpanel" class="tab-pane active" id="defaultdemo">
+        <div class="sensei-grid sensei-grid-default"></div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="htmldemo">
+        <div class="sensei-grid sensei-grid-html"></div>
+        <div class="alert alert-info">HTML can be allowed in cells by setting <code>allowHTML: true</code> in column
+          definition object.
         </div>
-        <div role="tabpanel" class="tab-pane" id="htmldemo">
-            <div class="sensei-grid sensei-grid-html"></div>
-            <div class="alert alert-info">HTML can be allowed in cells by setting <code>allowHTML: true</code> in column definition object.</div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="readonly">
-            <div class="sensei-grid sensei-grid-readonly"></div>
-        </div>
-        <div role="tabpanel" class="tab-pane" id="rowactions">
-            <div class="sensei-grid sensei-grid-rowactions"></div>
-        </div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="readonly">
+        <div class="sensei-grid sensei-grid-readonly"></div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="rowactions">
+        <div class="sensei-grid sensei-grid-rowactions"></div>
+      </div>
     </div>
 
-</div>
+  </div>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th colspan="2">Keyboard shortcuts when the editor <strong>is not active</strong></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td style="width:320px"><code>left, right, up, down</code></td>
-            <td>move active cell</td>
-        </tr>
-        <tr>
-            <td><code>esc</code></td>
-            <td>move focus away from grid and remove highlight from active cell and row</td>
-        </tr>
-        <tr>
-            <td><code>enter</code></td>
-            <td>open cell editor</td>
-        </tr>
-        <tr>
-            <td><code>backspace</code></td>
-            <td>clear contents of active cell</td>
-        </tr>
-        <tr>
-            <td><code>ctrl + backspace</code> or <code>⌘ + backspace</code></td>
-            <td>remove row</td>
-        </tr>
-        <tr>
-            <td><code>ctrl + d</code> or <code>shift + d</code></td>
-            <td>duplicate row</td>
-        </tr>
-        <tr>
-            <td><code>ctrl + z</code> or <code>⌘ + z</code></td>
-            <td>undo</td>
-        </tr>
-        <tr>
-            <td><code>ctrl + y</code> or <code>⌘ + y</code></td>
-            <td>redo</td>
-        </tr>
-        </tbody>
-    </table>
+  <table class="table">
+    <thead>
+    <tr>
+      <th colspan="2">Keyboard shortcuts when the editor <strong>is not active</strong></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td style="width:320px"><code>left, right, up, down</code></td>
+      <td>move active cell</td>
+    </tr>
+    <tr>
+      <td><code>esc</code></td>
+      <td>move focus away from grid and remove highlight from active cell and row</td>
+    </tr>
+    <tr>
+      <td><code>enter</code></td>
+      <td>open cell editor</td>
+    </tr>
+    <tr>
+      <td><code>space</code></td>
+      <td>toggle selected state of row</td>
+    </tr>
+    <tr>
+      <td><code>shift+down/up</code></td>
+      <td>move down/up and select rows</td>
+    </tr>
+    <tr>
+      <td><code>ctrl+a</code> or <code>shift+a</code> or <code>cmd+a</code></td>
+      <td>select/deselect all rows</td>
+    </tr>
+    <tr>
+      <td><code>backspace</code></td>
+      <td>clear contents of active cell</td>
+    </tr>
+    <tr>
+      <td><code>ctrl + backspace</code> or <code>⌘ + backspace</code></td>
+      <td>remove active row or selected rows if any</td>
+    </tr>
+    <tr>
+      <td><code>ctrl + d</code> or <code>shift + d</code></td>
+      <td>duplicate row</td>
+    </tr>
+    <tr>
+      <td><code>ctrl + z</code> or <code>⌘ + z</code></td>
+      <td>undo</td>
+    </tr>
+    <tr>
+      <td><code>ctrl + y</code> or <code>⌘ + y</code></td>
+      <td>redo</td>
+    </tr>
+    </tbody>
+  </table>
 
-    <table class="table">
-        <thead>
-        <tr>
-            <th colspan="2">Keyboard shortcuts when the editor <strong>is active</strong></th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <td style="width:320px"><code>ctrl + enter</code></td>
-            <td>move editor down</td>
-        </tr>
-        <tr>
-            <td><code>ctrl + shift + enter</code></td>
-            <td>move editor up</td>
-        </tr>
-        <tr>
-            <td><code>enter</code></td>
-            <td>exit editor and save</td>
-        </tr>
-        <tr>
-            <td><code>tab</code></td>
-            <td>move forward</td>
-        </tr>
-        <tr>
-            <td><code>shift + tab</code></td>
-            <td>move backward</td>
-        </tr>
-        <tr>
-            <td><code>esc</code></td>
-            <td>exit editor without saving</td>
-        </tr>
-        </tbody>
-    </table>
+  <table class="table">
+    <thead>
+    <tr>
+      <th colspan="2">Keyboard shortcuts when the editor <strong>is active</strong></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td style="width:320px"><code>ctrl + enter</code></td>
+      <td>move editor down</td>
+    </tr>
+    <tr>
+      <td><code>ctrl + shift + enter</code></td>
+      <td>move editor up</td>
+    </tr>
+    <tr>
+      <td><code>enter</code></td>
+      <td>exit editor and save</td>
+    </tr>
+    <tr>
+      <td><code>tab</code></td>
+      <td>move forward</td>
+    </tr>
+    <tr>
+      <td><code>shift + tab</code></td>
+      <td>move backward</td>
+    </tr>
+    <tr>
+      <td><code>esc</code></td>
+      <td>exit editor without saving</td>
+    </tr>
+    </tbody>
+  </table>
 </div>
 </body>
 </html>
