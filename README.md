@@ -33,7 +33,7 @@ stylesheet or you can just use bootstrap.css as shown in the example below.
 <link rel="stylesheet" type="text/css" href="lib/bootstrap/dist/css/bootstrap.min.css"/>
 
 <script src="lib/jquery/dist/jquery.min.js"></script>
-<script src="lib/lodash/dist/lodash.min.js"></script>
+<script src="lib/lodash/lodash.min.js"></script>
 <script src="dist/sensei-grid.js"></script>
 ```
 

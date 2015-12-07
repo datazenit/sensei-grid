@@ -27,7 +27,7 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "lodash": "~2.4.1",
+    "lodash": "~3.10.1",
     "pickadate": "~3.5.4",
     "summernote": "~0.5.10",
     "jquery": "~2.1.4"

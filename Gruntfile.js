@@ -69,7 +69,7 @@ module.exports = function (grunt) {
         jasmine: {
             src: ['src/sensei-grid.js', 'src/sensei-editors.js'],
             options: {
-                vendor: ['lib/jquery/dist/jquery.js', 'lib/lodash/dist/lodash.js'],
+                vendor: ['lib/jquery/dist/jquery.js', 'lib/lodash/lodash.min.js'],
                 specs: 'test/*Spec.js',
                 helpers: ["test/helpers.js"],
                 styles: ['src/css/sensei-grid.css']
