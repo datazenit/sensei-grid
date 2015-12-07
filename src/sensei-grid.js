@@ -822,7 +822,7 @@
           plugin.selectCell($cell, forceSelect);
         };
 
-        plugin.selectCell = function ($cell, forceSelect) {
+        plugin.selectCell = function ($cell, forceSelect, forceUnselect) {
           // check if "this" is a selectable cell
           // "this" will be a dom element if selectCell is called as a callback to dom event
           if ($(this) && $(this).is("input")) {
@@ -831,12 +831,21 @@
             // toggle checkbox state because if "this" is not a dom element, selectCell is not called as callback to
             // dom event and checkbox state is unchanged
             var $checkbox = $cell.find(":checkbox");
-            $checkbox.prop("checked", forceSelect || !$checkbox.prop("checked"));
+
+            if (forceSelect) {
+              $checkbox.prop("checked", true);
+            } else if (forceUnselect) {
+              $checkbox.prop("checked", true);
+            } else {
+              $checkbox.prop("checked", !$checkbox.prop("checked"));
+            }
           }
 
           // toggle row select state
           if (forceSelect) {
             $cell.parent().addClass("selectedRow");
+          } else if (forceUnselect) {
+            $cell.parent().removeClass("selectedRow");
           } else {
             $cell.parent().toggleClass("selectedRow");
           }
@@ -850,9 +859,19 @@
         };
 
         plugin.selectAll = function () {
+          // forced states
+          var forceSelect = true;
+          var forceUnselect = false;
+
+          // check if current checkbox is unchecked
+          if ($(this) && $(this).is(":checkbox") && !$(this).is(":checked")) {
+            forceSelect = false;
+            forceUnselect = false;
+          }
+
           var $rows = plugin.getRows();
           $rows.each(function () {
-              plugin.selectRow($(this));
+              plugin.selectRow($(this), forceSelect, forceUnselect);
           })
         };
 
