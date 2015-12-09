@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.3.14
+ * sensei-grid v0.3.15
  * Copyright (c) 2015 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
