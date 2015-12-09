@@ -555,7 +555,7 @@
             var $cell = plugin.getActiveCell();
 
             // can't remove a row if there is no active cell
-            if (!$cell) {
+            if ($cell.length === 0) {
                 return false;
             }
 
@@ -945,10 +945,14 @@
             // specific keyCodes that won't be hijacked from the editor
             var editorCodes = [8, 32, 37, 38, 39, 40, 65, 68, 89, 90];
 
+            // loose keyCodes that don't need an active cell to work
+            var looseCodes = [8];
+
             // get active cell
             var $activeCell = plugin.getActiveCell();
 
-            if ((plugin.getActiveCell().length === 0 && !plugin.isEditing) || !_.contains(codes, e.which)) {
+            if ((plugin.getActiveCell().length === 0 && !plugin.isEditing && !_.contains(looseCodes, e.which))
+                || !_.contains(codes, e.which)) {
                 return;
             }
 
