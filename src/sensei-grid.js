@@ -951,8 +951,8 @@
             // get active cell
             var $activeCell = plugin.getActiveCell();
 
-            if ((plugin.getActiveCell().length === 0 && !plugin.isEditing && !_.contains(looseCodes, e.which))
-                || !_.contains(codes, e.which)) {
+            if ((plugin.getActiveCell().length === 0 && !plugin.isEditing && !_.contains(looseCodes, e.which)) ||
+                !_.contains(codes, e.which)) {
                 return;
             }
 
