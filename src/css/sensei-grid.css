@@ -15,6 +15,13 @@
     white-space: nowrap;
     overflow: hidden;
 }
+/** shrink all cells except the last one */
+.sensei-grid>table td:not(:last-child) {
+    white-space: nowrap;
+}
+.sensei-grid>table td:last-child {
+    width: 100%;
+}
 .sensei-grid>table td>div,
 .sensei-grid>table th>div {
     overflow: hidden;

@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.3.15
+ * sensei-grid v0.3.16
  * Copyright (c) 2015 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -19,6 +19,13 @@
 .sensei-grid>table th {
     white-space: nowrap;
     overflow: hidden;
+}
+/** shrink all cells except the last one */
+.sensei-grid>table td:not(:last-child) {
+    white-space: nowrap;
+}
+.sensei-grid>table td:last-child {
+    width: 100%;
 }
 .sensei-grid>table td>div,
 .sensei-grid>table th>div {
