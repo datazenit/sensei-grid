@@ -268,7 +268,7 @@
             plugin.$el.off("dblclick.grid", ".sensei-grid-tbody>tr>td");
             plugin.$el.off("blur.grid");
             plugin.$el.off("keydown.grid");
-            plugin.$el.off("click.grid", plugin.sort);
+            plugin.$el.off("click.grid", ".sensei-grid-thead .sensei-grid-sortable");
             plugin.$el.off("change.grid", ".sensei-grid-tbody td.selectable :checkbox");
             plugin.$el.off("change.grid", ".sensei-grid-thead th.selectable :checkbox");
             $(document).off("click.grid");
