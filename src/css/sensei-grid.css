@@ -17,10 +17,10 @@
 }
 /** shrink all cells except the last one */
 .sensei-grid>table td:not(:last-child) {
-    white-space: nowrap;
+    /*white-space: nowrap;*/
 }
 .sensei-grid>table td:last-child {
-    width: 100%;
+    /*width: 100%;*/
 }
 .sensei-grid>table td>div,
 .sensei-grid>table th>div {
@@ -128,9 +128,10 @@
     margin-right: 2px;
 }
 
-.sensei-grid td.row-action {
-    width:1%;
-    white-space:nowrap;
+.sensei-grid td.row-action,
+.sensei-grid .selectable {
+    width: 1%;
+    white-space: nowrap;
 }
 
 /* selectable styles */
@@ -141,4 +142,21 @@
 .sensei-grid .selectedRow,
 .sensei-grid .activeRow.selectedRow {
     background-color: #FFFFE0;
+}
+
+/** toolbar */
+.sensei-grid-toolbar {
+    background: #F5F5F5;
+    padding: 5px 10px;
+    border: 1px solid #DDD;
+    border-bottom-width: 0;
+    vertical-align: middle;
+}
+.sensei-grid-toolbar .toolbar-label {
+    display: inline-block;
+    font-size: 12px;
+    padding-left: 10px;
+}
+.sensei-grid-toolbar .toolbar-label:first-child {
+    padding-left: 0;
 }
