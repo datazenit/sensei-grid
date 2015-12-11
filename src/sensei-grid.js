@@ -1062,6 +1062,11 @@
                     if (plugin.isEditing) {
                         plugin.exitEditor(true);
                     } else {
+                        // unselect all
+                        var $checkbox = plugin.$el.find("thead th.selectable :checkbox")
+                        $checkbox.prop("checked", false);
+                        plugin.selectAll();
+
                         // remove focus from grid
                         plugin.$el.blur();
                     }
