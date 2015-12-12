@@ -1373,7 +1373,7 @@
             table.appendChild(thead);
             table.appendChild(tbody);
 
-            plugin.$el.html(table);
+            plugin.$el.html($("<div class='sensei-grid-table-wrapper'>").html(table));
             plugin.$el.attr("tabindex", -1);
 
             if (plugin.config.toolbar) {

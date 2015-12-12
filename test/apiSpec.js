@@ -45,7 +45,7 @@ describe("sensei-grid api", function () {
 
     describe("getRowData", function () {
         it("should return row data", function () {
-            var $row = $(".sensei-grid>table>tbody>tr");
+            var $row = $(".sensei-grid-table-wrapper>table>tbody>tr");
             expect(grid.getRowData($row.eq(0))).toEqual(data[0]);
             expect(grid.getRowData($row.eq(1))).toEqual(data[1]);
             expect(grid.getRowData($row.eq(9))).toEqual(data[9]);
@@ -54,7 +54,7 @@ describe("sensei-grid api", function () {
 
     describe("getRowCells", function () {
         it("should return row cells", function () {
-            var $row = $(".sensei-grid>table>tbody>tr:first");
+            var $row = $(".sensei-grid-table-wrapper>table>tbody>tr:first");
             expect(grid.getRowCells($row).length).toEqual(5);
             expect(grid.getRowCells($row).get()).toEqual($row.find(">td").get());
         });
@@ -92,48 +92,48 @@ describe("sensei-grid api", function () {
     describe("getRows", function () {
         it("should return all rows from table", function () {
             expect(grid.getRows().length).toEqual(10);
-            expect(grid.getRows().get()).toEqual($(".sensei-grid>table>tbody>tr").get());
+            expect(grid.getRows().get()).toEqual($(".sensei-grid-table-wrapper>table>tbody>tr").get());
         });
     });
 
     describe("getCellFromRowByKey", function () {
         it("should return cell from row by key", function () {
-            var $row = $(".sensei-grid>table>tbody>tr:first");
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:first").get();
+            var $row = $(".sensei-grid-table-wrapper>table>tbody>tr:first");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:first").get();
             expect(grid.getCellFromRowByKey($row, "id").get()).toEqual($cell);
         });
     });
 
     describe("getCellFromRowByIndex", function () {
         it("should return cell from row by index", function () {
-            var $row = $(".sensei-grid>table>tbody>tr:first");
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:first").get();
+            var $row = $(".sensei-grid-table-wrapper>table>tbody>tr:first");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:first").get();
             expect(grid.getCellFromRowByIndex($row, 0).get()).toEqual($cell);
         });
     });
 
     describe("getRowCellsByIndex", function () {
         it("should return row cells by index", function () {
-            var $cells = $(".sensei-grid>table>tbody>tr:first>td").get();
+            var $cells = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td").get();
             expect(grid.getRowCellsByIndex(0).get()).toEqual($cells)
         });
     });
 
     describe("getRowCells", function () {
         it("should return row cells", function () {
-            var $row = $(".sensei-grid>table>tbody>tr:first");
+            var $row = $(".sensei-grid-table-wrapper>table>tbody>tr:first");
             expect(grid.getRowCells($row).get()).toEqual($row.find(">td").get());
         });
     });
 
     describe("getCellData", function () {
         it("should return cell data", function () {
-            var $cells = $(".sensei-grid>table>tbody>tr:first>td");
+            var $cells = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td");
             expect(grid.getCellData($cells.eq(0))).toBe(data[0]["id"]);
             expect(grid.getCellData($cells.eq(4))).toBe(data[0]["count"]);
         });
         it("should return data with correct type", function () {
-            var $cells = $(".sensei-grid>table>tbody>tr:first>td");
+            var $cells = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td");
             expect(grid.getCellData($cells.eq(0))).toEqual(jasmine.any(String));
             expect(grid.getCellData($cells.eq(4))).toEqual(jasmine.any(Number));
         });
@@ -141,12 +141,12 @@ describe("sensei-grid api", function () {
 
     describe("cell meta methods", function () {
         it("getCellType should return data type of cell", function () {
-            var $cells = $(".sensei-grid>table>tbody>tr:first>td");
+            var $cells = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td");
             expect(grid.getCellType($cells.eq(0))).toEqual("string");
             expect(grid.getCellType($cells.eq(4))).toEqual("int");
         });
         it("getCellColumn should return column name of cell", function () {
-            var $cells = $(".sensei-grid>table>tbody>tr:last>td");
+            var $cells = $(".sensei-grid-table-wrapper>table>tbody>tr:last>td");
             expect(grid.getCellColumn($cells.eq(0))).toEqual("id");
             expect(grid.getCellColumn($cells.eq(1))).toEqual("created_at");
             expect(grid.getCellColumn($cells.eq(2))).toEqual("status");

@@ -30,8 +30,8 @@ describe("sensei-grid sorting", function () {
     grid = $el.grid(data, columns, {sortable: false});
     grid.render();
 
-    expect($(".sensei-grid>table>thead>tr>th:first").length).toEqual(1);
-    expect($(".sensei-grid>table>thead>tr>th:first").attr("class")).toBeUndefined();
+    expect($(".sensei-grid-table-wrapper>table>thead>tr>th:first").length).toEqual(1);
+    expect($(".sensei-grid-table-wrapper>table>thead>tr>th:first").attr("class")).toBeUndefined();
   });
 
   it("should add sorting class to th elements", function () {
@@ -39,8 +39,8 @@ describe("sensei-grid sorting", function () {
     grid = $el.grid(data, columns, {sortable: true});
     grid.render();
 
-    expect($(".sensei-grid>table>thead>tr>th:first").length).toEqual(1);
-    expect($(".sensei-grid>table>thead>tr>th:first").attr("class")).toEqual("sensei-grid-sortable");
+    expect($(".sensei-grid-table-wrapper>table>thead>tr>th:first").length).toEqual(1);
+    expect($(".sensei-grid-table-wrapper>table>thead>tr>th:first").attr("class")).toEqual("sensei-grid-sortable");
   });
 
   it("clicking on column header should trigger sorting event", function (done) {
@@ -48,7 +48,7 @@ describe("sensei-grid sorting", function () {
     grid = $el.grid(data, columns, {sortable: true});
     grid.render();
 
-    var $th = $(".sensei-grid>table>thead>tr:first>th:first");
+    var $th = $(".sensei-grid-table-wrapper>table>thead>tr:first>th:first");
 
     // listen to row:save event and test returned values
     grid.events.on("column:sort", function (col, order, $el) {

@@ -30,9 +30,9 @@ describe("sensei-grid new row", function () {
         grid = $el.grid(data, columns, {emptyRow: true});
         grid.render();
 
-        expect($(".sensei-grid>table>tbody>tr").length).toEqual(11);
-        expect($(".sensei-grid>table>tbody>tr:last").text()).toEqual("");
-        expect($(".sensei-grid>table>tbody>tr.sensei-grid-empty-row").length).toBe(1);
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr").length).toEqual(11);
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr:last").text()).toEqual("");
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr.sensei-grid-empty-row").length).toBe(1);
     });
 
     it("should not render new empty row at the end of table if setting is disabled", function () {
@@ -40,9 +40,9 @@ describe("sensei-grid new row", function () {
         grid = $el.grid(data, columns, {emptyRow: false});
         grid.render();
 
-        expect($(".sensei-grid>table>tbody>tr").length).toEqual(10);
-        expect($(".sensei-grid>table>tbody>tr:last").text()).not.toEqual("");
-        expect($(".sensei-grid>table>tbody>tr.sensei-grid-empty-row").length).toBe(0);
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr").length).toEqual(10);
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr:last").text()).not.toEqual("");
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr.sensei-grid-empty-row").length).toBe(0);
     });
 
     it("should set unsaved row state to the empty row", function () {
@@ -50,12 +50,12 @@ describe("sensei-grid new row", function () {
         grid = $el.grid(data, columns, {emptyRow: true});
         grid.render();
 
-        var $emptyCell = $(".sensei-grid>table>tbody>tr:last>td:first");
+        var $emptyCell = $(".sensei-grid-table-wrapper>table>tbody>tr:last>td:first");
 
         expect($emptyCell.data("saved")).toEqual(false);
         expect(grid.getCellStatus($emptyCell)).toEqual(false);
 
-        var $cell = $(".sensei-grid>table>tbody>tr:first>td:first");
+        var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:first");
 
         expect($cell.data("saved")).toEqual(true);
         expect(grid.getCellStatus($cell)).toEqual(true);
@@ -67,19 +67,19 @@ describe("sensei-grid new row", function () {
         grid.registerEditor(BasicEditor);
         grid.render();
 
-        var $cell = $(".sensei-grid>table>tbody>tr:last>td:first");
+        var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:last>td:first");
 
-        expect($(".sensei-grid>table>tbody>tr.sensei-grid-empty-row").length).toBe(1);
-        expect($(".sensei-grid>table>tbody>tr").length).toBe(11);
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr.sensei-grid-empty-row").length).toBe(1);
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr").length).toBe(11);
 
         $cell.trigger("dblclick");
         $(".sensei-grid-editor input").val("test");
         $cell.next().trigger("click");
 
         expect($cell.text()).toEqual("test");
-        expect($(".sensei-grid>table>tbody>tr:last").hasClass("sensei-grid-empty-row")).toBe(true);
-        expect($(".sensei-grid>table>tbody>tr.sensei-grid-empty-row").length).toBe(1);
-        expect($(".sensei-grid>table>tbody>tr").length).toBe(12);
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr:last").hasClass("sensei-grid-empty-row")).toBe(true);
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr.sensei-grid-empty-row").length).toBe(1);
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr").length).toBe(12);
     });
 
     it("should trigger row:save event", function (done) {
@@ -88,7 +88,7 @@ describe("sensei-grid new row", function () {
         grid.registerEditor(BasicEditor);
         grid.render();
 
-        var $cell = $(".sensei-grid>table>tbody>tr:last>td:first");
+        var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:last>td:first");
 
         // listen to row:save event and test returned values
         grid.events.on("row:save", function (data, $row, source) {

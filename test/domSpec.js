@@ -33,15 +33,15 @@ describe("sensei-grid dom", function () {
     });
 
     it("should have a table element and core structure", function () {
-        expect($(".sensei-grid>table").length).toBe(1);
-        expect($(".sensei-grid>table>thead").length).toBe(1);
-        expect($(".sensei-grid>table>tbody").length).toBe(1);
-        expect($(".sensei-grid>table>tbody>tr").length).toBe(10);
-        expect($(".sensei-grid>table>thead>tr").length).toBe(1);
+        expect($(".sensei-grid-table-wrapper>table").length).toBe(1);
+        expect($(".sensei-grid-table-wrapper>table>thead").length).toBe(1);
+        expect($(".sensei-grid-table-wrapper>table>tbody").length).toBe(1);
+        expect($(".sensei-grid-table-wrapper>table>tbody>tr").length).toBe(10);
+        expect($(".sensei-grid-table-wrapper>table>thead>tr").length).toBe(1);
     });
 
     it("should render columns", function () {
-        var $ths = $(".sensei-grid>table>thead>tr>th");
+        var $ths = $(".sensei-grid-table-wrapper>table>thead>tr>th");
         var columnValues = $ths.map(function () {
             return $(this).text();
         }).get();
@@ -51,8 +51,8 @@ describe("sensei-grid dom", function () {
     });
 
     it("should render data", function () {
-        var $firstRow = $(".sensei-grid>table>tbody>tr:first");
-        var $lastRow = $(".sensei-grid>table>tbody>tr:last");
+        var $firstRow = $(".sensei-grid-table-wrapper>table>tbody>tr:first");
+        var $lastRow = $(".sensei-grid-table-wrapper>table>tbody>tr:last");
 
         expect($firstRow.find("td:first").text()).toEqual(data[0]["id"]);
         expect($firstRow.find("td:first").html()).toEqual("<div>" + data[0]["id"] + "</div>");

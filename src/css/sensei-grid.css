@@ -7,47 +7,47 @@
     -ms-user-select: none;
     user-select: none;
 }
-.sensei-grid>table {
+.sensei-grid-table-wrapper>table {
 	empty-cells: show;
     margin-bottom: 0;
 }
-.sensei-grid>table td,
-.sensei-grid>table th {
+.sensei-grid-table-wrapper>table td,
+.sensei-grid-table-wrapper>table th {
     white-space: nowrap;
     overflow: hidden;
 }
 /** shrink all cells except the last one */
-.sensei-grid>table td:not(:last-child) {
+.sensei-grid-table-wrapper>table td:not(:last-child) {
     /*white-space: nowrap;*/
 }
-.sensei-grid>table td:last-child {
+.sensei-grid-table-wrapper>table td:last-child {
     /*width: 100%;*/
 }
-.sensei-grid>table td>div,
-.sensei-grid>table th>div {
+.sensei-grid-table-wrapper>table td>div,
+.sensei-grid-table-wrapper>table th>div {
     overflow: hidden;
     /* transparent border fixes another firefox quirk
     when cell width is calculated incorrectly */
     border: 1px solid transparent;
 }
-.sensei-grid>table tr div::after {
+.sensei-grid-table-wrapper>table tr div::after {
     content: '\00a0';
 }
-.sensei-grid>table thead {
+.sensei-grid-table-wrapper>table thead {
 	background: #F5F5F5;
 }
-.sensei-grid>table thead>tr>th {
+.sensei-grid-table-wrapper>table thead>tr>th {
 	border-bottom-width: 1px;
     font-weight: bold;
 }
-.sensei-grid>table .activeCell {
+.sensei-grid-table-wrapper>table .activeCell {
 	background: #d0e9f8;
 	border: 1px double #3399ff;
 }
-.sensei-grid>table .activeRow {
+.sensei-grid-table-wrapper>table .activeRow {
 	background: #eff7fc;
 }
-.sensei-grid>table .sensei-grid-dirty-row {
+.sensei-grid-table-wrapper>table .sensei-grid-dirty-row {
     color: gray;
 }
 

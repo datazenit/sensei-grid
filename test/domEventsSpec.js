@@ -31,25 +31,25 @@ describe("sensei-grid dom events", function () {
 
     describe("click", function () {
         it("should set active cell", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(3)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(3)");
             $cell.trigger("click");
             expect($cell.hasClass("activeCell")).toBe(true);
 
-            var $cell2 = $(".sensei-grid>table>tbody>tr:eq(4)>td:eq(1)");
+            var $cell2 = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(4)>td:eq(1)");
             $cell2.trigger("click");
             expect($cell2.hasClass("activeCell")).toBe(true);
         });
         it("should only activate one cell", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(3)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(3)");
             $cell.trigger("click");
             expect($(".sensei-grid .activeCell").length).toBe(1);
 
-            var $cell2 = $(".sensei-grid>table>tbody>tr:eq(4)>td:eq(1)");
+            var $cell2 = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(4)>td:eq(1)");
             $cell2.trigger("click");
             expect($(".sensei-grid .activeCell").length).toBe(1);
         });
         it("outside of grid should remove active cell", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(3)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(3)");
             $cell.trigger("click");
 
             expect($(".sensei-grid .activeCell").length).toBe(1);
@@ -58,7 +58,7 @@ describe("sensei-grid dom events", function () {
             expect($(".sensei-grid .activeCell").length).toBe(0);
         });
         it("outside of grid should close editor", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(3)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(3)");
             $cell.trigger("dblclick");
             expect($(".sensei-grid-editor").is(":visible")).toBe(true);
             expect($(".sensei-grid-editor").length).toBe(1);
@@ -70,7 +70,7 @@ describe("sensei-grid dom events", function () {
     });
     describe("dblclick", function () {
         it("should open editor", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(3)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(3)");
             $cell.trigger("dblclick");
             expect($(".sensei-grid-editor").is(":visible")).toBe(true);
             expect($(".sensei-grid-editor").length).toBe(1);
@@ -78,7 +78,7 @@ describe("sensei-grid dom events", function () {
     });
     describe("cell shortcuts", function () {
         it("right arrow should move active cell", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(0)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(0)");
             $cell.trigger("click");
             expect($cell.hasClass("activeCell")).toBe(true);
 
@@ -87,19 +87,19 @@ describe("sensei-grid dom events", function () {
 
             // start position
 
-            $(".sensei-grid>table").trigger(e);
+            $(".sensei-grid-table-wrapper>table").trigger(e);
             expect($cell.hasClass("activeCell")).toBe(false);
             expect($cell.next().hasClass("activeCell")).toBe(true);
 
             // end position
 
-            $cell = $(".sensei-grid>table>tbody>tr:eq(9)>td:eq(4)");
+            $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(9)>td:eq(4)");
             $cell.trigger("click");
-            $(".sensei-grid>table").trigger(e);
+            $(".sensei-grid-table-wrapper>table").trigger(e);
             expect($cell.hasClass("activeCell")).toBe(true);
         });
         it("left arrow should move active cell", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(4)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(4)");
             $cell.trigger("click");
             expect($cell.hasClass("activeCell")).toBe(true);
 
@@ -108,19 +108,19 @@ describe("sensei-grid dom events", function () {
 
             // end position
 
-            $(".sensei-grid>table").trigger(e);
-            $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(3)");
+            $(".sensei-grid-table-wrapper>table").trigger(e);
+            $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(0)>td:eq(3)");
             expect($cell.hasClass("activeCell")).toBe(true);
 
             // start position
 
-            $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(0)");
+            $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(0)>td:eq(0)");
             $cell.trigger("click");
-            $(".sensei-grid>table").trigger(e);
+            $(".sensei-grid-table-wrapper>table").trigger(e);
             expect($cell.hasClass("activeCell")).toBe(true);
         });
         it("up arrow should move active cell", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(0)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(0)>td:eq(0)");
             $cell.trigger("click");
             expect($cell.hasClass("activeCell")).toBe(true);
 
@@ -129,20 +129,20 @@ describe("sensei-grid dom events", function () {
 
             // movement at start position
 
-            $(".sensei-grid>table").trigger(e);
-            $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(0)");
+            $(".sensei-grid-table-wrapper>table").trigger(e);
+            $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(0)>td:eq(0)");
             expect($cell.hasClass("activeCell")).toBe(true);
 
             // movement at end position
 
-            $cell = $(".sensei-grid>table>tbody>tr:eq(1)>td:eq(0)");
+            $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(1)>td:eq(0)");
             $cell.trigger("click");
-            $(".sensei-grid>table").trigger(e);
-            $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(0)");
+            $(".sensei-grid-table-wrapper>table").trigger(e);
+            $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(0)>td:eq(0)");
             expect($cell.hasClass("activeCell")).toBe(true);
         });
         it("down arrow should move active cell", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(0)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(0)");
             $cell.trigger("click");
             expect($cell.hasClass("activeCell")).toBe(true);
 
@@ -151,19 +151,19 @@ describe("sensei-grid dom events", function () {
 
             // movement at start position
 
-            $(".sensei-grid>table").trigger(e);
-            $cell = $(".sensei-grid>table>tbody>tr:eq(1)>td:eq(0)");
+            $(".sensei-grid-table-wrapper>table").trigger(e);
+            $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(1)>td:eq(0)");
             expect($cell.hasClass("activeCell")).toBe(true);
 
             // movement at end position
 
-            $cell = $(".sensei-grid>table>tbody>tr:eq(9)>td:eq(0)");
+            $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(9)>td:eq(0)");
             $cell.trigger("click");
-            $(".sensei-grid>table").trigger(e);
+            $(".sensei-grid-table-wrapper>table").trigger(e);
             expect($cell.hasClass("activeCell")).toBe(true);
         });
         it("backspace key should clear value of cell", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:eq(1)>td:eq(0)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(1)>td:eq(0)");
             // activate cell
             $cell.trigger("click");
             expect($cell.hasClass("activeCell")).toBe(true);
@@ -177,7 +177,7 @@ describe("sensei-grid dom events", function () {
     });
     describe("editor shortcuts", function () {
         it("tab key should move editor forward", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(0)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(0)");
             // open editor
             $cell.trigger("dblclick");
             expect($(".sensei-grid-editor").is(":visible")).toBe(true);
@@ -190,7 +190,7 @@ describe("sensei-grid dom events", function () {
             expect($(".sensei-grid-editor:visible input").val()).toEqual($cell.next().text());
         });
         it("shift+tab key should move editor backward", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(1)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(1)");
             // open editor
             $cell.trigger("dblclick");
             expect($(".sensei-grid-editor").is(":visible")).toBe(true);
@@ -204,7 +204,7 @@ describe("sensei-grid dom events", function () {
             expect($(".sensei-grid-editor:visible input").val()).toEqual($cell.prev().text());
         });
         it("enter key should save and close editor", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(1)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(1)");
             // open editor
             $cell.trigger("dblclick");
             expect($(".sensei-grid-editor").is(":visible")).toBe(true);
@@ -221,7 +221,7 @@ describe("sensei-grid dom events", function () {
             expect($(".sensei-grid-editor").is(":visible")).toBe(false);
         });
         it("ctrl+enter key should move editor down", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:first>td:eq(0)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:first>td:eq(0)");
             // open editor
             $cell.trigger("dblclick");
             expect($(".sensei-grid-editor").is(":visible")).toBe(true);
@@ -232,11 +232,11 @@ describe("sensei-grid dom events", function () {
             e.ctrlKey = true;
             $(".sensei-grid").trigger(e);
 
-            $cell = $(".sensei-grid>table>tbody>tr:eq(1)>td:eq(0)");
+            $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(1)>td:eq(0)");
             expect($(".sensei-grid-editor:visible input").val()).toEqual($cell.text());
         });
         it("shift+ctrl+enter key should move editor up", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:eq(1)>td:eq(0)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(1)>td:eq(0)");
             // open editor
             $cell.trigger("dblclick");
             expect($(".sensei-grid-editor").is(":visible")).toBe(true);
@@ -248,11 +248,11 @@ describe("sensei-grid dom events", function () {
             e.shiftKey = true;
             $(".sensei-grid").trigger(e);
 
-            $cell = $(".sensei-grid>table>tbody>tr:eq(0)>td:eq(0)");
+            $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(0)>td:eq(0)");
             expect($(".sensei-grid-editor:visible input").val()).toEqual($cell.text());
         });
         it("esc key should close editor", function () {
-            var $cell = $(".sensei-grid>table>tbody>tr:eq(1)>td:eq(0)");
+            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(1)>td:eq(0)");
             // open editor
             $cell.trigger("dblclick");
             expect($(".sensei-grid-editor").is(":visible")).toBe(true);
