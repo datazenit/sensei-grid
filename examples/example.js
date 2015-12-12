@@ -186,6 +186,7 @@ $(function() {
   // disable sorting for rest of the grids
   options.sortable = false;
   options.selectable = false;
+  options.toolbar = false;
 
 	var grid2 = $(".sensei-grid-html").grid(data2, columns2, options);
 	grid2.registerEditor(BasicEditor);

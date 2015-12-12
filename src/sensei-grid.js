@@ -20,7 +20,8 @@
                 emptyGridMessage: null,
                 skipOnDuplicate: null,
                 initialSort: null,
-                selectable: false
+                selectable: false,
+                toolbar: false
             };
 
         plugin.name = null;
@@ -1374,6 +1375,10 @@
 
             plugin.$el.html(table);
             plugin.$el.attr("tabindex", -1);
+
+            if (plugin.config.toolbar) {
+              plugin.$el.append($("<div class='sensei-grid-toolbar'>").text("Empty toolbar."));
+            }
         };
 
         plugin.init = function (data, columns, options, name) {

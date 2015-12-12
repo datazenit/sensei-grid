@@ -14,6 +14,7 @@
 }
 .sensei-grid>table {
 	empty-cells: show;
+    margin-bottom: 0;
 }
 .sensei-grid>table td,
 .sensei-grid>table th {
@@ -154,8 +155,7 @@
     background: #F5F5F5;
     padding: 5px 10px;
     border: 1px solid #DDD;
-    border-bottom-width: 0;
-    vertical-align: middle;
+    vertical-align: top;
 }
 .sensei-grid-toolbar .toolbar-label {
     display: inline-block;

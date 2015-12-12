@@ -25,7 +25,8 @@
                 emptyGridMessage: null,
                 skipOnDuplicate: null,
                 initialSort: null,
-                selectable: false
+                selectable: false,
+                toolbar: false
             };
 
         plugin.name = null;
@@ -33,6 +34,7 @@
         plugin.$prevRow = null;
         plugin.editorProps = {};
         plugin.preventEnter = false;
+        plugin.$lastActiveCell = null;
 
         $.fn.isOnScreen = function () {
 
@@ -122,6 +124,9 @@
                     plugin.events.trigger("row:save", plugin.getRowData(plugin.$prevRow), plugin.$prevRow, "row:select");
                 }
             }
+
+            // set last active cell
+            plugin.$lastActiveCell = $el;
 
             // @todo remove
             // focus first row action, if current cell is row action cell
@@ -1375,6 +1380,10 @@
 
             plugin.$el.html(table);
             plugin.$el.attr("tabindex", -1);
+
+            if (plugin.config.toolbar) {
+              plugin.$el.append($("<div class='sensei-grid-toolbar'>").text("Empty toolbar."));
+            }
         };
 
         plugin.init = function (data, columns, options, name) {
