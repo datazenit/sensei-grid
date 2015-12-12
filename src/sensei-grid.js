@@ -1191,13 +1191,12 @@
             // if shift key was pressed, extend selection between last active and current row
             if (plugin.config.selectable && e.shiftKey) {
               var $currentRow = $(this).parent();
-              var $currentCell = $(this);
               if ($prev && $currentRow) {
                 var $between = plugin.$el.find("tbody>tr").between($prev, $currentRow);
                 $between.each(function () {
                   // if current cell is selectable, skip its row, because the select event will be called anyway from
                   // checkbox change event
-                  if (!$currentCell.hasClass("selectable") || !$(this).is($currentRow)) {
+                  if (!$(e.target).is(":checkbox") || !$(this).is($currentRow)) {
                     plugin.selectCell($(this).find("td.selectable"), true);
                   }
                 });
