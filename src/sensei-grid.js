@@ -50,18 +50,18 @@
 
         /**
          * Helper method to traverse elements between two nodes
-         * @param elm0
-         * @param elm1
+         * @param node1
+         * @param node2
          * @returns {*}
          */
         $.fn.between = function (node1, node2) {
           var index0 = $(this).index(node1);
           var index1 = $(this).index(node2);
 
-          if (index0 <= index1)
+          if (index0 <= index1) {
             return this.slice(index0, index1 + 1);
-          else
-            return this.slice(index1, index0 + 1);
+          }
+          return this.slice(index1, index0 + 1);
         };
 
         /**
@@ -985,7 +985,7 @@
                 e.preventDefault();
             }
 
-            var $nextCell;
+            var $nextCell, $checkbox;
 
             switch (e.which) {
                 case 37: // left
@@ -1079,7 +1079,7 @@
                         plugin.exitEditor(true);
                     } else {
                         // unselect all
-                        var $checkbox = plugin.$el.find("thead th.selectable :checkbox")
+                        $checkbox = plugin.$el.find("thead th.selectable :checkbox");
                         $checkbox.prop("checked", false);
                         plugin.selectAll();
 
@@ -1112,7 +1112,7 @@
                     if (plugin.config.selectable && (e.ctrlKey || e.metaKey || e.shiftKey)) {
 
                       // toggle main selectable checkbox
-                      var $checkbox = plugin.$el.find("thead th.selectable :checkbox");
+                      $checkbox = plugin.$el.find("thead th.selectable :checkbox");
                       $checkbox.prop("checked", !$checkbox.prop("checked"));
 
                       // toggle select all rows
