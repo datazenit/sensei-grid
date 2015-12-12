@@ -49,6 +49,22 @@
         };
 
         /**
+         * Helper method to traverse elements between two nodes
+         * @param elm0
+         * @param elm1
+         * @returns {*}
+         */
+        $.fn.between = function (node1, node2) {
+          var index0 = $(this).index(node1);
+          var index1 = $(this).index(node2);
+
+          if (index0 <= index1)
+            return this.slice(index0, index1 + 1);
+          else
+            return this.slice(index1, index0 + 1);
+        };
+
+        /**
          * Force redraw on element
          * @param $el
          */
@@ -1158,13 +1174,35 @@
         plugin.clickCell = function (e) {
             // dont prevent default event if this is selectable cell with checkbox
             if (!$(this).hasClass("selectable")) {
+              // is not selectable cell, prevent default event
               e.preventDefault();
+            }
+
+            var $prev;
+            if (plugin.getActiveCell()) {
+              $prev = plugin.getActiveCell().parent();
             }
 
             if (plugin.isEditing) {
                 plugin.exitEditor();
             }
             plugin.setActiveCell($(this));
+
+            // if shift key was pressed, extend selection between last active and current row
+            if (plugin.config.selectable && e.shiftKey) {
+              var $currentRow = $(this).parent();
+              var $currentCell = $(this);
+              if ($prev && $currentRow) {
+                var $between = plugin.$el.find("tbody>tr").between($prev, $currentRow);
+                $between.each(function () {
+                  // if current cell is selectable, skip its row, because the select event will be called anyway from
+                  // checkbox change event
+                  if (!$currentCell.hasClass("selectable") || !$(this).is($currentRow)) {
+                    plugin.selectCell($(this).find("td.selectable"), true);
+                  }
+                });
+              }
+            }
         };
 
         plugin.dblClickCell = function (e) {
