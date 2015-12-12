@@ -54,6 +54,22 @@
         };
 
         /**
+         * Helper method to traverse elements between two nodes
+         * @param node1
+         * @param node2
+         * @returns {*}
+         */
+        $.fn.between = function (node1, node2) {
+          var index0 = $(this).index(node1);
+          var index1 = $(this).index(node2);
+
+          if (index0 <= index1) {
+            return this.slice(index0, index1 + 1);
+          }
+          return this.slice(index1, index0 + 1);
+        };
+
+        /**
          * Force redraw on element
          * @param $el
          */
@@ -974,7 +990,7 @@
                 e.preventDefault();
             }
 
-            var $nextCell;
+            var $nextCell, $checkbox;
 
             switch (e.which) {
                 case 37: // left
@@ -1067,6 +1083,11 @@
                     if (plugin.isEditing) {
                         plugin.exitEditor(true);
                     } else {
+                        // unselect all
+                        $checkbox = plugin.$el.find("thead th.selectable :checkbox");
+                        $checkbox.prop("checked", false);
+                        plugin.selectAll();
+
                         // remove focus from grid
                         plugin.$el.blur();
                     }
@@ -1096,7 +1117,7 @@
                     if (plugin.config.selectable && (e.ctrlKey || e.metaKey || e.shiftKey)) {
 
                       // toggle main selectable checkbox
-                      var $checkbox = plugin.$el.find("thead th.selectable :checkbox");
+                      $checkbox = plugin.$el.find("thead th.selectable :checkbox");
                       $checkbox.prop("checked", !$checkbox.prop("checked"));
 
                       // toggle select all rows
@@ -1158,13 +1179,34 @@
         plugin.clickCell = function (e) {
             // dont prevent default event if this is selectable cell with checkbox
             if (!$(this).hasClass("selectable")) {
+              // is not selectable cell, prevent default event
               e.preventDefault();
+            }
+
+            var $prev;
+            if (plugin.getActiveCell()) {
+              $prev = plugin.getActiveCell().parent();
             }
 
             if (plugin.isEditing) {
                 plugin.exitEditor();
             }
             plugin.setActiveCell($(this));
+
+            // if shift key was pressed, extend selection between last active and current row
+            if (plugin.config.selectable && e.shiftKey) {
+              var $currentRow = $(this).parent();
+              if ($prev && $currentRow) {
+                var $between = plugin.$el.find("tbody>tr").between($prev, $currentRow);
+                $between.each(function () {
+                  // if current cell is selectable, skip its row, because the select event will be called anyway from
+                  // checkbox change event
+                  if (!$(e.target).is(":checkbox") || !$(this).is($currentRow)) {
+                    plugin.selectCell($(this).find("td.selectable"), true);
+                  }
+                });
+              }
+            }
         };
 
         plugin.dblClickCell = function (e) {
