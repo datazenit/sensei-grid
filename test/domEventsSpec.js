@@ -162,18 +162,6 @@ describe("sensei-grid dom events", function () {
             $(".sensei-grid-table-wrapper>table").trigger(e);
             expect($cell.hasClass("activeCell")).toBe(true);
         });
-        it("backspace key should clear value of cell", function () {
-            var $cell = $(".sensei-grid-table-wrapper>table>tbody>tr:eq(1)>td:eq(0)");
-            // activate cell
-            $cell.trigger("click");
-            expect($cell.hasClass("activeCell")).toBe(true);
-
-            var e = $.Event("keydown");
-            e.which = 8; // backspace
-            $(".sensei-grid").trigger(e);
-
-            expect($cell.text()).toEqual("");
-        });
     });
     describe("editor shortcuts", function () {
         it("tab key should move editor forward", function () {
