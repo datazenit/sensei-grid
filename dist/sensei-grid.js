@@ -1088,13 +1088,17 @@
                     if (plugin.isEditing) {
                         plugin.exitEditor(true);
                     } else {
-                        // unselect all
-                        $checkbox = plugin.$el.find("thead th.selectable :checkbox");
-                        $checkbox.prop("checked", false);
-                        plugin.selectAll();
-
-                        // remove focus from grid
-                        plugin.$el.blur();
+                        // get selected
+                        var $selectedRows = plugin.getSelectedRows();
+                        if ($selectedRows && $selectedRows.length > 0) {
+                          // unselect all
+                          $checkbox = plugin.$el.find("thead th.selectable :checkbox");
+                          $checkbox.prop("checked", false);
+                          plugin.selectAll();
+                        } else {
+                          // remove focus from grid if no rows are selected
+                          plugin.$el.blur();
+                        }
                     }
                     break;
                 case 9: // tab
