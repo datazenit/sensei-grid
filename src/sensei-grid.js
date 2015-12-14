@@ -531,7 +531,7 @@
             plugin.events.trigger("cell:clear", oldValue, $td);
         };
 
-        plugin.removeRow = function ($row) {
+        plugin.removeRow = function ($row, userArg) {
 
           // get row index
           var row = $row.index();
@@ -552,7 +552,7 @@
 
           // trigger row:remove event before actual removal
           // could be used to persist changes in db
-          plugin.events.trigger("row:remove", data, row, $row);
+          plugin.events.trigger("row:remove", data, row, $row, userArg);
 
           // remove row
           $row.remove();
@@ -1109,8 +1109,6 @@
                 case 8: // backspace
                     if (e.ctrlKey || e.metaKey) {
                         plugin.removeActiveRow();
-                    } else {
-                        plugin.clearActiveCell();
                     }
                     break;
                 case 65: // "a" key
