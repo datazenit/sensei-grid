@@ -384,6 +384,12 @@
         };
 
         plugin.getCellData = function ($cell) {
+
+            // if cell doesn't exist, return null
+            if (!$cell || $cell.length === 0) {
+              return null;
+            }
+
             var value = $cell.text();
             var type = plugin.getCellType($cell);
 
@@ -421,22 +427,13 @@
 
         plugin.getCellFromRowByIndex = function ($row, index) {
             var $cell = $row.find("td").eq(index);
-            if ($cell.length === 0) {
-                throw new Error("Cell does not exist");
-            }
-
             return $cell;
         };
 
         plugin.getCellFromRowByKey = function ($row, key) {
-
             var $cell = $row.find("td").filter(function () {
                 return $(this).data("column") === key;
             });
-            if ($cell.length === 0) {
-                throw new Error("Cell does not exist");
-            }
-
             return $cell;
         };
 
@@ -454,10 +451,6 @@
 
         plugin.getRowByIndex = function (index) {
             var $row = plugin.$el.find(".sensei-grid-tbody>tr").eq(index);
-            if ($row.length === 0) {
-                throw new Error("Row does not exist");
-            }
-
             return $row;
         };
 
@@ -467,6 +460,11 @@
         };
 
         plugin.getRowData = function ($row) {
+
+            // return null when row is not found
+            if (!$row || $row.length === 0) {
+              return null;
+            }
 
             // get all cells from row
             var $cells = plugin.getRowCells($row);

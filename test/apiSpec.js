@@ -36,10 +36,10 @@ describe("sensei-grid api", function () {
         it("should return data by negative index", function () {
             expect(grid.getRowDataByIndex(-1)).toEqual(data[9]);
         });
-        it("should throw error when row is not found", function () {
-            expect(function () { grid.getRowDataByIndex(100) }).toThrowError("Row does not exist");
-            expect(function () { grid.getRowDataByIndex(-100) }).toThrowError("Row does not exist");
-            expect(function () { grid.getRowDataByIndex("foo") }).toThrowError("Row does not exist");
+        it("should be null when row is not found", function () {
+            expect(grid.getRowDataByIndex(100)).toBeNull();
+            expect(grid.getRowDataByIndex(-100)).toBeNull();
+            expect(grid.getRowDataByIndex("foo")).toBeNull();
         });
     });
 
@@ -77,9 +77,9 @@ describe("sensei-grid api", function () {
             expect(grid.getCellDataByKey(1, "title")).toEqual(data[1]["title"]);
             expect(grid.getCellDataByKey(9, "id")).toEqual(data[9]["id"]);
         });
-        it("should throw error when cell or row is not found", function () {
-            expect(function () { grid.getCellDataByKey(0,"key_from_outer_space") }).toThrowError("Cell does not exist");
-            expect(function () { grid.getCellDataByKey(100,"title") }).toThrowError("Row does not exist");
+        it("should be null when cell or row is not found", function () {
+            expect(grid.getCellDataByKey(0,"key_from_outer_space")).toBeNull();
+            expect(grid.getCellDataByKey(100,"title")).toBeNull();
         });
     });
 
