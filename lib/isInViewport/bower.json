@@ -1,0 +1,31 @@
+{
+  "name": "isInViewport",
+  "version": "2.3.0",
+  "homepage": "https://github.com/zeusdeux/isInViewport",
+  "authors": [
+    "Mudit Ameta <zeusdeux@gmail.com>"
+  ],
+  "description": "An ultra-light jQuery plugin that tells you if an element is in the viewport but with a twist.",
+  "main": "lib/isInViewport.min.js",
+  "keywords": [
+    "viewport",
+    "jquery",
+    "selector"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "examples/**",
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "tests",
+    "*.sublime-*",
+    "Grunt*.js",
+    "package.json",
+    "isInViewport_*.js",
+    "*.jquery.json",
+    ".travis*",
+    ".git*",
+    "/**/*.dmp"
+  ]
+}

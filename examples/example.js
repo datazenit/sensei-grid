@@ -73,7 +73,7 @@ $(function() {
     skipOnDuplicate: ["id"],
     // set the initial order of table
     initialSort: {col: "id", order: "asc"},
-    selectable: true
+    //selectable: true
 	};
 
   // initialize grid with data, column mapping and options
@@ -92,10 +92,10 @@ $(function() {
 
 	// example listeners on grid events
 	grid.events.on("editor:save", function(data, $cell) {
-		console.info("save cell:", data, $cell);
+		//console.info("save cell:", data, $cell);
 	});
 	grid.events.on("editor:load", function(data, $cell) {
-		console.info("set value in editor:", data, $cell);
+		//console.info("set value in editor:", data, $cell);
 	});
 	grid.events.on("cell:select", function($cell) {
 		console.info("active cell:", $cell);

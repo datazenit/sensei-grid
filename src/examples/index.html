@@ -23,6 +23,7 @@
   <script src="../lib/pickadate/lib/picker.date.js"></script>
   <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
   <script src="../lib/summernote/dist/summernote.js"></script>
+  <script src="../lib/isInViewport/lib/isInViewport.js"></script>
 
   <!-- Sensei Grid JS -->
   <script src="../src/sensei-grid.js?v=<!-- @echo now -->"></script>
@@ -93,7 +94,9 @@
     <!-- Tab panes -->
     <div class="tab-content">
       <div role="tabpanel" class="tab-pane active" id="defaultdemo">
-        <div class="sensei-grid sensei-grid-default"></div>
+        <div style="width:600px;height:200px;overflow:auto;">
+          <div class="sensei-grid sensei-grid-default"></div>
+        </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="htmldemo">
         <div class="sensei-grid sensei-grid-html"></div>
