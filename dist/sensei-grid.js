@@ -37,25 +37,6 @@
         plugin.preventEnter = false;
         plugin.$lastActiveCell = null;
 
-        $.fn.isOnScreen = function () {
-
-            var win = $(window);
-
-            var viewport = {
-                top: win.scrollTop(),
-                left: win.scrollLeft()
-            };
-            viewport.right = viewport.left + win.width();
-            viewport.bottom = viewport.top + win.height();
-
-            var bounds = this.offset();
-            bounds.right = bounds.left + this.outerWidth();
-            bounds.bottom = bounds.top + this.outerHeight();
-
-            return (!(viewport.right < bounds.left || viewport.left > bounds.right || viewport.bottom < bounds.top || viewport.top > bounds.bottom));
-
-        };
-
         /**
          * Helper method to traverse elements between two nodes
          * @param node1
@@ -72,11 +53,21 @@
           return this.slice(index1, index0 + 1);
         };
 
+        var isFirefox = function () {
+          return navigator.userAgent.search("Firefox") > -1;
+        };
+
         /**
          * Force redraw on element
+         * NB! Causes scroll glitch after moving viewport with scrollLeft/scrollTop
+         * Redraw is needed because of an old bug in firefox
+         * https://bugzilla.mozilla.org/show_bug.cgi?id=688556
+         * Use only for firefox because all other browser can get their shit together
+         *
          * @param $el
          */
         var redraw = function ($el) {
+          if (isFirefox()) {
             var el = $el.get(0);
             var d = el.style.display;
 
@@ -84,6 +75,7 @@
             el.style.display = "none";
             el.offsetHeight; // jshint ignore:line
             el.style.display = d;
+          }
         };
 
         /**
@@ -703,35 +695,46 @@
             }
         };
 
+        plugin.scrollIntoView = function($el, $container) {
+          var padding = 50;
+          $container.scrollTop(
+              $el.offset().top - $container.offset().top + $container.scrollTop() - padding
+          );
+          $container.scrollLeft(
+              $el.offset().left - $container.offset().left + $container.scrollLeft() - padding
+          );
+        };
+
         plugin.move = function (direction) {
-            var directionMethod = "move" + direction.charAt(0).toUpperCase() + direction.substr(1);
-            if (_.has(plugin, directionMethod)) {
+          var directionMethod = "move" + direction.charAt(0).toUpperCase() + direction.substr(1);
+          if (_.has(plugin, directionMethod)) {
 
-                // move active cell
-                plugin[directionMethod]();
+            // move active cell
+            plugin[directionMethod]();
 
-                if (plugin.isEditing) {
-                    // save & hide editor
-                    plugin.saveEditor();
-                }
-
-                if (plugin.isEditing) {
-                    // show editor for currently active cell
-                    plugin.editCell();
-                }
-
-                // scroll cell into viewport if it is not already visible
-                if (!plugin.getActiveCell().find(">div").isOnScreen()) {
-                    if (_.contains(["up", "left"], direction)) {
-                        plugin.getActiveCell().get(0).scrollIntoView(true);
-                    } else {
-                        plugin.getActiveCell().get(0).scrollIntoView(false);
-                    }
-                }
-
-            } else {
-                console.warn("move method not found", directionMethod);
+            if (plugin.isEditing) {
+              // save & hide editor
+              plugin.saveEditor();
             }
+
+            var $container = plugin.$el.parent(),
+                $cell = plugin.getActiveCell();
+
+            // check if isInViewport method exists and active cell is in the viewport
+            if ($.fn.isInViewport && $cell.isInViewport({viewport: $container}).length === 0) {
+              // cell is not in containers viewport, let's scroll
+              plugin.scrollIntoView($cell, $container);
+            }
+
+            if (plugin.isEditing) {
+              // show editor for currently active cell
+              plugin.editCell();
+            }
+
+
+          } else {
+            console.warn("move method not found", directionMethod);
+          }
         };
 
         plugin.editCell = function () {
@@ -956,6 +959,10 @@
             var allowHTML = $td.data("allowHTML");
             var value = allowHTML ? $td.find(">div").html() : $td.text();
             plugin.activeEditor.setValue(value);
+
+            // set editor position again, because setting value and focusing editor
+            // can cause different position
+            $editor.css($td.cellPosition());
 
             // trigger editor:load event
             var data = {};
