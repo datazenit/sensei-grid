@@ -21,6 +21,7 @@
                 tableClass: "table table-bordered table-condensed",
                 disableKeys: [],
                 moveOnRowRemove: true,
+                removable: true,
                 readonly: false,
                 emptyGridMessage: null,
                 skipOnDuplicate: null,
@@ -535,6 +536,11 @@
         };
 
         plugin.removeRow = function ($row, userArg) {
+
+          // check if rows can be removed
+          if (!plugin.config.removable) {
+            return false;
+          }
 
           // get row index
           var row = $row.index();
