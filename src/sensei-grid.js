@@ -130,7 +130,7 @@
 
             // if browser is firefox or similar, fix table cell position
             // firefox calculates cell positions differently from webkit browsers
-            if (plugin.isSillyFirefox()) {
+            if (isFirefox()) {
                 pos.left -= 1;
                 pos.top -= 1;
             }
@@ -161,6 +161,7 @@
             }
         };
 
+        // @deprecated use isFirefox function
         plugin.isSillyFirefox = function () {
             if (!plugin.$el.find("td:first").position()) {
               return false;
