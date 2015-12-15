@@ -466,6 +466,7 @@
 
         plugin.getRowData = function ($row) {
 
+            // return null when row is not found
             if (!$row || $row.length === 0) {
               return null;
             }
@@ -1169,7 +1170,7 @@
                     }
                     break;
                 case 68: // keypress "d" duplicate row
-                    if (e.ctrlKey || e.shiftKey) {
+                    if (e.ctrlKey || e.shiftKey || e.metaKey) {
                         plugin.duplicateActiveRow();
                     }
                     break;

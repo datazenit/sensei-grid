@@ -1165,7 +1165,7 @@
                     }
                     break;
                 case 68: // keypress "d" duplicate row
-                    if (e.ctrlKey || e.shiftKey) {
+                    if (e.ctrlKey || e.shiftKey || e.metaKey) {
                         plugin.duplicateActiveRow();
                     }
                     break;
