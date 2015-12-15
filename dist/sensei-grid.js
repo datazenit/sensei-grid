@@ -27,7 +27,9 @@
                 skipOnDuplicate: null,
                 initialSort: null,
                 selectable: false,
-                toolbar: false
+                toolbar: false,
+                // container used for scrolling viewport
+                $container: $(window)
             };
 
         plugin.name = null;
@@ -698,11 +700,17 @@
 
         plugin.scrollIntoView = function($el, $container) {
           var padding = 50;
+          var top = 0;
+          var left = 0;
+          if ($container.offset()) {
+            top = $container.offset().top + $container.scrollTop();
+            left = $container.offset().left + $container.scrollLeft();
+          }
           $container.scrollTop(
-              $el.offset().top - $container.offset().top + $container.scrollTop() - padding
+              $el.offset().top - top - padding
           );
           $container.scrollLeft(
-              $el.offset().left - $container.offset().left + $container.scrollLeft() - padding
+              $el.offset().left - left - padding
           );
         };
 
@@ -718,11 +726,12 @@
               plugin.saveEditor();
             }
 
-            var $container = plugin.$el.parent(),
-                $cell = plugin.getActiveCell();
+            var $cell = plugin.getActiveCell();
+            var $container = plugin.config.$container;
+            var viewportSettings = $container.is($(window)) ? {} : {viewport: $container};
 
             // check if isInViewport method exists and active cell is in the viewport
-            if ($.fn.isInViewport && $cell.isInViewport({viewport: $container}).length === 0) {
+            if ($.fn.isInViewport && $cell.isInViewport(viewportSettings).length === 0) {
               // cell is not in containers viewport, let's scroll
               plugin.scrollIntoView($cell, $container);
             }
