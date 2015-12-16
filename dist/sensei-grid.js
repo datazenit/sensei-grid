@@ -29,7 +29,7 @@
                 selectable: false,
                 toolbar: false,
                 // container used for scrolling viewport
-                $container: $(window)
+                getContainer: null
             };
 
         plugin.name = null;
@@ -727,7 +727,10 @@
             }
 
             var $cell = plugin.getActiveCell();
-            var $container = plugin.config.$container;
+            var $container = $(window);
+            if (plugin.config.getContainer) {
+              $container = plugin.config.getContainer();
+            }
             var viewportSettings = $container.is($(window)) ? {} : {viewport: $container};
 
             // check if isInViewport method exists and active cell is in the viewport
