@@ -723,10 +723,11 @@
 
             var $cell = plugin.getActiveCell();
             var $container = $(window);
+            var viewportSettings = {};
             if (plugin.config.getContainer) {
               $container = plugin.config.getContainer();
+              viewportSettings = {viewport: $container};
             }
-            var viewportSettings = $container.is($(window)) ? {} : {viewport: $container};
 
             // check if isInViewport method exists and active cell is in the viewport
             if ($.fn.isInViewport && $cell.isInViewport(viewportSettings).length === 0) {
