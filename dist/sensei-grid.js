@@ -1610,6 +1610,7 @@
     root.DateEditor = Editor.extend({
         types: [],
         name: "DateEditor",
+        datepicker: null,
         render: function () {
             if (!this.editor) {
 
@@ -1621,24 +1622,25 @@
                 $(this.editor).append($wrapper);
                 this.grid.$el.append(this.editor);
 
-                // needed for datepicker
-                var grid = this.grid;
-
                 // load the datepicker
                 $('.datepicker').pickadate({
-                    format : 'ddd mmm dd yyyy', 
-                    editable: true,
-                    today: false,
-                    clear: false,
-                    close: false,
-                    onClose: function() {
-                        grid.preventEnter = false;
-                    },
-                    onOpen: function() {
-                        grid.preventEnter = true;
-                    }
+                  format : 'ddd mmm dd yyyy',
+                  editable: true,
+                  today: false,
+                  clear: false,
+                  close: false
                 });
+
+                // store datepicker instance
+                this.datepicker = $(".datepicker").pickadate('picker');
             }
+        },
+        show: function () {
+          this.getElement().show();
+          // force open datepicker
+          if (this.datepicker) {
+            this.datepicker.open();
+          }
         },
         getValue: function () {
             return $("input", this.editor).val();
