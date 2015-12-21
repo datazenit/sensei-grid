@@ -1,5 +1,7 @@
 .sensei-grid {
     outline: none;
+}
+.sensei-grid.no-select {
     /** disable selection */
     -moz-user-select: -moz-none;
     -khtml-user-select: none;
