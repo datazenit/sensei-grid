@@ -89,6 +89,18 @@
             return text.replace(/\r\n/g, "\n");
         };
 
+        /**
+         * Clear text selection
+         */
+        var clearSelection = function () {
+          if(document.selection && document.selection.empty) {
+            document.selection.empty();
+          } else if(window.getSelection) {
+            var sel = window.getSelection();
+            sel.removeAllRanges();
+          }
+        };
+
         plugin.setActiveCell = function ($el) {
 
             // disable setting active cell when in read only mode
@@ -1227,6 +1239,10 @@
 
             // if shift key was pressed, extend selection between last active and current row
             if (plugin.config.selectable && e.shiftKey) {
+
+              // disable text selection
+              clearSelection();
+
               var $currentRow = $(this).parent();
               if ($prev && $currentRow) {
                 var $between = plugin.$el.find("tbody>tr").between($prev, $currentRow);
