@@ -55,7 +55,7 @@ Currently it is mandatory to define columns in a separate array for Sensei Grid 
 var columns = [
     {name: "id", type: "string"},
     {name: "title", type: "string"}
-}
+];
 ```
 
 Initialize grid with data and columns
