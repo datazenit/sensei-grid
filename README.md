@@ -88,6 +88,7 @@ List of available editors:
 - SelectEditor - dropdown select box to choose a value from a list
 - DateEditor - datetime editor to choose a specific date from a calendar, provided by pickadate.js
 - DisabledEditor - sample editor that can't be edited
+- [new] AutocompleteEditor - text field with autocomplete support, based on typeahead.js
 
 ## Blog posts
 
