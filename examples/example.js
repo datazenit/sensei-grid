@@ -4,6 +4,11 @@ $(function() {
 	var authors = {
 		"values": ["Bob", "John", "Alice", "Jane"]
 	};
+	var occupations = {
+		"values": ["Software Developer", "Web Developer", "System Administrator", "Data Scientist",
+      "Graphic Designer", "Data Analyst", "Computer Support Specialists", "Database Administrators",
+      "Information Security Analyst"]
+	};
 	var statuses = {
 		"values": ["In progress", "Completed", "Done", "Verified"]
 	};
@@ -17,7 +22,8 @@ $(function() {
 			"is_admin": true,
 			"status": _.shuffle(statuses.values)[0],
 			"body": "The quick, brown fox jumps over a lazy dog.",
-			"author": _.shuffle(authors.values)[0],
+      "author": _.shuffle(authors.values)[0],
+      "occupation": _.shuffle(occupations.values)[0],
 			"title": "Test " + i + Math.round(Math.random() * 1000),
 			"count": Math.round(Math.random() * 100)
 		});
@@ -38,11 +44,16 @@ $(function() {
     display: "created at",
 		editor: "DateEditor"
 	}, {
-		name: "author",
-		type: "string",
-		editor: "SelectEditor",
-		editorProps: authors
-	}, {
+    name: "author",
+    type: "string",
+    editor: "SelectEditor",
+    editorProps: authors
+  }, {
+    name: "occupation",
+    type: "string",
+    editor: "AutocompleteEditor",
+    editorProps: occupations
+  }, {
 		name: "body",
 		type: "string",
 		editor: "TextareaEditor"
@@ -85,6 +96,7 @@ $(function() {
 	grid.registerEditor(TextareaEditor);
 	grid.registerEditor(SelectEditor);
 	grid.registerEditor(DateEditor);
+	grid.registerEditor(AutocompleteEditor);
 	//grid.registerEditor(DisabledEditor);
 
 	// register row actions

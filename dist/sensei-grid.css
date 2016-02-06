@@ -1,6 +1,6 @@
 /**
- * sensei-grid v0.4.0
- * Copyright (c) 2015 Lauris Dzilums <lauris@discuss.lv>
+ * sensei-grid v0.4.1
+ * Copyright (c) 2016 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
 .sensei-grid {
@@ -166,4 +166,57 @@
 }
 .sensei-grid-toolbar .toolbar-label:first-child {
     padding-left: 0;
+}
+
+/** typeahead styles */
+.twitter-typeahead {
+    width: 100%;
+}
+.tt-query,
+.tt-hint {
+    width: 396px;
+    height: 30px;
+    padding: 8px 12px;
+    font-size: 14px;
+    border: 2px solid #ccc;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    outline: none;
+}
+.tt-query {
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+.tt-hint {
+    color: #999
+}
+.tt-menu {
+    width: 300px;
+    max-height: 150px;
+    overflow-y: auto;
+    margin: 3px 0 3px -2px;
+    padding: 4px 0;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+}
+.tt-suggestion {
+    padding: 4px 10px;
+    font-size: 14px;
+}
+.tt-suggestion:hover {
+    cursor: pointer;
+    color: black;
+    background-color: #d0e9f8;
+}
+.tt-suggestion.tt-cursor {
+    color: black;
+    background-color: #d0e9f8;
+}
+.tt-suggestion p {
+    margin: 0;
 }
