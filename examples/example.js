@@ -217,11 +217,11 @@ $(function() {
 
 	var styledCols = _.clone(columns);
 
-	styledCols[3].style = function (value, $cell, $grid) {
+	styledCols[3].style = function (value, $cell, grid) {
 		return {"font-weight": "bold"}
 	};
 
-	styledCols[6].style = function (value, $cell, $grid) {
+	styledCols[6].style = function (value, $cell, grid) {
 		if (value === "Todo") {
 			return {background: "wheat"};
 		}
