@@ -10,7 +10,7 @@ $(function() {
 			"Accountant"]
 	};
 	var statuses = {
-		"values": ["In progress", "Completed", "Done", "Verified"]
+		"values": ["In progress", "Completed", "Done", "Todo"]
 	};
 
 	// generate data
@@ -191,7 +191,7 @@ $(function() {
 	}, {
 		name: "body",
 		type: "string",
-		editor: "TextareaEditor",
+		editor: "RichEditor",
 		allowHTML: true
 	}, {
 		name: "title",
@@ -207,11 +207,41 @@ $(function() {
 	var grid2 = $(".sensei-grid-html").grid(data2, columns2, options);
 	grid2.registerEditor(BasicEditor);
 	grid2.registerEditor(TextareaEditor);
+	grid2.registerEditor(RichEditor);
 	grid2.render();
 
   options.readonly = true;
   options.emptyRow = false;
 	var grid3 = $(".sensei-grid-readonly").grid(data, columns, options);
+	grid3.render();
+
+	var styledCols = _.clone(columns);
+
+	styledCols[3].style = function (value, $cell) {
+		return {"font-weight": "bold"}
+	};
+
+	styledCols[6].style = function (value, $cell) {
+		if (value === "Todo") {
+			return {background: "wheat"};
+		}
+
+		if (value === "In progress") {
+			return {background: "#F5EAD8"};
+		}
+
+		if (value === "Done") {
+			return {background: "#DDF3DD"};
+		}
+
+		if (value === "Completed") {
+			return {background: "#FBFDE7"};
+		}
+
+		return {};
+	};
+
+	var grid3 = $(".sensei-grid-styles").grid(data, columns, options);
 	grid3.render();
 
   options.readonly = false;

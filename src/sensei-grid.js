@@ -1372,6 +1372,15 @@
                     } else {
                         $(div).text(item[column.name]);
                     }
+                    
+                    // custom style callback
+                    if (_.isFunction(column.style)) {
+                        var style = column.style(item[column.name], plugin);
+                        
+                        if (!_.isEmpty(style)) {
+                            $(td).css(style);                            
+                        }
+                    }
                 }
 
                 // check if nowrap needs to be disabled

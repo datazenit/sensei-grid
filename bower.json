@@ -29,7 +29,7 @@
   "dependencies": {
     "lodash": "~3.10.1",
     "pickadate": "~3.5.4",
-    "summernote": "~0.5.10",
+    "summernote": "~0.8.0",
     "jquery": "~2.1.4",
     "isInViewport": "~2.3.0"
   }

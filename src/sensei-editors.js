@@ -329,35 +329,48 @@
       this.getElement().css({width: $td.outerWidth() + 50});
     },
     getValue: function () {
-      return $(".summertime-wrapper", this.editor).code();
+      var htmlVal = $(".summertime-wrapper", this.editor).summernote("code");
+      return ("" + htmlVal).trim();
     },
     setValue: function (val) {
-      $(".summertime-wrapper", this.editor).destroy();
-      $(".summertime-wrapper", this.editor).html(val);
 
       var grid = this.grid;
 
       $(".summertime-wrapper", this.editor).summernote({
         focus: true,
+        height: 100,
+        disableResizeEditor: true,
         toolbar: [
           ['style', ['bold', 'italic', 'underline', 'clear']],
           ['font', ['strikethrough']],
+          ['color', ['color']],
           ['fontsize', ['fontsize']]
         ],
-        onfocus: function () {
-          grid.preventEnter = true;
-        },
-        onblur: function () {
-          grid.preventEnter = false;
-        },
-        onkeydown: function (e) {
-          if (e.keyCode === 9) {
-            e.stopImmediatePropagation();
+        callbacks: {
+          onKeydown: function (e) {
+
+            // prevent enter + modifier keys in summernote
+            if (e.keyCode === 13 && (e.shiftKey || e.altKey || e.metaKey || e.ctrlKey)) {
+              e.preventDefault();
+              return true;
+            }
+
+            // allow only enter itself in summernote, prevent event to be triggered in grid
+            if (e.keyCode === 13) {
+              e.stopImmediatePropagation();
+            }
+
+            // prevent tab in summernote
+            if (e.keyCode === 9) {
+              e.preventDefault();
+              return false;
+            }
+
           }
         }
       });
 
-      $(".summertime-wrapper", this.editor).code(val);
+      $(".summertime-wrapper", this.editor).summernote("code", val);
     }
   });
 

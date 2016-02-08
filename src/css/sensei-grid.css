@@ -215,3 +215,13 @@
 .tt-suggestion p {
     margin: 0;
 }
+
+.note-editor .note-resizebar {
+    display: none;
+}
+.note-editor.note-frame {
+    margin-bottom: 0;
+    border-style: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+}

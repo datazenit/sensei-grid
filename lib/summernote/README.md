@@ -1,54 +1,64 @@
 # Summernote
-Super Simple WYSIWYG Editor on Bootstrap(3.0 and 2.x).
 
-[![Build Status](https://secure.travis-ci.org/HackerWins/summernote.png)](http://travis-ci.org/HackerWins/summernote)
+Super simple WYSIWYG Editor.
+
+[![Build Status](https://secure.travis-ci.org/summernote/summernote.svg)](http://travis-ci.org/summernote/summernote)
+[![npm version](https://badge.fury.io/js/summernote.svg)](http://badge.fury.io/js/summernote)
+[![Dependency Status](https://gemnasium.com/summernote/summernote.svg)](https://gemnasium.com/summernote/summernote)
+[![Coverage Status](https://coveralls.io/repos/summernote/summernote/badge.svg?branch=develop&service=github)](https://coveralls.io/github/summernote/summernote?branch=develop)
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/summernoteis.svg)](https://saucelabs.com/u/summernoteis)
 
 ### Summernote
-Summernote is a javascript program that helps you to create WYSIWYG Editor on web.
+Summernote is a JavaScript library that helps you create WYSIWYG editors online.
 
-Home Page: http://hackerwins.github.io/summernote/
+Home page: <http://summernote.org>
 
 ### Why Summernote?
 
-Summernote has something specials no like others.
+Summernote has a few special features:
+
+* Paste images from clipboard
+* Saves images directly in the content of the field using base64 encoding, so you don't need to implement image handling at all
 * Simple UI
-* Interative WYSIWYG editing
+* Interactive WYSIWYG editing
 * Handy integration with server
 
-#### Inspired by
-* Gmail WYSIWYG Editor (http://www.gmail.com)
-* Redactor (http://imperavi.com/redactor/)
+### Installation and dependencies
 
-### Easy to install
+Summernote uses opensource libraries: [jQuery](http://jquery.com/), [Bootstrap](http://getbootstrap.com).
 
-Summernote uses opensouce libraries(jQuery, bootstrap, fontAwesome) 
+For [Meteor](http://github.com/meteor/meteor), just run `meteor add summernote:summernote`. More info in the [Meteor README](meteor/README.md).
 
-#### 01. include js/css
+For other/no frameworks:
 
-Include Following code into `<head>` tag of your HTML:
+#### 1. include JS/CSS
+
+Include the following code in the `<head>` tag of your HTML:
 
 ```html
-<!-- include libraries(jQuery, bootstrap, fontawesome) -->
-<script type="text/javascript" src="//code.jquery.com/jquery-1.9.1.min.js"></script> 
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css" />
-<script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" />
+<!-- include libraries(jQuery, bootstrap) -->
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> 
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css" />
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
 <!-- include summernote css/js-->
 <link href="summernote.css" rel="stylesheet">
-<script src="summernote.min.js"></script>
+<script src="summernote.js"></script>
 ```
 
-If your summernote download is placed in a different folder, don't forget to change file's paths.
+#### 2. target elements
 
-#### 02. target elements
-And place `div` tag to somewhere in the `body` tag. This element will be placed by the visual representation of the summernote.
+Then place a `div` tag somewhere in the `body` tag. This element will be replaced with the summernote editor.
+
 ```html
 <div id="summernote">Hello Summernote</div>
 ```
 
-#### 03. summernote
-Finally, run script after document ready.
+#### 3. summernote
+
+Finally, run this script after the DOM is ready:
+
 ```javascript
 $(document).ready(function() {
   $('#summernote').summernote();
@@ -56,117 +66,52 @@ $(document).ready(function() {
 ```
 
 ### API
-Get HTML `code` if you need.
+
+`code` - get the HTML source code underlying the text in the editor:
 
 ```javascript
-var sHTML = $('#summernote').code();
+var html = $('#summernote').summernote('code');
 ```
 
-`Destroy` summernote.
+`Destroy` summernote:
 
 ```javascript
-$('#summernote').destroy();
+$('#summernote').summernote('destroy');
 ```
 
-#### Dependencies
-* jQuery: http://jquery.com/
-* Bootstrap: http://getbootstrap.com (both 2.x and 3.x)
-* fontAwesome: https://github.com/FortAwesome/Font-Awesome (both 3.x and 4.x)
+#### Warning - code injection
 
-### Supported platform
-* Modern Browser (Safari, Chrome, Firefox, Opera, Internet Explorer 9+)
-* OS (Windows, Mac, Linux)
+The code view allows the user to enter script contents. Make sure to filter/[sanitize the HTML on the server](https://github.com/search?l=JavaScript&q=sanitize+html). Otherwise, an attacker can inject arbitrary JavaScript code into clients.
+
+### Supported platforms
+
+Any modern browser: Safari, Chrome, Firefox, Opera, Internet Explorer 9+.
 
 ### Upcoming Features
-* Responsive Toolbar
-* Table: Handles(Sizing, Selection) and Popover
-* support IE8
-* Clipboard
-* Media Object Selection
+* Responsive toolbar
+* Table: Handles (sizing, selection) and popover
+* IE8 Support
+* Clipboard (you can paste images already)
+* Media object selection
 
-### Change Log
+### Developer information
 
-#### v0.5.9 2014-09-21
-* Dom Editing: insert(Un)OrderedList, indent/outdent
-* History in a line.
-
-#### v0.5.8 2014-08-31
-* Remove `autoFormatRange` option
-* Fixed `onChange` issues
-
-#### v0.5.7 ~ v0.5.4 2014-08-29 ~ 2014-08-23
-* Dom editing: insertPara, insertNode
-
-#### v0.5.3 2014-07-25
-* Extract codemirror.autoFormatOnStart option
-* Bug patch (createLink)
-
-#### v0.5.2 2014-07-20
-* Air Mode
-* And bug patch (scroll, createLink, ...)
-
-#### v0.5.1 2014-03-16
-* Support 15 Languages(https://github.com/HackerWins/summernote/tree/master/lang)
-* Add local-server for develop summernote.
-* Font style: Font-Family
-* And Bug patch.
-
-#### v0.5 2013-12-29
-* Support both Font-Awesome 3.x and 4.x
-* CodeMirror as Codeview
-* Insert Video (by cdownie)
-* Support 5 Languages(by hendrismit, tschiela, inomies, cverond)
-* Restructuring: jQuery build pattern
-
-#### v0.4 2013-11-01
-* Support both Bootstrap 3.0 and 2.x
-* Fullscreen
-* Codeview
-* Image Upload callback
-
-#### v0.3 2013-09-01
-* Bugs(image upload, fontsize, tab, recent color, ...)
-* Help dialog(keyboard shortcut)
-* Init options(event callbacks, custom toolbar)
-* Resize bar
-* Support IE8 Beta(some range bugs, can't insert Image)
-
-#### v0.2, 2013-08-01
-* Undo/Redo
-* Image sizing handle and popover
-* Support standalone css
-* Support Multiple Editor
-* Remove jQuery.curstyles dependency
-
-#### v0.1, 2013-07-01
-* Font style: size, color, bold, italic, underline, remove font style
-* Para style: bullet, align, outdent, indent, line height
-* Image: drag & drop, dialog
-* Link: popover and dialog
-* Table: create table with dimension picker
-
-### for Hacker
-
-#### structure of summernote.js
+#### document structure
 
 ```
-summernote.js - Renderer.js (Generate markup) - Locale.js (Locale object)
-              ㄴEventHandler.js - Editor.js  (Abstract editor)
-                                ㄴStyle.js   (Style Getter and Setter)
-                                ㄴHistory.js (Store on jQuery.data)
-                                ㄴToolbar.js (Toolbar module)
-                                ㄴPopover.js (Popover module)
-                                ㄴHandle.js  (Handle module)
-                                ㄴDialog.js  (Dialog module)
------------------------------Core Script-----------------------------
-  agent.js  (agent information)
-  async.js  (aysnc utility)
-  key.js    (keycode object)
-  dom.js    (dom functions)
-  list.js   (list functions)
-  range.js  (W3CRange extention)
----------------------------------------------------------------------
+ - body container: <div class="note-editable">, <td>, <blockquote>, <ul>
+ - block node: <div>, <p>, <li>, <h1>, <table>
+ - void block node: <hr>
+ - inline node: <span>, <b>, <font>, <a>, ...
+ - void inline node: <img>
+ - text node: #text
 ```
+
+1. A body container has block node, but `<ul>` has only `<li>` nodes.
+2. A body container also has inline nodes sometimes. This inline nodes will be wraped with `<p>` when enter key pressed.
+4. A block node only has inline nodes.
+5. A inline nodes has another inline nodes
+6. `#text` and void inline node doesn't have children.
 
 #### build summernote
 ```bash
@@ -183,26 +128,45 @@ grunt dist
 At this point, you should now have a `build/` directory populated with everything you need to use summernote.
 
 #### test summernote
-run tests with PhantomJS
+run tests with Karma and PhantomJS
 ```bash
 grunt test
 ```
+If you want run tests on other browser,
+change the values for `broswers` properties in `Gruntfile.js`.
+
+```
+karma: {
+  all: {
+    browsers: ['PhantomJS'],
+    reporters: ['progress']
+  }
+}
+
+```
+You can use `Chrome`, `ChromeCanary`, `Firefox`, `Opera`, `Safari`, `PhantomJS` and `IE` beside `PhantomJS`.
+Once you run `grunt test`, it will watch all javascript file. Therefore karma run tests every time you chage code.
 
 #### start local server for developing summernote.
 run local server with connect and watch.
 ```bash
-# this will open a browser on http://localhost:3000.
 grunt server
+# Open a browser on http://localhost:3000.
 # If you change source code, automatically reload your page.
 ```
 
 #### Coding convention
 * JSHint: http://www.jshint.com/about/
-* JSHint rule: https://github.com/HackerWins/summernote/blob/master/.jshintrc
+* JSHint rule: https://github.com/summernote/summernote/blob/master/.jshintrc
+
+#### Contribution guide
+* Please read [CONTRIBUTING.md](https://github.com/summernote/summernote/blob/develop/CONTRIBUTING.md) before sending pull requests.
 
 ### Contacts
 * Email: susukang98@gmail.com
 * Twitter: http://twitter.com/hackerwins
+* Chat with us:
+[![Join the chat at https://gitter.im/summernote/summernote](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/summernote/summernote?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 ### License
 summernote may be freely distributed under the MIT license.
