@@ -1380,7 +1380,7 @@
                     
                     // custom style callback
                     if (_.isFunction(column.style)) {
-                        var style = column.style(item[column.name], $(td), plugin);
+                        var style = column.style(item[column.name], item, $(td), plugin);
                         
                         if (!_.isEmpty(style)) {
                             $(td).css(style);                            
