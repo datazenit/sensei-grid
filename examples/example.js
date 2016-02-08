@@ -5,9 +5,9 @@ $(function() {
 		"values": ["Bob", "John", "Alice", "Jane"]
 	};
 	var occupations = {
-		"values": ["Software Developer", "Web Developer", "System Administrator", "Data Scientist",
-      "Graphic Designer", "Data Analyst", "Computer Support Specialists", "Database Administrators",
-      "Information Security Analyst"]
+		"values": ["Engineer", "Programmer", "Designer", 
+			"Administrator", "Manager", "Director", 
+			"Accountant"]
 	};
 	var statuses = {
 		"values": ["In progress", "Completed", "Done", "Verified"]
@@ -22,8 +22,8 @@ $(function() {
 			"is_admin": true,
 			"status": _.shuffle(statuses.values)[0],
 			"body": "The quick, brown fox jumps over a lazy dog.",
-      "author": _.shuffle(authors.values)[0],
-      "occupation": _.shuffle(occupations.values)[0],
+			"author": _.shuffle(authors.values)[0],
+			"occupation": _.shuffle(occupations.values)[0],
 			"title": "Test " + i + Math.round(Math.random() * 1000),
 			"count": Math.round(Math.random() * 100)
 		});
@@ -37,23 +37,33 @@ $(function() {
 		name: "is_admin",
 		type: "boolean",
 		editor: "BooleanEditor",
-    display: "admin"
+    	display: "admin"
 	}, {
 		name: "created_at",
 		type: "string",
-    display: "created at",
-		editor: "DateEditor"
+    	display: "created at",
+		editor: function (grid) {
+
+			// var $td = grid.getActiveCell();
+			// var data = grid.getCellData($td);
+			// var $row = grid.getCellRow($td);
+			// var rowData = grid.getRowData($row);
+
+			// insert some logic here to choose editor
+
+			return "DateEditor";
+		}
 	}, {
-    name: "author",
-    type: "string",
-    editor: "SelectEditor",
-    editorProps: authors
-  }, {
-    name: "occupation",
-    type: "string",
-    editor: "AutocompleteEditor",
-    editorProps: occupations
-  }, {
+	    name: "author",
+	    type: "string",
+	    editor: "SelectEditor",
+	    editorProps: authors
+	}, {
+		name: "occupation",
+		type: "string",
+		editor: "AutocompleteEditor",
+		editorProps: occupations
+	}, {
 		name: "body",
 		type: "string",
 		editor: "TextareaEditor"
@@ -62,29 +72,23 @@ $(function() {
 		type: "string",
 		editor: "SelectEditor",
 		editorProps: statuses
-	}, {
-		name: "title",
-		type: "string"
-	}, {
-		name: "count",
-		type: "string"
 	}];
 
 	// initialize grid
 	var options = {
-    // add an empty row at the end of grid
+		// add an empty row at the end of grid
 		emptyRow: true,
-    // enable sortable callbacks
+		// enable sortable callbacks
 		sortable: true,
-    // disable specific keys
+		// disable specific keys
 		disableKeys: [],
-    // move active cell when a row is removed
+		// move active cell when a row is removed
 		moveOnRowRemove: true,
-    // skip these cells on duplicate action
-    skipOnDuplicate: ["id"],
-    // set the initial order of table
-    initialSort: {col: "id", order: "asc"},
-    selectable: true
+		// skip these cells on duplicate action
+		skipOnDuplicate: ["id"],
+		// set the initial order of table
+		initialSort: {col: "id", order: "asc"},
+		selectable: false
 	};
 
   // initialize grid with data, column mapping and options
@@ -97,7 +101,7 @@ $(function() {
 	grid.registerEditor(SelectEditor);
 	grid.registerEditor(DateEditor);
 	grid.registerEditor(AutocompleteEditor);
-	//grid.registerEditor(DisabledEditor);
+	grid.registerEditor(DisabledEditor);
 
 	// register row actions
 	// grid.registerRowAction(BasicRowActions);

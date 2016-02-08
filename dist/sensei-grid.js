@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.4.1
+ * sensei-grid v0.4.2
  * Copyright (c) 2016 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -779,6 +779,10 @@
 
             var editorName = $td.data("editor");
 
+            if (_.isFunction(editorName)) {
+                editorName = editorName(plugin);
+            }
+
             if (editorName && _.has(plugin.editors, editorName)) {
                 // check if there is props for this editor
                 var col = plugin.getCellColumn($td);
@@ -958,14 +962,17 @@
 
         plugin.showEditor = function () {
 
-            if (!plugin.getEditorInstance()) {
+            // get editor instance
+            var editor = plugin.getEditorInstance();
+
+            if (!editor) {
               plugin.exitEditor();
               plugin.isEditing = true;
               return;
             }
 
             // set active editor instance
-            plugin.activeEditor = plugin.getEditorInstance();
+            plugin.activeEditor = editor;
 
             // assign element instances
             var $editor = plugin.activeEditor.getElement();
