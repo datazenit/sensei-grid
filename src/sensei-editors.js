@@ -334,8 +334,6 @@
     },
     setValue: function (val) {
 
-      var grid = this.grid;
-
       $(".summertime-wrapper", this.editor).summernote({
         focus: true,
         height: 100,

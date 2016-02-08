@@ -1,5 +1,5 @@
 /**
- * sensei-grid v0.4.2
+ * sensei-grid v0.4.3
  * Copyright (c) 2016 Lauris Dzilums <lauris@discuss.lv>
  * Licensed under MIT 
 */
@@ -219,4 +219,14 @@
 }
 .tt-suggestion p {
     margin: 0;
+}
+
+.note-editor .note-resizebar {
+    display: none;
+}
+.note-editor.note-frame {
+    margin-bottom: 0;
+    border-style: none;
+    box-shadow: none;
+    -webkit-box-shadow: none;
 }
