@@ -14,7 +14,7 @@
   <link rel="stylesheet" type="text/css" href="../lib/summernote/dist/summernote.css"/>
 
   <!-- Sensei Grid CSS -->
-  <link rel="stylesheet" type="text/css" href="../src/css/sensei-grid.css?v=20160208083640"/>
+  <link rel="stylesheet" type="text/css" href="../src/css/sensei-grid.css?v=20160208101902"/>
 
   <!-- Core JS dependencies -->
   <script src="../lib/jquery/dist/jquery.min.js"></script>
@@ -29,10 +29,10 @@
   <script src="../lib/typeahead.js/dist/typeahead.jquery.js"></script>
 
   <!-- Sensei Grid JS -->
-  <script src="../src/sensei-grid.js?v=20160208083640"></script>
-  <script src="../src/sensei-editors.js?v=20160208083640"></script>
-  <script src="../src/sensei-row-actions.js?v=20160208083640"></script>
-  <script src="example.js?v=20160208083640"></script>
+  <script src="../src/sensei-grid.js?v=20160208101902"></script>
+  <script src="../src/sensei-editors.js?v=20160208101902"></script>
+  <script src="../src/sensei-row-actions.js?v=20160208101902"></script>
+  <script src="example.js?v=20160208101902"></script>
 
   <!-- Custom CSS for this example -->
   <style type="text/css">
@@ -90,10 +90,11 @@
 
     <!-- Nav tabs -->
     <ul class="nav nav-tabs" role="tablist">
-      <li class="active"><a href="#defaultdemo" role="tab" data-toggle="tab">Full Demo</a></li>
-      <li><a href="#htmldemo" role="tab" data-toggle="tab">HTML in Grid Demo</a></li>
-      <li><a href="#readonly" role="tab" data-toggle="tab">Read-only Grid</a></li>
-      <li><a href="#rowactions" role="tab" data-toggle="tab">Row Actions</a></li>
+      <li class="active"><a href="#defaultdemo" role="tab" data-toggle="tab">Full demo</a></li>
+      <li><a href="#htmldemo" role="tab" data-toggle="tab">HTML in cells</a></li>
+      <li><a href="#styles" role="tab" data-toggle="tab">Custom cell styles</a></li>
+      <li><a href="#readonly" role="tab" data-toggle="tab">Read-only grid</a></li>
+      <li><a href="#rowactions" role="tab" data-toggle="tab">Row actions</a></li>
     </ul>
     <br>
     <!-- Tab panes -->
@@ -103,12 +104,17 @@
       </div>
       <div role="tabpanel" class="tab-pane" id="htmldemo">
         <div class="sensei-grid sensei-grid-html"></div>
-        <div class="alert alert-info">HTML can be allowed in cells by setting <code>allowHTML: true</code> in column
-          definition object.
+        <div class="alert alert-info">
+          This demo features WYSIWYG editor and HTML display in cells.
+          HTML can be allowed in cells by setting <code>allowHTML: true</code> in column
+          definition object. To add WYSIWYG editor, set "RichEditor" as column's editor.
         </div>
       </div>
       <div role="tabpanel" class="tab-pane" id="readonly">
         <div class="sensei-grid sensei-grid-readonly"></div>
+      </div>
+      <div role="tabpanel" class="tab-pane" id="styles">
+        <div class="sensei-grid sensei-grid-styles"></div>
       </div>
       <div role="tabpanel" class="tab-pane" id="rowactions">
         <div class="sensei-grid sensei-grid-rowactions"></div>
