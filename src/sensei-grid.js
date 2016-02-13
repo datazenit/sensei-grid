@@ -162,6 +162,7 @@
         plugin.events.trigger = function (event) {
             var args = Array.prototype.slice.call(arguments, 1);
             if (_.has(this._events, event)) {
+                // alert("event:"+event);
                 var events = this._events[event];
                 _.each(events, function (e) {
                     var cbk = _.bind(e["callback"], e["context"]);
@@ -198,7 +199,8 @@
         plugin.render = function () {
 
             // render row actions
-            plugin.rowElements = {};
+            plugin.rowElements = {}
+            ;
             _.each(plugin.rowActions, function (rowAction) {
                 rowAction.initialize();
                 var rowEl = "<div>" + rowAction.rowElement() + "</div>";
@@ -561,6 +563,15 @@
           // get row data for event
           var data = plugin.getRowData($row);
 
+          // stores the original row and records the row id
+          var edit = {
+              "type":"row",
+              "previousState": data,
+              "index": row
+          };
+          // save the state prior to edit
+          plugin.addEdit(edit);
+
           // trigger row:remove event before actual removal
           // could be used to persist changes in db
           plugin.events.trigger("row:remove", data, row, $row, userArg);
@@ -805,6 +816,7 @@
 
                     // stores the original content and records the cell row and column
                     var edit = {
+                        "type":"cell",
                         "previousState": plugin.getCellData($td),
                         "currentState": val,
                         "row": plugin.getRowData(plugin.getCellRow($td))["id"],
@@ -1174,19 +1186,49 @@
                     if (e.ctrlKey || e.metaKey) {
                         var edit = plugin.undo();
 
-                        if (('row' in edit) && ('column' in edit)) {
+                        if (edit.type === 'cell') {
+                            if (('row' in edit) && ('column' in edit)) {
 
-                            var row = plugin.getRowByIndex(edit.row - 1);
-                            var element = plugin.getCellFromRowByIndex(row, edit.column);
+                                var row = plugin.getRowByIndex(edit.row - 1);
+                                var element = plugin.getCellFromRowByIndex(row, edit.column);
 
-                            // set value from editor to the active cell
-                            element.html($("<div>").text(edit.previousState));
+                                // set value from editor to the active cell
+                                element.html($("<div>").text(edit.previousState));
 
-                            // trigger editor:save event
-                            var data = {};
-                            data[element.data("column")] = edit.previousState;
-                            plugin.events.trigger("editor:save", data, element);
+                                // trigger editor:save event
+                                var data = {};
+                                data[element.data("column")] = edit.previousState;
+                                plugin.events.trigger("editor:save", data, element);
 
+                            }
+                        } else if (edit.type === 'row') {
+                            if ('index' in edit) {
+
+                                var rowIndex  = edit.index;
+                                var data = edit.previousState;
+
+                                // recreate the row from row data
+                                var $newRow = $(plugin.renderRow(data, false, true));
+
+                                // insert the row at its previous position
+                                var totalRows = plugin.getRows().length - (plugin.emptyRow?1:0);
+                                if (rowIndex == 0 || totalRows == 0) {
+                                    // if it was the first row in the table
+                                    // or the table is currently empty
+                                    var $tbody = plugin.$el.find(".sensei-grid-tbody");
+                                    $tbody.prepend($newRow);
+                                }
+                                else {
+                                    var prevRowIndex = Math.min(totalRows,rowIndex - 1);
+                                    var prevRow   = $(plugin.getRowByIndex(prevRowIndex));
+
+                                    $newRow.insertAfter(prevRow);
+                                }
+
+                                // trigger row:create event
+                                plugin.events.trigger("row:create", $newRow);
+
+                            }
                         }
                     }
                     break;
