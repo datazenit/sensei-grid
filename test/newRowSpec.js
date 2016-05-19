@@ -11,7 +11,8 @@ describe("sensei-grid new row", function () {
     beforeEach(function () {
 
         // suppress console.log statements from src files
-        console.log = function () {};
+        console.log = function () {
+        };
 
         // create wrapper element
         $("body").append($el);
@@ -92,7 +93,13 @@ describe("sensei-grid new row", function () {
 
         // listen to row:save event and test returned values
         grid.events.on("row:save", function (data, $row, source) {
-            expect(data).toEqual({id: "test", created_at: "", status: "", title: "", count: NaN});
+            expect(data).toEqual({
+                id: "test",
+                created_at: "",
+                status: "",
+                title: "",
+                count: NaN
+            });
             expect($row.get()).toEqual($cell.parent("tr").get());
             expect(source).toEqual("editor:close");
             done();

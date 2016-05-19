@@ -1,15 +1,16 @@
 (function ($) {
 
-    // @TODO need to refactor event model. For example, avoid forced focus on grid,
-    // just set a mode (active/inactive) instead.
-    // key events should be global not specific to sensei grid, thus no focus would be needed
-    // on sensei grid for them to work.
-    // current event model and forced focus causes grid to get scrolled in area
-    // when editor moves/closes which is unnecessary
-
+    /**
+     * Initialize data grid component
+     * @param data
+     * @param columns
+     * @param options
+     * @param name
+     * @returns {*}
+     */
     $.fn.grid = function (data, columns, options, name) {
 
-        var plugin = this,
+        var plugin   = this,
             defaults = {
                 emptyRow: false,
                 sortable: false,
@@ -41,17 +42,21 @@
          * @returns {*}
          */
         $.fn.between = function (node1, node2) {
-          var index0 = $(this).index(node1);
-          var index1 = $(this).index(node2);
+            var index0 = $(this).index(node1);
+            var index1 = $(this).index(node2);
 
-          if (index0 <= index1) {
-            return this.slice(index0, index1 + 1);
-          }
-          return this.slice(index1, index0 + 1);
+            if (index0 <= index1) {
+                return this.slice(index0, index1 + 1);
+            }
+            return this.slice(index1, index0 + 1);
         };
 
+        /**
+         * Check if current browser is Firefox
+         * @returns {boolean}
+         */
         var isFirefox = function () {
-          return navigator.userAgent.search("Firefox") > -1;
+            return navigator.userAgent.search("Firefox") > -1;
         };
 
         /**
@@ -64,15 +69,15 @@
          * @param $el
          */
         var redraw = function ($el) {
-          if (isFirefox()) {
-            var el = $el.get(0);
-            var d = el.style.display;
+            if (isFirefox()) {
+                var el = $el.get(0);
+                var d = el.style.display;
 
-            // actual code that will force redraw of element
-            el.style.display = "none";
-            el.offsetHeight; // jshint ignore:line
-            el.style.display = d;
-          }
+                // actual code that will force redraw of element
+                el.style.display = "none";
+                el.offsetHeight; // jshint ignore:line
+                el.style.display = d;
+            }
         };
 
         /**
@@ -88,19 +93,23 @@
          * Clear text selection
          */
         var clearSelection = function () {
-          if(document.selection && document.selection.empty) {
-            document.selection.empty();
-          } else if(window.getSelection) {
-            var sel = window.getSelection();
-            sel.removeAllRanges();
-          }
+            if (document.selection && document.selection.empty) {
+                document.selection.empty();
+            } else if (window.getSelection) {
+                var sel = window.getSelection();
+                sel.removeAllRanges();
+            }
         };
 
+        /**
+         * Set active cell in grid
+         * @param $el jQuery element of cell that will be set as active
+         */
         plugin.setActiveCell = function ($el) {
 
             // disable setting active cell when in read only mode
             if (plugin.config.readonly) {
-              return;
+                return;
             }
 
             plugin.$prevRow = $(".sensei-grid-tbody>tr>.activeCell", plugin.$el).parent("tr");
@@ -136,8 +145,10 @@
             // }
         };
 
-        // fixes inconsistent position in firefox/chrome
-        // for this to work a div is needed inside table cell
+        /**
+         * Get cell position and fix inconsistent position in firefox/chrome
+         * @returns {object}
+         */
         $.fn.cellPosition = function () {
 
             var pos = $(this).position();
@@ -178,23 +189,34 @@
         // @deprecated use isFirefox function
         plugin.isSillyFirefox = function () {
             if (!plugin.$el.find("td:first").position()) {
-              return false;
+                return false;
             }
             var tableLeft = plugin.$el.position().left;
             var cellLeft = plugin.$el.find("td:first").position().left;
             return cellLeft !== tableLeft;
         };
 
+        /**
+         * Register cell editor
+         * @param Editor
+         */
         plugin.registerEditor = function (Editor) {
             var instance = new Editor(plugin);
             plugin.editors[instance.name] = instance;
         };
 
+        /**
+         * Register row action
+         * @param RowAction
+         */
         plugin.registerRowAction = function (RowAction) {
             var instance = new RowAction(plugin);
             plugin.rowActions[instance.name] = instance;
         };
 
+        /**
+         * Render grid and all related components
+         */
         plugin.render = function () {
 
             // render row actions
@@ -211,13 +233,13 @@
 
             // check if we need to show initial sorting
             if (plugin.config.sortable && _.isObject(plugin.config.initialSort)) {
-              var col = plugin.config.initialSort.col;
-              var $col = plugin.$el.find("th").filter(function () {
-                return $(this).data("name") === col;
-              });
-              if ($col) {
-                plugin.showSortingIndicator($col, plugin.config.initialSort.order);
-              }
+                var col = plugin.config.initialSort.col;
+                var $col = plugin.$el.find("th").filter(function () {
+                    return $(this).data("name") === col;
+                });
+                if ($col) {
+                    plugin.showSortingIndicator($col, plugin.config.initialSort.order);
+                }
             }
 
 
@@ -232,8 +254,8 @@
         };
 
         plugin.updateData = function (data) {
-          plugin.renderData(data);
-          plugin.bindEvents();
+            plugin.renderData(data);
+            plugin.bindEvents();
         };
 
         plugin.destroy = function () {
@@ -241,7 +263,7 @@
             plugin.$el.remove();
         };
 
-        plugin.addEdit = function (edit){
+        plugin.addEdit = function (edit) {
             // the pointer is at the last element in the edits array; push and exit
             if (plugin.editPointer === plugin.edits.length - 1) {
                 plugin.editPointer += 1;
@@ -257,7 +279,7 @@
             }
         };
 
-        plugin.redo = function (){
+        plugin.redo = function () {
             if (plugin.editPointer + 1 >= plugin.edits.length) {
                 return [];
 
@@ -320,17 +342,17 @@
             plugin.$el.find("th.sensei-grid-sortable .glyphicon").remove();
 
             if (forceOrder === "desc" || ($el.data("order") && $el.data("order") === "asc")) {
-              order = "desc";
-              // add sorting icon
-              $el.append($("<span>").addClass("glyphicon glyphicon-chevron-up"));
+                order = "desc";
+                // add sorting icon
+                $el.append($("<span>").addClass("glyphicon glyphicon-chevron-up"));
             } else {
-              order = "asc";
-              // add sorting icon
-              $el.append($("<span>").addClass("glyphicon glyphicon-chevron-down"));
+                order = "asc";
+                // add sorting icon
+                $el.append($("<span>").addClass("glyphicon glyphicon-chevron-down"));
             }
 
             if (forceOrder) {
-              order = forceOrder;
+                order = forceOrder;
             }
 
             // save sort order
@@ -395,7 +417,7 @@
 
             // if cell doesn't exist, return null
             if (!$cell || $cell.length === 0) {
-              return null;
+                return null;
             }
 
             var value = $cell.text();
@@ -471,7 +493,7 @@
 
             // return null when row is not found
             if (!$row || $row.length === 0) {
-              return null;
+                return null;
             }
 
             // get all cells from row
@@ -490,7 +512,7 @@
         };
 
         plugin.getSelectedRows = function () {
-          return plugin.$el.find(".sensei-grid-tbody>tr.selectedRow");
+            return plugin.$el.find(".sensei-grid-tbody>tr.selectedRow");
         };
 
         plugin.getGridData = function () {
@@ -539,34 +561,34 @@
 
         plugin.removeRow = function ($row, userArg) {
 
-          // check if rows can be removed
-          if (!plugin.config.removable) {
-            return false;
-          }
+            // check if rows can be removed
+            if (!plugin.config.removable) {
+                return false;
+            }
 
-          // get row index
-          var row = $row.index();
+            // get row index
+            var row = $row.index();
 
-          // avoid removing empty row
-          if ($row.hasClass("sensei-grid-empty-row")) {
-              return false;
-          }
+            // avoid removing empty row
+            if ($row.hasClass("sensei-grid-empty-row")) {
+                return false;
+            }
 
-          // select another row
-          if (plugin.config["moveOnRowRemove"]) {
-              // @todo move up, if there are no rows below
-              plugin.moveDown();
-          }
+            // select another row
+            if (plugin.config["moveOnRowRemove"]) {
+                // @todo move up, if there are no rows below
+                plugin.moveDown();
+            }
 
-          // get row data for event
-          var data = plugin.getRowData($row);
+            // get row data for event
+            var data = plugin.getRowData($row);
 
-          // trigger row:remove event before actual removal
-          // could be used to persist changes in db
-          plugin.events.trigger("row:remove", data, row, $row, userArg);
+            // trigger row:remove event before actual removal
+            // could be used to persist changes in db
+            plugin.events.trigger("row:remove", data, row, $row, userArg);
 
-          // remove row
-          $row.remove();
+            // remove row
+            $row.remove();
         };
 
         /**
@@ -577,10 +599,10 @@
             // check if any rows are selected
             var $selectedRows = plugin.getSelectedRows();
             if ($selectedRows.length > 0) {
-              $selectedRows.each(function () {
-                plugin.removeRow($(this));
-              });
-              return;
+                $selectedRows.each(function () {
+                    plugin.removeRow($(this));
+                });
+                return;
             }
 
             // get active cell
@@ -624,7 +646,7 @@
 
             // check if we need to skip some values
             if (!_.isEmpty(plugin.config.skipOnDuplicate)) {
-              data = _.omit(data, plugin.config.skipOnDuplicate);
+                data = _.omit(data, plugin.config.skipOnDuplicate);
             }
 
             // duplicate current row
@@ -705,57 +727,57 @@
             }
         };
 
-        plugin.scrollIntoView = function($el, $container) {
-          var padding = 50;
-          var top = 0;
-          var left = 0;
-          if ($container.offset()) {
-            top = $container.offset().top + $container.scrollTop();
-            left = $container.offset().left + $container.scrollLeft();
-          }
-          $container.scrollTop(
-              $el.offset().top - top - padding
-          );
-          $container.scrollLeft(
-              $el.offset().left - left - padding
-          );
+        plugin.scrollIntoView = function ($el, $container) {
+            var padding = 50;
+            var top = 0;
+            var left = 0;
+            if ($container.offset()) {
+                top = $container.offset().top + $container.scrollTop();
+                left = $container.offset().left + $container.scrollLeft();
+            }
+            $container.scrollTop(
+                $el.offset().top - top - padding
+            );
+            $container.scrollLeft(
+                $el.offset().left - left - padding
+            );
         };
 
         plugin.move = function (direction) {
-          var directionMethod = "move" + direction.charAt(0).toUpperCase() + direction.substr(1);
-          if (_.has(plugin, directionMethod)) {
+            var directionMethod = "move" + direction.charAt(0).toUpperCase() + direction.substr(1);
+            if (_.has(plugin, directionMethod)) {
 
-            // move active cell
-            plugin[directionMethod]();
+                // move active cell
+                plugin[directionMethod]();
 
-            if (plugin.isEditing) {
-              // save & hide editor
-              plugin.saveEditor();
+                if (plugin.isEditing) {
+                    // save & hide editor
+                    plugin.saveEditor();
+                }
+
+                var $cell = plugin.getActiveCell();
+                var $container = $(window);
+                var viewportSettings = {};
+                if (plugin.config.getContainer) {
+                    $container = plugin.config.getContainer();
+                    viewportSettings = {viewport: $container};
+                }
+
+                // check if isInViewport method exists and active cell is in the viewport
+                if ($.fn.isInViewport && $cell.isInViewport(viewportSettings).length === 0) {
+                    // cell is not in containers viewport, let's scroll
+                    plugin.scrollIntoView($cell, $container);
+                }
+
+                if (plugin.isEditing) {
+                    // show editor for currently active cell
+                    plugin.editCell();
+                }
+
+
+            } else {
+                console.warn("move method not found", directionMethod);
             }
-
-            var $cell = plugin.getActiveCell();
-            var $container = $(window);
-            var viewportSettings = {};
-            if (plugin.config.getContainer) {
-              $container = plugin.config.getContainer();
-              viewportSettings = {viewport: $container};
-            }
-
-            // check if isInViewport method exists and active cell is in the viewport
-            if ($.fn.isInViewport && $cell.isInViewport(viewportSettings).length === 0) {
-              // cell is not in containers viewport, let's scroll
-              plugin.scrollIntoView($cell, $container);
-            }
-
-            if (plugin.isEditing) {
-              // show editor for currently active cell
-              plugin.editCell();
-            }
-
-
-          } else {
-            console.warn("move method not found", directionMethod);
-          }
         };
 
         plugin.editCell = function () {
@@ -886,73 +908,73 @@
         };
 
         plugin.selectRow = function ($row, forceSelect, forceUnselect) {
-          // check if row can be selected
-          if (!plugin.config.selectable) {
-            return;
-          }
+            // check if row can be selected
+            if (!plugin.config.selectable) {
+                return;
+            }
 
-          var $cell = $row.find(".selectable");
-          plugin.selectCell($cell, forceSelect, forceUnselect);
+            var $cell = $row.find(".selectable");
+            plugin.selectCell($cell, forceSelect, forceUnselect);
         };
 
         plugin.selectCell = function ($cell, forceSelect, forceUnselect) {
-          // check if "this" is a selectable cell
-          // "this" will be a dom element if selectCell is called as a callback to dom event
-          if ($(this) && $(this).is("input")) {
-            $cell = $(this).parents("td.selectable");
-          } else {
-            // toggle checkbox state because if "this" is not a dom element, selectCell is not called as callback to
-            // dom event and checkbox state is unchanged
-            var $checkbox = $cell.find(":checkbox");
-
-            if (forceSelect) {
-              $checkbox.prop("checked", true);
-            } else if (forceUnselect) {
-              $checkbox.prop("checked", false);
+            // check if "this" is a selectable cell
+            // "this" will be a dom element if selectCell is called as a callback to dom event
+            if ($(this) && $(this).is("input")) {
+                $cell = $(this).parents("td.selectable");
             } else {
-              $checkbox.prop("checked", !$checkbox.prop("checked"));
+                // toggle checkbox state because if "this" is not a dom element, selectCell is not called as callback to
+                // dom event and checkbox state is unchanged
+                var $checkbox = $cell.find(":checkbox");
+
+                if (forceSelect) {
+                    $checkbox.prop("checked", true);
+                } else if (forceUnselect) {
+                    $checkbox.prop("checked", false);
+                } else {
+                    $checkbox.prop("checked", !$checkbox.prop("checked"));
+                }
             }
-          }
 
-          // don't select empty row
-          if ($cell.parent().hasClass("sensei-grid-empty-row")) {
-            return;
-          }
+            // don't select empty row
+            if ($cell.parent().hasClass("sensei-grid-empty-row")) {
+                return;
+            }
 
-          // toggle row select state
-          if (forceSelect) {
-            $cell.parent().addClass("selectedRow");
-          } else if (forceUnselect) {
-            $cell.parent().removeClass("selectedRow");
-          } else {
-            $cell.parent().toggleClass("selectedRow");
-          }
+            // toggle row select state
+            if (forceSelect) {
+                $cell.parent().addClass("selectedRow");
+            } else if (forceUnselect) {
+                $cell.parent().removeClass("selectedRow");
+            } else {
+                $cell.parent().toggleClass("selectedRow");
+            }
 
 
-          if ($cell.parent().hasClass("selectedRow")) {
-            plugin.events.trigger("row:mark", $cell.parent());
-          } else {
-            plugin.events.trigger("row:unmark", $cell.parent());
-          }
+            if ($cell.parent().hasClass("selectedRow")) {
+                plugin.events.trigger("row:mark", $cell.parent());
+            } else {
+                plugin.events.trigger("row:unmark", $cell.parent());
+            }
         };
 
         plugin.selectAll = function () {
-          // forced states
-          var forceSelect = true;
-          var forceUnselect = false;
+            // forced states
+            var forceSelect = true;
+            var forceUnselect = false;
 
-          var $checkbox = plugin.$el.find("thead th.selectable :checkbox");
+            var $checkbox = plugin.$el.find("thead th.selectable :checkbox");
 
-          // check if current checkbox is unchecked
-          if ($checkbox && !$checkbox.is(":checked")) {
-            forceSelect = false;
-            forceUnselect = true;
-          }
+            // check if current checkbox is unchecked
+            if ($checkbox && !$checkbox.is(":checked")) {
+                forceSelect = false;
+                forceUnselect = true;
+            }
 
-          var $rows = plugin.getRows();
-          $rows.each(function () {
-              plugin.selectRow($(this), forceSelect, forceUnselect);
-          });
+            var $rows = plugin.getRows();
+            $rows.each(function () {
+                plugin.selectRow($(this), forceSelect, forceUnselect);
+            });
         };
 
         plugin.showEditor = function () {
@@ -961,9 +983,9 @@
             var editor = plugin.getEditorInstance();
 
             if (!editor) {
-              plugin.exitEditor();
-              plugin.isEditing = true;
-              return;
+                plugin.exitEditor();
+                plugin.isEditing = true;
+                return;
             }
 
             // set active editor instance
@@ -1016,8 +1038,7 @@
             // get active cell
             var $activeCell = plugin.getActiveCell();
 
-            if ((plugin.getActiveCell().length === 0 && !plugin.isEditing && !_.contains(looseCodes, e.which)) ||
-                !_.contains(codes, e.which)) {
+            if ((plugin.getActiveCell().length === 0 && !plugin.isEditing && !_.contains(looseCodes, e.which)) || !_.contains(codes, e.which)) {
                 return;
             }
 
@@ -1044,8 +1065,8 @@
 
                     // check if current cell is selectable and shift key is pressed
                     if (e.shiftKey && plugin.config.selectable) {
-                      // select cell/row
-                      plugin.selectRow($activeCell.parent(), true);
+                        // select cell/row
+                        plugin.selectRow($activeCell.parent(), true);
                     }
 
                     plugin.move("up");
@@ -1053,8 +1074,8 @@
                     $nextCell = plugin.getActiveCell();
                     // check if next cell is selectable and shift key is pressed
                     if (e.shiftKey && plugin.config.selectable) {
-                      // select cell/row
-                      plugin.selectRow($nextCell.parent(), true);
+                        // select cell/row
+                        plugin.selectRow($nextCell.parent(), true);
                     }
 
                     break;
@@ -1065,8 +1086,8 @@
 
                     // check if current cell is selectable and shift key is pressed
                     if (e.shiftKey && plugin.config.selectable) {
-                      // select cell/row
-                      plugin.selectRow($activeCell.parent(), true);
+                        // select cell/row
+                        plugin.selectRow($activeCell.parent(), true);
                     }
 
                     plugin.move("down");
@@ -1074,8 +1095,8 @@
                     $nextCell = plugin.getActiveCell();
                     // check if next cell is selectable and shift key is pressed
                     if (e.shiftKey && plugin.config.selectable) {
-                      // select cell/row
-                      plugin.selectRow($nextCell.parent(), true);
+                        // select cell/row
+                        plugin.selectRow($nextCell.parent(), true);
                     }
                     break;
                 case 13: // enter
@@ -1084,23 +1105,24 @@
                     var isSelectable = false;
 
                     if ($activeCell && $activeCell.data("action")) {
-                      var rowActionName = $activeCell.data("action-name");
-                      if (plugin.rowActions[rowActionName]) {
-                        plugin.rowActions[rowActionName].trigger({data:
-                          {$activeCell: $activeCell}});
-                      }
+                        var rowActionName = $activeCell.data("action-name");
+                        if (plugin.rowActions[rowActionName]) {
+                            plugin.rowActions[rowActionName].trigger({
+                                data: {$activeCell: $activeCell}
+                            });
+                        }
 
-                      isRowAction = true;
+                        isRowAction = true;
                     }
 
                     // check if cell is selectable checkbox wrapper
                     if ($activeCell && $activeCell.hasClass("selectable")) {
 
-                      // select cell/row
-                      plugin.selectCell($activeCell);
+                        // select cell/row
+                        plugin.selectCell($activeCell);
 
-                      // set isSelectable state
-                      isSelectable = true;
+                        // set isSelectable state
+                        isSelectable = true;
                     }
 
                     // @todo the code below must be refactored
@@ -1119,7 +1141,7 @@
 
                         // enter on row action and selectable cell should not change editor state
                         if (!isRowAction && !isSelectable) {
-                          plugin.editCell();
+                            plugin.editCell();
                         }
                     }
                     break;
@@ -1130,13 +1152,13 @@
                         // get selected
                         var $selectedRows = plugin.getSelectedRows();
                         if ($selectedRows && $selectedRows.length > 0) {
-                          // unselect all
-                          $checkbox = plugin.$el.find("thead th.selectable :checkbox");
-                          $checkbox.prop("checked", false);
-                          plugin.selectAll();
+                            // unselect all
+                            $checkbox = plugin.$el.find("thead th.selectable :checkbox");
+                            $checkbox.prop("checked", false);
+                            plugin.selectAll();
                         } else {
-                          // remove focus from grid if no rows are selected
-                          plugin.$el.blur();
+                            // remove focus from grid if no rows are selected
+                            plugin.$el.blur();
                         }
                     }
                     break;
@@ -1150,8 +1172,8 @@
                 case 32: // space
                     // check if row is selectable
                     if ($activeCell && plugin.config.selectable) {
-                      // select row
-                      plugin.selectRow($activeCell.parent());
+                        // select row
+                        plugin.selectRow($activeCell.parent());
                     }
                     break;
                 case 8: // backspace
@@ -1162,12 +1184,12 @@
                 case 65: // "a" key
                     if (plugin.config.selectable && (e.ctrlKey || e.metaKey || e.shiftKey)) {
 
-                      // toggle main selectable checkbox
-                      $checkbox = plugin.$el.find("thead th.selectable :checkbox");
-                      $checkbox.prop("checked", !$checkbox.prop("checked"));
+                        // toggle main selectable checkbox
+                        $checkbox = plugin.$el.find("thead th.selectable :checkbox");
+                        $checkbox.prop("checked", !$checkbox.prop("checked"));
 
-                      // toggle select all rows
-                      plugin.selectAll();
+                        // toggle select all rows
+                        plugin.selectAll();
                     }
                     break;
                 case 90: // undo
@@ -1225,13 +1247,13 @@
         plugin.clickCell = function (e) {
             // dont prevent default event if this is selectable cell with checkbox
             if (!$(this).hasClass("selectable")) {
-              // is not selectable cell, prevent default event
-              e.preventDefault();
+                // is not selectable cell, prevent default event
+                e.preventDefault();
             }
 
             var $prev;
             if (plugin.getActiveCell()) {
-              $prev = plugin.getActiveCell().parent();
+                $prev = plugin.getActiveCell().parent();
             }
 
             if (plugin.isEditing) {
@@ -1242,20 +1264,20 @@
             // if shift key was pressed, extend selection between last active and current row
             if (plugin.config.selectable && e.shiftKey) {
 
-              // disable text selection
-              clearSelection();
+                // disable text selection
+                clearSelection();
 
-              var $currentRow = $(this).parent();
-              if ($prev && $currentRow) {
-                var $between = plugin.$el.find("tbody>tr").between($prev, $currentRow);
-                $between.each(function () {
-                  // if current cell is selectable, skip its row, because the select event will be called anyway from
-                  // checkbox change event
-                  if (!$(e.target).is(":checkbox") || !$(this).is($currentRow)) {
-                    plugin.selectCell($(this).find("td.selectable"), true);
-                  }
-                });
-              }
+                var $currentRow = $(this).parent();
+                if ($prev && $currentRow) {
+                    var $between = plugin.$el.find("tbody>tr").between($prev, $currentRow);
+                    $between.each(function () {
+                        // if current cell is selectable, skip its row, because the select event will be called anyway from
+                        // checkbox change event
+                        if (!$(e.target).is(":checkbox") || !$(this).is($currentRow)) {
+                            plugin.selectCell($(this).find("td.selectable"), true);
+                        }
+                    });
+                }
             }
         };
 
@@ -1270,8 +1292,8 @@
             var tr = document.createElement("tr");
 
             if (plugin.config.selectable) {
-              var th = $("<th class=selectable><div><input type=checkbox></div></th>")[0];
-              tr.appendChild(th);
+                var th = $("<th class=selectable><div><input type=checkbox></div></th>")[0];
+                tr.appendChild(th);
             }
 
             _.each(plugin.columns, function (column) {
@@ -1314,7 +1336,7 @@
 
             // override existing data array
             if (data) {
-              plugin.data = data;
+                plugin.data = data;
             }
 
             // remove existing content from tbody
@@ -1352,14 +1374,14 @@
             }
 
             if (plugin.config.selectable) {
-              var $td = $("<td><div></div></td>");
-              //var td = document.createElement("td");
-              if (saved) {
-                var $checkbox = $("<input type=checkbox>");
-                $td.find("div").append($checkbox);
-              }
-              $td.prop("class", "selectable");
-              tr.appendChild($td[0]);
+                var $td = $("<td><div></div></td>");
+                //var td = document.createElement("td");
+                if (saved) {
+                    var $checkbox = $("<input type=checkbox>");
+                    $td.find("div").append($checkbox);
+                }
+                $td.prop("class", "selectable");
+                tr.appendChild($td[0]);
             }
 
             _.each(plugin.columns, function (column) {
@@ -1372,20 +1394,20 @@
                     } else {
                         $(div).text(item[column.name]);
                     }
-                    
+
                     // custom style callback
                     if (_.isFunction(column.style)) {
                         var style = column.style(item[column.name], item, $(td), plugin);
-                        
+
                         if (!_.isEmpty(style)) {
-                            $(td).css(style);                            
+                            $(td).css(style);
                         }
                     }
                 }
 
                 // check if nowrap needs to be disabled
                 if (column.wrap === true) {
-                  $(td).css("white-space", "normal");
+                    $(td).css("white-space", "normal");
                 }
 
                 $(td).data("allowHTML", column.allowHTML);
@@ -1399,22 +1421,22 @@
             });
 
             if (!_.isEmpty(plugin.rowElements)) {
-              // append row actions to tr element
-              _.each(plugin.rowElements, function (rowEl, name) {
-                var td = document.createElement("td");
-                td.innerHTML = rowEl;
-                $(td).data("action", true);
-                $(td).data("action-name", name);
-                $(td).addClass("row-action");
+                // append row actions to tr element
+                _.each(plugin.rowElements, function (rowEl, name) {
+                    var td = document.createElement("td");
+                    td.innerHTML = rowEl;
+                    $(td).data("action", true);
+                    $(td).data("action-name", name);
+                    $(td).addClass("row-action");
 
-                // if row action has defined trigger event, bind it to $(td) el
-                var rowAction = plugin.rowActions[name];
-                if (rowAction.triggerEvent && rowAction.triggerEvent.event && rowAction.triggerEvent.selector) {
-                  $(td).on(rowAction.triggerEvent.event, rowAction.triggerEvent.selector, {$activeCell: $(td)}, rowAction.trigger);
-                }
+                    // if row action has defined trigger event, bind it to $(td) el
+                    var rowAction = plugin.rowActions[name];
+                    if (rowAction.triggerEvent && rowAction.triggerEvent.event && rowAction.triggerEvent.selector) {
+                        $(td).on(rowAction.triggerEvent.event, rowAction.triggerEvent.selector, {$activeCell: $(td)}, rowAction.trigger);
+                    }
 
-                tr.appendChild(td);
-              });
+                    tr.appendChild(td);
+                });
             }
 
             return tr;
@@ -1436,7 +1458,7 @@
             plugin.$el.attr("tabindex", -1);
 
             if (plugin.config.toolbar) {
-              plugin.$el.append($("<div class='sensei-grid-toolbar'>").text("Empty toolbar."));
+                plugin.$el.append($("<div class='sensei-grid-toolbar'>").text("Empty toolbar."));
             }
         };
 

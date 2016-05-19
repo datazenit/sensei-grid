@@ -16,6 +16,6 @@ function getColumns(data) {
     var firstRow = data[0];
     return _.map(firstRow, function (val, key) {
         var type = _.isNumber(val) ? "int" : "string";
-        return {name: key,  type: type}
+        return {name: key, type: type}
     });
 }

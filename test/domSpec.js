@@ -11,7 +11,8 @@ describe("sensei-grid dom", function () {
     beforeEach(function () {
 
         // suppress console.log statements from src files
-        console.log = function () {};
+        console.log = function () {
+        };
 
         // create wrapper element
         $("body").append($el);

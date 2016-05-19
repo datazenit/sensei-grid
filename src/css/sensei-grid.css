@@ -1,6 +1,7 @@
 .sensei-grid {
     outline: none;
 }
+
 .sensei-grid.no-select {
     /** disable selection */
     -moz-user-select: -moz-none;
@@ -9,70 +10,75 @@
     -ms-user-select: none;
     user-select: none;
 }
-.sensei-grid-table-wrapper>table {
-	empty-cells: show;
+
+.sensei-grid-table-wrapper > table {
+    empty-cells: show;
     margin-bottom: 0;
 }
-.sensei-grid-table-wrapper>table td,
-.sensei-grid-table-wrapper>table th {
+
+.sensei-grid-table-wrapper > table td,
+.sensei-grid-table-wrapper > table th {
     white-space: nowrap;
     overflow: hidden;
 }
-/** shrink all cells except the last one */
-.sensei-grid-table-wrapper>table td:not(:last-child) {
-    /*white-space: nowrap;*/
-}
-.sensei-grid-table-wrapper>table td:last-child {
-    /*width: 100%;*/
-}
-.sensei-grid-table-wrapper>table td>div,
-.sensei-grid-table-wrapper>table th>div {
+
+.sensei-grid-table-wrapper > table td > div,
+.sensei-grid-table-wrapper > table th > div {
     overflow: hidden;
     /* transparent border fixes another firefox quirk
     when cell width is calculated incorrectly */
     border: 1px solid transparent;
 }
-.sensei-grid-table-wrapper>table tr div::after {
+
+.sensei-grid-table-wrapper > table tr div::after {
     content: '\00a0';
 }
-.sensei-grid-table-wrapper>table thead {
-	background: #F5F5F5;
+
+.sensei-grid-table-wrapper > table thead {
+    background: #F5F5F5;
 }
-.sensei-grid-table-wrapper>table thead>tr>th {
-	border-bottom-width: 1px;
+
+.sensei-grid-table-wrapper > table thead > tr > th {
+    border-bottom-width: 1px;
     font-weight: bold;
 }
-.sensei-grid-table-wrapper>table .activeCell {
-	background: #d0e9f8;
-	border: 1px double #3399ff;
+
+.sensei-grid-table-wrapper > table .activeCell {
+    background: #d0e9f8;
+    border: 1px double #3399ff;
 }
-.sensei-grid-table-wrapper>table .activeRow {
-	background: #eff7fc;
+
+.sensei-grid-table-wrapper > table .activeRow {
+    background: #eff7fc;
 }
-.sensei-grid-table-wrapper>table .sensei-grid-dirty-row {
+
+.sensei-grid-table-wrapper > table .sensei-grid-dirty-row {
     color: gray;
 }
 
 .sensei-grid-editor {
-	position: absolute;
-	background: white;
-	border: 2px solid #3399ff;
-	box-shadow: 2px 2px 2px rgba(0,0,0,0.1);
+    position: absolute;
+    background: white;
+    border: 2px solid #3399ff;
+    box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.1);
 }
+
 .sensei-grid-editor input[type=text],
 .sensei-grid-editor select,
 .sensei-grid-editor textarea {
-	border: none;
-	width: 100%;
-	height: 100%;
-	box-shadow: none;
-	outline: none;
-	padding: 5px 6px;
+    border: none;
+    width: 100%;
+    height: 100%;
+    box-shadow: none;
+    outline: none;
+    padding: 5px 6px;
     background: #fff;
 }
+
 .sensei-grid-editor.sensei-grid-boolean-editor {
     /*text-align: center;*/
 }
+
 .sensei-grid-editor input[type=checkbox] {
     margin: 8px 0 0 8px;
     font-size: 20px;
@@ -80,9 +86,10 @@
     padding: 0;
     line-height: inherit;
 }
+
 .sensei-grid-editor textarea {
-	/** fixes bottom gap */
-	vertical-align: top;
+    /** fixes bottom gap */
+    vertical-align: top;
 }
 
 .sensei-grid-date-editor .picker__holder {
@@ -90,6 +97,7 @@
     margin-left: -2px;
     margin-top: 2px;
 }
+
 .sensei-grid-date-editor .picker {
     font-size: 14px;
 }
@@ -97,6 +105,7 @@
 .sensei-grid-disabled-editor {
     border-color: #ADADAD;
 }
+
 .sensei-grid-disabled-editor input[type=text] {
     cursor: not-allowed;
     background: #FAFAFA;
@@ -110,6 +119,7 @@
     padding-right: 22px;
     position: relative;
 }
+
 .sensei-grid th.sensei-grid-sortable .glyphicon {
     font-size: 10px;
     color: #aaa;
@@ -140,8 +150,9 @@
 /* selectable styles */
 .sensei-grid th.selectable input,
 .sensei-grid td.selectable input {
-   margin-left: 2px;
+    margin-left: 2px;
 }
+
 .sensei-grid .selectedRow,
 .sensei-grid .activeRow.selectedRow {
     background-color: #FFFFE0;
@@ -154,11 +165,13 @@
     border: 1px solid #DDD;
     vertical-align: top;
 }
+
 .sensei-grid-toolbar .toolbar-label {
     display: inline-block;
     font-size: 12px;
     padding-left: 10px;
 }
+
 .sensei-grid-toolbar .toolbar-label:first-child {
     padding-left: 0;
 }
@@ -167,6 +180,7 @@
 .twitter-typeahead {
     width: 100%;
 }
+
 .tt-query,
 .tt-hint {
     width: 396px;
@@ -179,14 +193,17 @@
     border-radius: 8px;
     outline: none;
 }
+
 .tt-query {
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     -moz-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
 }
+
 .tt-hint {
     color: #999
 }
+
 .tt-menu {
     width: 300px;
     max-height: 150px;
@@ -195,23 +212,27 @@
     padding: 4px 0;
     background-color: #fff;
     border: 1px solid #ccc;
-    -webkit-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-    -moz-box-shadow: 0 5px 10px rgba(0,0,0,.2);
-    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    -webkit-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    -moz-box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, .2);
 }
+
 .tt-suggestion {
     padding: 4px 10px;
     font-size: 14px;
 }
+
 .tt-suggestion:hover {
     cursor: pointer;
     color: black;
     background-color: #d0e9f8;
 }
+
 .tt-suggestion.tt-cursor {
     color: black;
     background-color: #d0e9f8;
 }
+
 .tt-suggestion p {
     margin: 0;
 }
@@ -219,6 +240,7 @@
 .note-editor .note-resizebar {
     display: none;
 }
+
 .note-editor.note-frame {
     margin-bottom: 0;
     border-style: none;

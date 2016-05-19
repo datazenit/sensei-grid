@@ -1,216 +1,252 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Sensei Grid: JavaScript Data Grid Library</title>
+    <title>Sensei Grid: JavaScript Data Grid Library</title>
 
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- CSS dependencies -->
-  <link rel="stylesheet" type="text/css" href="../lib/bootstrap/dist/css/bootstrap.min.css"/>
-  <link rel="stylesheet" type="text/css" href="../lib/pickadate/lib/themes/classic.css"/>
-  <link rel="stylesheet" type="text/css" href="../lib/pickadate/lib/themes/classic.date.css"/>
-  <link rel="stylesheet" type="text/css" href="../lib/fontawesome/css/font-awesome.min.css"/>
-  <link rel="stylesheet" type="text/css" href="../lib/summernote/dist/summernote.css"/>
+    <!-- CSS dependencies -->
+    <link rel="stylesheet" type="text/css"
+          href="../lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="../lib/pickadate/lib/themes/classic.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="../lib/pickadate/lib/themes/classic.date.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="../lib/fontawesome/css/font-awesome.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="../lib/summernote/dist/summernote.css"/>
 
-  <!-- Sensei Grid CSS -->
-  <link rel="stylesheet" type="text/css" href="../src/css/sensei-grid.css?v=<!-- @echo now -->"/>
+    <!-- Sensei Grid CSS -->
+    <link rel="stylesheet" type="text/css"
+          href="../src/css/sensei-grid.css?v=<!-- @echo now -->"/>
 
-  <!-- Core JS dependencies -->
-  <script src="../lib/jquery/dist/jquery.min.js"></script>
-  <script src="../lib/lodash/lodash.min.js"></script>
+    <!-- Core JS dependencies -->
+    <script src="../lib/jquery/dist/jquery.min.js"></script>
+    <script src="../lib/lodash/lodash.min.js"></script>
 
-  <!-- Editor JS dependencies -->
-  <script src="../lib/pickadate/lib/picker.js"></script>
-  <script src="../lib/pickadate/lib/picker.date.js"></script>
-  <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="../lib/summernote/dist/summernote.js"></script>
-  <script src="../lib/isInViewport/lib/isInViewport.js"></script>
-  <script src="../lib/typeahead.js/dist/typeahead.jquery.js"></script>
+    <!-- Editor JS dependencies -->
+    <script src="../lib/pickadate/lib/picker.js"></script>
+    <script src="../lib/pickadate/lib/picker.date.js"></script>
+    <script src="../lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../lib/summernote/dist/summernote.js"></script>
+    <script src="../lib/isInViewport/lib/isInViewport.js"></script>
+    <script src="../lib/typeahead.js/dist/typeahead.jquery.js"></script>
 
-  <!-- Sensei Grid JS -->
-  <script src="../src/sensei-grid.js?v=<!-- @echo now -->"></script>
-  <script src="../src/sensei-editors.js?v=<!-- @echo now -->"></script>
-  <script src="../src/sensei-row-actions.js?v=<!-- @echo now -->"></script>
-  <script src="example.js?v=<!-- @echo now -->"></script>
+    <!-- Sensei Grid JS -->
+    <script src="../src/sensei-grid.js?v=<!-- @echo now -->"></script>
+    <script src="../src/sensei-editors.js?v=<!-- @echo now -->"></script>
+    <script src="../src/sensei-row-actions.js?v=<!-- @echo now -->"></script>
+    <script src="example.js?v=<!-- @echo now -->"></script>
 
-  <!-- Custom CSS for this example -->
-  <style type="text/css">
-    .example {
-      width: 940px;
-      margin: 50px auto;
-      padding: 0 20px;
-    }
+    <!-- Custom CSS for this example -->
+    <style type="text/css">
+        .example {
+            width: 940px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
 
-    .sensei-grid {
-      margin-bottom: 20px;
-    }
+        .sensei-grid {
+            margin-bottom: 20px;
+        }
 
-    h1 {
-      font-weight: bold;
-      line-height: normal;
-    }
-  </style>
+        h1 {
+            font-weight: bold;
+            line-height: normal;
+        }
+    </style>
 
-  <script>
-    (function (i, s, o, g, r, a, m) {
-      i['GoogleAnalyticsObject'] = r;
-      i[r] = i[r] || function () {
-            (i[r].q = i[r].q || []).push(arguments)
-          }, i[r].l = 1 * new Date();
-      a = s.createElement(o),
-          m = s.getElementsByTagName(o)[0];
-      a.async = 1;
-      a.src = g;
-      m.parentNode.insertBefore(a, m)
-    })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+    <script>
+        (function (i, s, o, g, r, a, m) {
+            i['GoogleAnalyticsObject'] = r;
+            i[r] = i[r] || function () {
+                        (i[r].q = i[r].q || []).push(arguments)
+                    }, i[r].l = 1 * new Date();
+            a = s.createElement(o),
+                    m = s.getElementsByTagName(o)[0];
+            a.async = 1;
+            a.src = g;
+            m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
 
-    ga('create', 'UA-46133629-1', 'datazenit.com');
-    ga('send', 'pageview');
-  </script>
+        ga('create', 'UA-46133629-1', 'datazenit.com');
+        ga('send', 'pageview');
+    </script>
 
 </head>
 <body>
 <div class="example">
 
-  <div class="page-header">
-    <h1>Sensei Grid – JavaScript Data Grid</h1>
-    <p class="lead">
-      An open-source project by <a href="http://datazenit.com" title="Database administration tool"><b>Datazenit</b></a>,
-      a web-based database administration tool.
-    </p>
-    <p>Sensei Grid is a data grid component written in JS. It features keyboard navigation,
-      data editing with different editors, multiple row selection, row actions, toolbar system, sorting hooks
-      and more. It aims to be simple and easy to customize. For more info and source code go to
-      <a href="https://github.com/datazenit/sensei-grid" target="_blank">GitHub</a>.
-    </p>
-  </div>
-
-  <div>
-
-    <!-- Nav tabs -->
-    <ul class="nav nav-tabs" role="tablist">
-      <li class="active"><a href="#defaultdemo" role="tab" data-toggle="tab">Full demo</a></li>
-      <li><a href="#htmldemo" role="tab" data-toggle="tab">HTML in cells</a></li>
-      <li><a href="#styles" role="tab" data-toggle="tab">Custom cell styles</a></li>
-      <li><a href="#readonly" role="tab" data-toggle="tab">Read-only grid</a></li>
-      <li><a href="#rowactions" role="tab" data-toggle="tab">Row actions</a></li>
-    </ul>
-    <br>
-    <!-- Tab panes -->
-    <div class="tab-content">
-      <div role="tabpanel" class="tab-pane active" id="defaultdemo">
-        <div class="sensei-grid sensei-grid-default"></div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="htmldemo">
-        <div class="sensei-grid sensei-grid-html"></div>
-        <div class="alert alert-info">
-          This demo features WYSIWYG editor and HTML display in cells.
-          HTML can be allowed in cells by setting <code>allowHTML: true</code> in column
-          definition object. To add WYSIWYG editor, set "RichEditor" as column's editor.
-        </div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="readonly">
-        <div class="sensei-grid sensei-grid-readonly"></div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="styles">
-        <div class="sensei-grid sensei-grid-styles"></div>
-      </div>
-      <div role="tabpanel" class="tab-pane" id="rowactions">
-        <div class="sensei-grid sensei-grid-rowactions"></div>
-      </div>
+    <div class="page-header">
+        <h1>Sensei Grid – JavaScript Data Grid</h1>
+        <p class="lead">
+            An open-source project by <a href="http://datazenit.com"
+                                         title="Database administration tool"><b>Datazenit</b></a>,
+            a web-based database administration tool.
+        </p>
+        <p>Sensei Grid is a data grid component written in JS. It features
+            keyboard navigation,
+            data editing with different editors, multiple row selection, row
+            actions, toolbar system, sorting hooks
+            and more. It aims to be simple and easy to customize. For more info
+            and source code go to
+            <a href="https://github.com/datazenit/sensei-grid" target="_blank">GitHub</a>.
+        </p>
     </div>
 
-  </div>
+    <div>
 
-  <table class="table">
-    <thead>
-    <tr>
-      <th colspan="2">Keyboard shortcuts when the editor <strong>is not active</strong></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td style="width:320px"><code>left, right, up, down</code></td>
-      <td>move active cell</td>
-    </tr>
-    <tr>
-      <td><code>esc</code></td>
-      <td>move focus away from grid and remove highlight from active cell and row</td>
-    </tr>
-    <tr>
-      <td><code>enter</code></td>
-      <td>open cell editor</td>
-    </tr>
-    <tr>
-      <td><code>space</code></td>
-      <td>toggle selected state of row</td>
-    </tr>
-    <tr>
-      <td><code>shift+down/up</code></td>
-      <td>move down/up and select rows</td>
-    </tr>
-    <tr>
-      <td><code>ctrl+a</code> or <code>shift+a</code> or <code>cmd+a</code></td>
-      <td>select/deselect all rows</td>
-    </tr>
-    <tr>
-      <td><code>backspace</code></td>
-      <td>clear contents of active cell</td>
-    </tr>
-    <tr>
-      <td><code>ctrl + backspace</code> or <code>⌘ + backspace</code></td>
-      <td>remove active row or selected rows if any</td>
-    </tr>
-    <tr>
-      <td><code>ctrl + d</code> or <code>shift + d</code></td>
-      <td>duplicate row</td>
-    </tr>
-    <tr>
-      <td><code>ctrl + z</code> or <code>⌘ + z</code></td>
-      <td>undo</td>
-    </tr>
-    <tr>
-      <td><code>ctrl + y</code> or <code>⌘ + y</code></td>
-      <td>redo</td>
-    </tr>
-    </tbody>
-  </table>
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active">
+                <a href="#defaultdemo" role="tab" data-toggle="tab">Full
+                    demo</a>
+            </li>
+            <li>
+                <a href="#htmldemo" role="tab" data-toggle="tab">HTML in
+                    cells</a>
+            </li>
+            <li>
+                <a href="#styles" role="tab" data-toggle="tab">Custom cell
+                    styles</a>
+            </li>
+            <li>
+                <a href="#readonly" role="tab" data-toggle="tab">Read-only
+                    grid</a>
+            </li>
+            <li>
+                <a href="#rowactions" role="tab" data-toggle="tab">Row
+                    actions</a>
+            </li>
+        </ul>
+        <br>
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane active" id="defaultdemo">
+                <div class="sensei-grid sensei-grid-default"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="htmldemo">
+                <div class="sensei-grid sensei-grid-html"></div>
+                <div class="alert alert-info">
+                    This demo features WYSIWYG editor and HTML display in cells.
+                    HTML can be allowed in cells by setting <code>allowHTML:
+                    true</code> in column
+                    definition object. To add WYSIWYG editor, set "RichEditor"
+                    as column's editor.
+                </div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="readonly">
+                <div class="sensei-grid sensei-grid-readonly"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="styles">
+                <div class="sensei-grid sensei-grid-styles"></div>
+            </div>
+            <div role="tabpanel" class="tab-pane" id="rowactions">
+                <div class="sensei-grid sensei-grid-rowactions"></div>
+            </div>
+        </div>
 
-  <table class="table">
-    <thead>
-    <tr>
-      <th colspan="2">Keyboard shortcuts when the editor <strong>is active</strong></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td style="width:320px"><code>ctrl + enter</code></td>
-      <td>move editor down</td>
-    </tr>
-    <tr>
-      <td><code>ctrl + shift + enter</code></td>
-      <td>move editor up</td>
-    </tr>
-    <tr>
-      <td><code>enter</code></td>
-      <td>exit editor and save</td>
-    </tr>
-    <tr>
-      <td><code>tab</code></td>
-      <td>move forward</td>
-    </tr>
-    <tr>
-      <td><code>shift + tab</code></td>
-      <td>move backward</td>
-    </tr>
-    <tr>
-      <td><code>esc</code></td>
-      <td>exit editor without saving</td>
-    </tr>
-    </tbody>
-  </table>
+    </div>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th colspan="2">Keyboard shortcuts when the editor <strong>is not
+                active</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="width:320px"><code>left, right, up, down</code></td>
+            <td>move active cell</td>
+        </tr>
+        <tr>
+            <td><code>esc</code></td>
+            <td>move focus away from grid and remove highlight from active cell
+                and row
+            </td>
+        </tr>
+        <tr>
+            <td><code>enter</code></td>
+            <td>open cell editor</td>
+        </tr>
+        <tr>
+            <td><code>space</code></td>
+            <td>toggle selected state of row</td>
+        </tr>
+        <tr>
+            <td><code>shift+down/up</code></td>
+            <td>move down/up and select rows</td>
+        </tr>
+        <tr>
+            <td><code>ctrl+a</code> or <code>shift+a</code> or
+                <code>cmd+a</code></td>
+            <td>select/deselect all rows</td>
+        </tr>
+        <tr>
+            <td><code>backspace</code></td>
+            <td>clear contents of active cell</td>
+        </tr>
+        <tr>
+            <td><code>ctrl + backspace</code> or <code>⌘ + backspace</code></td>
+            <td>remove active row or selected rows if any</td>
+        </tr>
+        <tr>
+            <td><code>ctrl + d</code> or <code>shift + d</code></td>
+            <td>duplicate row</td>
+        </tr>
+        <tr>
+            <td><code>ctrl + z</code> or <code>⌘ + z</code></td>
+            <td>undo</td>
+        </tr>
+        <tr>
+            <td><code>ctrl + y</code> or <code>⌘ + y</code></td>
+            <td>redo</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th colspan="2">Keyboard shortcuts when the editor <strong>is
+                active</strong></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td style="width:320px"><code>ctrl + enter</code></td>
+            <td>move editor down</td>
+        </tr>
+        <tr>
+            <td><code>ctrl + shift + enter</code></td>
+            <td>move editor up</td>
+        </tr>
+        <tr>
+            <td><code>enter</code></td>
+            <td>exit editor and save</td>
+        </tr>
+        <tr>
+            <td><code>tab</code></td>
+            <td>move forward</td>
+        </tr>
+        <tr>
+            <td><code>shift + tab</code></td>
+            <td>move backward</td>
+        </tr>
+        <tr>
+            <td><code>esc</code></td>
+            <td>exit editor without saving</td>
+        </tr>
+        </tbody>
+    </table>
 </div>
-<a href="https://github.com/datazenit/sensei-grid"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+<a href="https://github.com/datazenit/sensei-grid"><img
+        style="position: absolute; top: 0; right: 0; border: 0;"
+        src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67"
+        alt="Fork me on GitHub"
+        data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
 </body>
 </html>

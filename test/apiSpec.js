@@ -11,7 +11,8 @@ describe("sensei-grid api", function () {
     beforeEach(function () {
 
         // suppress console.log statements from src files
-        console.log = function () {};
+        console.log = function () {
+        };
 
         // create wrapper element
         $("body").append($el);
@@ -62,12 +63,12 @@ describe("sensei-grid api", function () {
 
     describe("getCellDataByIndex", function () {
         it("should return cell data by index", function () {
-            expect(grid.getCellDataByIndex(0,0)).toEqual(data[0]["id"]);
-            expect(grid.getCellDataByIndex(5,4)).toEqual(data[5]["count"]);
+            expect(grid.getCellDataByIndex(0, 0)).toEqual(data[0]["id"]);
+            expect(grid.getCellDataByIndex(5, 4)).toEqual(data[5]["count"]);
         });
         it("should return cell data by negative index", function () {
-            expect(grid.getCellDataByIndex(-1,0)).toEqual(data[9]["id"]);
-            expect(grid.getCellDataByIndex(0,-1)).toEqual(data[0]["count"]);
+            expect(grid.getCellDataByIndex(-1, 0)).toEqual(data[9]["id"]);
+            expect(grid.getCellDataByIndex(0, -1)).toEqual(data[0]["count"]);
         });
     });
 
@@ -78,8 +79,8 @@ describe("sensei-grid api", function () {
             expect(grid.getCellDataByKey(9, "id")).toEqual(data[9]["id"]);
         });
         it("should be null when cell or row is not found", function () {
-            expect(grid.getCellDataByKey(0,"key_from_outer_space")).toBeNull();
-            expect(grid.getCellDataByKey(100,"title")).toBeNull();
+            expect(grid.getCellDataByKey(0, "key_from_outer_space")).toBeNull();
+            expect(grid.getCellDataByKey(100, "title")).toBeNull();
         });
     });
 
