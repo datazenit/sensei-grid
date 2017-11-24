@@ -6,9 +6,9 @@ Dependencies: jQuery and underscore.js/lodash. The example in this repository al
 
 ## Demo and Screenshot
 
-Demo: http://datazenit.com/static/sensei-grid/examples/
+Demo: http://datazenit.com/static/sensei-grid/examples/index.html
 
-[![Sensei Grid Screenshot](http://lauris.github.io/images/blog/sensei-grid-screenshot.png)](http://datazenit.com/static/sensei-grid/examples/)
+[![Sensei Grid Screenshot](http://lauris.github.io/images/blog/sensei-grid-screenshot.png)](http://datazenit.com/static/sensei-grid/examples/index.html)
 
 ## Goals
 
