@@ -22,7 +22,7 @@ Demo: http://datazenit.com/static/sensei-grid/examples/index.html
 The simplest way to get all necessary files is via bower: ``bower install sensei-grid``.
 If you don't want to use bower, just download an archive from the [latest release page](https://github.com/datazenit/sensei-grid/releases) or clone the whole repository.
 
-When you have obtained a copy of Sensei Grid, you must include all dependecies, sensei-grid.js and sensei-grid.css.
+When you have obtained a copy of Sensei Grid, you must include all dependencies, sensei-grid.js and sensei-grid.css.
 Sensei Grid depends on jQuery and lodash/underscore.js. For your convenience all dependecies can be found in ``lib/`` folder.
 
 *Warning:* By default Sensei Grid does not apply any styles to the table. It means that you need to create your own
