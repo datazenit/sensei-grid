@@ -47,7 +47,7 @@
     "karma-sauce-launcher": "^0.3.0",
     "load-grunt-tasks": "0.2.0",
     "mocha": "^2.3.4",
-    "open": "0.0.4",
+    "open": "7.0.0",
     "phantomjs": "^1.9.17",
     "requirejs": "^2.1.22"
   }
