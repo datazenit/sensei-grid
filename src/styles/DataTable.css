@@ -1,0 +1,21 @@
+.data-table-container {
+  overflow: auto;
+  max-height: 500px;
+}
+
+.sticky-header {
+  position: sticky;
+  top: 0;
+  background: #fff;
+  z-index: 2;
+}
+
+.pinned {
+  position: sticky;
+  background: #f9f9f9;
+  z-index: 1;
+}
+
+.sticky-header.pinned {
+  z-index: 3;
+}
